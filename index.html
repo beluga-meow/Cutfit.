@@ -268,6 +268,11 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 @media(max-width:520px){.w{padding:14px 14px 112px}.try-carousel{grid-template-columns:repeat(2,minmax(0,1fr))!important}.fit-bottom-actions{grid-template-columns:1fr}.library-tools{grid-template-columns:1fr 1fr}.gr{grid-template-columns:repeat(2,minmax(0,1fr))}.consult-grid{grid-template-columns:1fr}.fit-heading h1{font-size:1.8rem}.fit-heading .lead{font-size:.9rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
+
+/* CutFit modern haircut detail + AI try-on */
+#haircutModal{position:fixed;inset:0;z-index:80;background:#000d;display:grid;place-items:center;padding:14px}#haircutModal[hidden]{display:none}#haircutModal .modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:#171717;color:#f5f5f5;border:1px solid #444;border-radius:22px;padding:18px}#haircutModal .modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}#haircutModal .views{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}#haircutModal .view-link{display:block;border:1px solid #444;border-radius:14px;padding:14px 8px;text-align:center;color:#fff;text-decoration:none;background:#242424}#haircutModal .view-link b{display:block;font-size:1.05rem}#haircutModal .view-link small{color:#bbb}#haircutModal .detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}#tryCredits{font-size:.78rem;color:#eee;background:#242424;border:1px solid #444;padding:8px 11px;border-radius:999px}#trycv.generated{outline:2px solid #777}
+@media(max-width:520px){#haircutModal .views{grid-template-columns:1fr}#haircutModal .view-link{text-align:left}}
+
 </style>
 </head>
 <body>
@@ -347,15 +352,15 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 </section>
 
 <section id="p-try" hidden class="fitting-room">
-<div class="fit-heading"><div><p class="eyebrow">YOUR VIRTUAL FITTING ROOM</p><h1>Find your next look.</h1><p class="lead">Try a cut, compare the shape, then save the look you want to show your barber.</p></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="tryCredits">6 preview edits left</span><button class="save-pill" id="saveTry" aria-label="Save hairstyle preview">♡ <span>Save</span></button></div></div>
+<div class="fit-heading"><div><p class="eyebrow">YOUR VIRTUAL FITTING ROOM</p><h1>Find your next look.</h1><p class="lead">Choose a modern cut, generate a realistic AI preview, and compare real haircut references before visiting your barber.</p></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="tryCredits">10 AI credits</span><button class="save-pill" id="saveTry" aria-label="Save hairstyle preview">♡ <span>Save</span></button></div></div>
 <div class="fit-stage">
  <div class="fit-main"><div class="fit-image-wrap"><canvas id="trycv" width="640" height="800" aria-label="Your photo with hairstyle preview"></canvas><span class="view-tag">FRONT VIEW</span></div>
-  <div class="fit-caption"><div class="fit-cut"><span class="checkmark">✓</span><div><strong id="fitStyleName">Korean Two-Block</strong><small id="fitStyleDesc">Soft textured fringe</small></div></div><button class="try-again" id="renderTry">↻ <span>Try another</span></button></div>
+  <div class="fit-caption"><div class="fit-cut"><span class="checkmark">✓</span><div><strong id="fitStyleName">Korean Two-Block</strong><small id="fitStyleDesc">Soft textured fringe</small></div></div><button class="try-again" id="renderTry">✦ <span>Generate AI</span></button></div>
  </div>
  <aside class="fit-angles">
   <div class="angle-card"><div class="angle-art"><svg viewBox="0 0 180 190" role="img" aria-label="Side profile haircut guide"><path d="M35 190Q40 150 65 143L70 125Q48 111 47 79Q45 35 87 23Q128 14 143 51Q151 73 133 95L125 123Q117 139 101 145L112 190Z" fill="#d5b39a"/><path d="M44 80Q37 32 83 17Q133 4 148 51Q151 68 140 87Q132 66 113 62Q86 56 70 75Q57 91 48 105Z" fill="#211d1b"/></svg></div><span class="angle-label">SIDE GUIDE</span></div>
   <div class="angle-card"><div class="angle-art"><svg viewBox="0 0 180 190" role="img" aria-label="Back view haircut guide"><path d="M25 190Q34 145 62 139L63 116Q43 95 43 64Q43 18 90 16Q137 18 137 64Q137 95 117 116L118 139Q146 145 155 190Z" fill="#d5b39a"/><path d="M40 72Q31 16 90 10Q149 16 140 72L133 119Q122 136 90 138Q58 136 47 119Z" fill="#211d1b"/></svg></div><span class="angle-label">BACK GUIDE</span></div>
-  <p class="angle-note">Side and back are haircut shape references, not extra photos of you.</p>
+  <p class="angle-note">Open a haircut’s details for real front, side and back reference searches.</p>
  </aside>
  <div class="fit-tools"><button class="tool-btn" id="retakeFit" type="button"><span>◎</span><small>Retake</small></button><button class="tool-btn" id="adjustFit" type="button"><span>☷</span><small>Adjust</small></button><button class="tool-btn" id="colorFit" type="button"><span>◉</span><small>Hair color</small></button><button class="tool-btn" id="tutorialFit" type="button"><span>▷</span><small>Tutorial</small></button></div>
 </div>
@@ -363,7 +368,7 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 <div class="fit-shelf-heading"><div><strong>Choose your hairstyle</strong><small>Tap a style to preview it</small></div><button class="text-action" data-go="lib">See all</button></div>
 <div id="tryCarousel" class="try-carousel" aria-label="Hairstyle choices"></div>
 <select id="tryStyle" aria-label="Choose a haircut" class="visually-hidden"></select>
-<p class="fit-status" id="trymsg" role="status">Choose a style to preview. Current preview uses a visual overlay, not AI photo replacement.</p>
+<p class="fit-status" id="trymsg" role="status">Upload a selfie in Scan, choose a haircut, then tap Generate AI.</p>
 <div class="fit-bottom-actions"><button class="btn alt" data-go="lib">Explore all hairstyles</button><button class="btn" id="saveTrySecondary" type="button">Save preview ↓</button></div>
 </section>
 
@@ -383,17 +388,20 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 <div id="tm" role="dialog" aria-modal="true" aria-labelledby="tt" hidden><div>
 <h2 id="tt">Terms of use</h2>
 <ul>
-<li><b>Your photo stays with you.</b> It is processed in your browser and is not uploaded or saved by this app.</li>
+<li><b>Photo processing.</b> Basic face scanning happens in your browser. If you choose Generate AI, your selected photo is sent to the CutFit AI service and fal.ai to create the hairstyle preview. Do not upload someone else’s photo without permission.</li>
 <li><b>Estimates only.</b> Smart face landmarks help place measurement dots, but face-shape results are estimates. Review and adjust the dots yourself.</li>
 <li><b>Barber details are a snapshot.</b> Ratings, hours and prices came from Google Maps on Nov 21, 2026 and may have changed. Shops are listed for convenience, not endorsed.</li>
 <li><b>Your reviews and saved looks stay local.</b> Reviews and favorite hairstyles are stored in this browser on this device only. Clearing browser data may erase them.</li>
 <li><b>Permissions.</b> Your browser asks before using the camera. You can decline and upload a photo instead.</li>
 <li><b>Use your own photos.</b> Only use photos of yourself or of people who agreed.</li>
-<li><b>Try-on is a concept preview.</b> The hairstyle overlay is illustrative, not a photorealistic AI hair replacement. Side and back cards are generic references, not views of you.</li>
+<li><b>Credits.</b> This demo stores the 10-credit balance in this browser. Clearing site data or switching devices may reset it; it is not a secure account-wide limit.</li>
+<li><b>AI try-on and references.</b> AI results are generated estimates and may not perfectly match a real haircut. Front, side and back reference links show examples of the selected style, not views of your own head.</li>
 <li><b>Just for fun.</b> The roulette and the guide chat are automated and are not recommendations.</li>
 </ul>
 <div class="row"><button class="btn" id="ag">I agree</button><button class="btn alt" id="dc">Decline</button></div>
 </div></div>
+
+<div id="haircutModal" hidden role="dialog" aria-modal="true" aria-labelledby="haircutTitle"><div class="modal-card"><div class="modal-top"><div><p class="eyebrow">CUT DETAILS & REFERENCES</p><h2 id="haircutTitle">Haircut name</h2></div><button class="chip" id="closeHaircut" type="button">Close ✕</button></div><p id="haircutDescription" class="mute"></p><div class="spec-grid" id="haircutSpecs"></div><h3 style="margin-top:18px">Explore the real haircut from every angle</h3><p class="fine mute">These open photo references for the selected haircut. Check the side profile, back shape and front finish before choosing.</p><div class="views" id="haircutViews"></div><div class="detail-actions"><a class="btn alt" id="haircutVideo" href="#" target="_blank" rel="noopener">▶ Watch haircut videos</a><button class="btn" id="useHaircut" type="button">Use this haircut</button></div></div></div>
 
 <script>
 const S={
@@ -506,6 +514,7 @@ const saveFavs=()=>ls.s('cf_favs',JSON.stringify(favs));
 const isFav=name=>favs.includes(name);
 function toggleFav(name){favs=isFav(name)?favs.filter(x=>x!==name):[...favs,name];saveFavs();renderSaved();if(!$('p-lib').hidden)lib();if(!$('p-scan').hidden&&rank)sm();updateFitLabel();}
 try{RV=JSON.parse(ls.g('cf_rv')||'{}')}catch(_){}
+
 // ---------- haircut pictures (inline SVG) ----------
 function fig(p){
  const [t,h,s,f,y,b,w,x]=p,tp=20-t,k=c=>x.includes(c),o=k('Z')?.55:k('N')?.28:1,
@@ -526,7 +535,7 @@ function fig(p){
  if(k('R'))z+=`<path d="M38 ${tp+2}V${h}M44 ${tp}V${h-2}M50 ${tp}V${h-3}M56 ${tp}V${h-2}M62 ${tp+2}V${h}" stroke="var(--sk)" stroke-width="1.4" fill="none"/>`;
  return `<svg class="fg" viewBox="0 0 100 110" aria-hidden="true"><path class="sh" d="M10 110Q12 88 40 84H60Q88 88 90 110Z"/><g class="hr">${a}</g><rect class="sk" x="43" y="66" width="14" height="22"/><ellipse class="sk" cx="50" cy="50" rx="21" ry="26"/><g class="hr">${z}</g></svg>`;
 }
-const card=c=>`<div class="cd">${fig(c[4])}<b>${esc(c[0])}</b><span>${E[c[3]]}, ${L[c[2]]}. ${esc(c[5])}</span><div class="actions"><button class="chip" data-preview="${esc(c[0])}">Try this</button><button class="chip" data-fav="${esc(c[0])}" aria-pressed="${isFav(c[0])}">${isFav(c[0])?'♥ Saved':'♡ Save'}</button><a class="chip" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c[0]+' haircut tutorial step by step barber guide') }">Tutorial</a></div></div>`;
+const card=c=>`<div class="cd">${fig(c[4])}<b>${esc(c[0])}</b><span>${E[c[3]]}, ${L[c[2]]}. ${esc(c[5])}</span><div class="actions"><button class="chip" data-preview="${esc(c[0])}">Try this</button><button class="chip" data-details="${esc(c[0])}">Details + views</button><button class="chip" data-fav="${esc(c[0])}" aria-pressed="${isFav(c[0])}">${isFav(c[0])?'♥ Saved':'♡ Save'}</button><a class="chip" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c[0]+' haircut tutorial step by step barber guide') }">Tutorial</a></div></div>`;
 
 // ---------- tabs, terms ----------
 function tab(t){['scan','lib','spin','try','saved','bar'].forEach(i=>{$('p-'+i).hidden=i!=t});const active=$('p-'+t);if(active){active.classList.remove('page-enter');void active.offsetWidth;active.classList.add('page-enter')}if(t==='saved')renderSaved();
@@ -549,6 +558,7 @@ const need=()=>{if(agreed)return 0;terms();return 1};
 $('ag').onclick=()=>{agreed=true;ls.s('cf_ok','1');$('tm').hidden=true};
 $('dc').onclick=()=>{$('tm').hidden=true;$('msg').textContent='Agree to the terms to use the camera or photo upload.'};
 $('tl').onclick=terms;
+
 // ---------- photo: camera or upload ----------
 async function cam(){
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('f1').click();return}
@@ -559,7 +569,7 @@ function stop(){if(st)st.getTracks().forEach(t=>t.stop());st=null;$('cam').hidde
 $('b1').onclick=()=>{if(!need())cam()};
 $('b2').onclick=()=>{if(!need())$('f2').click()};
 $('retake').onclick=()=>{if(st)stop();cam()};
-$('clearPhoto').onclick=()=>{if(st)stop();img=null;pts=null;rank=null;m=null;$('s2').hidden=true;$('photoStart').hidden=false;$('sum').hidden=true;$('clearPhoto').hidden=true;$('retake').hidden=true;$('msg').textContent='Photo removed from this page. You can take or upload another one anytime.';drawTry();};
+$('clearPhoto').onclick=()=>{if(st)stop();img=null;generatedImg=null;pts=null;rank=null;m=null;$('s2').hidden=true;$('photoStart').hidden=false;$('sum').hidden=true;$('clearPhoto').hidden=true;$('retake').hidden=true;$('msg').textContent='Photo removed from this page. You can take or upload another one anytime.';drawTry();};
 $('cc').onclick=stop;
 $('sn').onclick=()=>{const v=$('vd'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);stop();c.toBlob(b=>load(URL.createObjectURL(b)),'image/jpeg',.92)};
 const pick=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(!f.type.startsWith('image/')){$('msg').textContent='Please choose an image file.';return}if(f.size>12*1024*1024){$('msg').textContent='That photo is over 12 MB. Choose a smaller image for a faster scan.';return}load(URL.createObjectURL(f))};
@@ -567,7 +577,7 @@ $('f1').onchange=$('f2').onchange=pick;
 function load(u){
  const i=new Image();
  i.onload=async()=>{
-  img=i;cv.width=640;cv.height=Math.round(640*i.height/i.width);
+  img=i;generatedImg=null;cv.width=640;cv.height=Math.round(640*i.height/i.width);
   $('s2').hidden=false;$('photoStart').hidden=true;$('sum').hidden=true;rank=null;bx=null;$('retake').hidden=false;$('clearPhoto').hidden=false;
   init();draw();dt();URL.revokeObjectURL(u);$('msg').textContent='';
   $('aihint').textContent='Trying smart face-landmark detection…';
@@ -719,6 +729,7 @@ function dt(){
 <div class="gr">${cs.map(card).join('')||'<p class="mute">No cuts match these filters.</p>'}</div>
 <p><b>Skip:</b> ${s.a}</p><p><b>Tip:</b> ${s.t}</p>`;
 }
+
 // ---------- style library ----------
 function lib(){
  const q=($('styleSearch')?.value||'').trim().toLowerCase(),len=$('styleLength')?.value||'a',type=$('styleType')?.value||'a';
@@ -758,28 +769,35 @@ $('sp').onclick=()=>{
 };
 
 // ---------- virtual hairstyle preview (illustrative overlay) ----------
-let selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];
-const creditKey='cf_preview_day',creditCountKey='cf_preview_count';
-function creditsLeft(){const today=new Date().toISOString().slice(0,10);if(ls.g(creditKey)!==today){ls.s(creditKey,today);ls.s(creditCountKey,'0')}return Math.max(0,6-(+(ls.g(creditCountKey)||0)));}
-function updateCredits(){const n=creditsLeft();$('tryCredits').textContent=n+' preview edit'+(n===1?'':'s')+' left today';$('renderTry').disabled=n<=0;}
-function useCredit(){const n=creditsLeft();if(n<=0){$('trymsg').textContent='You’ve used all 6 preview edits for today. Your preview credits refresh tomorrow.';return false;}ls.s(creditCountKey,String(6-n+1));updateCredits();return true;}
+let selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];let generatedImg=null,generatedUrl='';const CUTFIT_API='https://cutfit-api-ai.jhayc-chua06.workers.dev';
+const creditKey='cf_ai_credit_state_v2';
+const CREDIT_MAX=10, CREDIT_INTERVAL=3*60*60*1000;
+function getCreditState(){let st;try{st=JSON.parse(ls.g(creditKey)||'null')}catch(_){}if(!st||typeof st.credits!=='number'){st={credits:CREDIT_MAX,last:Date.now()};ls.s(creditKey,JSON.stringify(st));}const now=Date.now();if(st.credits<CREDIT_MAX){const passed=Math.max(0,now-(st.last||now));const earned=Math.floor(passed/CREDIT_INTERVAL);if(earned>0){st.credits=Math.min(CREDIT_MAX,st.credits+earned);st.last=st.credits===CREDIT_MAX?now:(st.last||now)+earned*CREDIT_INTERVAL;}}else st.last=now;ls.s(creditKey,JSON.stringify(st));return st;}
+function creditsLeft(){return getCreditState().credits;}
+function updateCredits(){const st=getCreditState(),n=st.credits;let extra='';if(n<CREDIT_MAX){const ms=Math.max(0,CREDIT_INTERVAL-(Date.now()-st.last));const mins=Math.ceil(ms/60000);extra=' · +1 in '+Math.floor(mins/60)+'h '+(mins%60)+'m';}$('tryCredits').textContent=n+'/'+CREDIT_MAX+' AI credits'+extra;$('renderTry').disabled=n<=0;}
+function useCredit(){const st=getCreditState();if(st.credits<=0){$('trymsg').textContent='No AI credits left. One credit returns every 3 hours, up to 10 credits.';return false;}st.credits--;if(st.credits===CREDIT_MAX-1&&st.last>Date.now())st.last=Date.now();ls.s(creditKey,JSON.stringify(st));updateCredits();return true;}
 function setupTry(){
  $('tryStyle').innerHTML=CT.filter(c=>c[1]==='m'||c[1]==='u').map(c=>`<option value="${esc(c[0])}">${esc(c[0])}</option>`).join('');
- const featured=['Korean two-block','French crop','Low taper','Comma hair','Textured crop','Layered cut','Caesar cut','Textured quiff','Natural curls','Side-swept fringe'];
+ const featured=['Korean two-block','Korean comma two-block','Mid taper with textured top','Burst fade','Drop fade','Modern mullet','Textured fringe','Modern slick back','Teddy bear cut','Japanese wolf cut','Edgar cut','Bro flow'];
  const items=featured.map(n=>CT.find(c=>(c[1]==='m'||c[1]==='u')&&c[0].toLowerCase()===n.toLowerCase())||CT.find(c=>(c[1]==='m'||c[1]==='u')&&c[0].toLowerCase().includes(n.split(' ')[0]))).filter(Boolean);
  $('tryCarousel').innerHTML=items.map(c=>`<button class="try-card" type="button" data-style="${esc(c[0])}" aria-pressed="${c[0]===selectedTry[0]}">${fig(c[4])}<span>${esc(c[0])}</span>${c[0]===selectedTry[0]?'<i class="picked">✓</i>':''}</button>`).join('');
- document.querySelectorAll('.try-card').forEach(b=>b.onclick=()=>selectTry(b.dataset.style));updateFitLabel();
+ document.querySelectorAll('.try-card').forEach(b=>b.onclick=()=>{selectTry(b.dataset.style);showHaircutDetails(b.dataset.style)});updateFitLabel();
 }
+function showHaircutDetails(name){const c=CM[name]||CT[0];$('haircutTitle').textContent=c[0];$('haircutDescription').textContent=c[5]||'Modern haircut reference';const specs={sides:/fade|taper|undercut/.test(c[0].toLowerCase())?'Tapered or faded sides':'Clean, blended sides',top:c[2]==='s'?'Short textured top':c[2]==='m'?'Medium length with shape':'Longer layered length',finish:c[5]||'Natural finish'};$('haircutSpecs').innerHTML=`<div class="spec-grid"><div><small>SIDES</small><b>${specs.sides}</b></div><div><small>TOP</small><b>${specs.top}</b></div><div><small>FINISH</small><b>${esc(specs.finish)}</b></div></div>`;const q=encodeURIComponent(c[0]+' men haircut');$('haircutViews').innerHTML=[['Front','front view'],['Side','side profile view'],['Back','back view']].map(([label,view])=>`<a class="view-link" target="_blank" rel="noopener" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(c[0]+' haircut '+view)}"><b>${label} view ↗</b><small>Open photo references</small></a>`).join('');$('haircutVideo').href='https://www.youtube.com/results?search_query='+encodeURIComponent(c[0]+' haircut real life transformation barber tutorial');$('useHaircut').dataset.style=c[0];$('haircutModal').hidden=false;}
+$('closeHaircut').onclick=()=>$('haircutModal').hidden=true;
+$('haircutModal').addEventListener('click',e=>{if(e.target===$('haircutModal'))$('haircutModal').hidden=true});
+$('useHaircut').onclick=()=>{const n=$('useHaircut').dataset.style;$('haircutModal').hidden=true;selectTry(n);tab('try');};
+
 function updateFitLabel(){
  $('fitStyleName').textContent=selectedTry[0];$('fitStyleDesc').textContent=selectedTry[5]||'Custom hairstyle preview';$('saveTry').innerHTML=isFav(selectedTry[0])?'♥ <span>Saved</span>':'♡ <span>Save</span>'; 
  document.querySelectorAll('.try-card').forEach(b=>{const on=b.dataset.style===selectedTry[0];b.setAttribute('aria-pressed',on?'true':'false');const old=b.querySelector('.picked');if(old)old.remove();if(on){const i=document.createElement('i');i.className='picked';i.textContent='✓';b.appendChild(i)}});
 }
-function selectTry(name){const next=CM[name]||CT[0];if(next[0]!==selectedTry[0]&&!useCredit())return;selectedTry=next;$('tryStyle').value=selectedTry[0];drawTry();updateFitLabel();$('trymsg').textContent=img?'Preview updated: '+selectedTry[0]+'. This is a visual concept overlay, not AI hair replacement.':'Take or upload a photo in Scan first.';}
+function selectTry(name){const next=CM[name]||CT[0];selectedTry=next;generatedImg=null;generatedUrl='';$('tryStyle').value=selectedTry[0];drawTry();updateFitLabel();$('trymsg').textContent=img?'Preview updated: '+selectedTry[0]+'. This is a visual concept overlay, not AI hair replacement.':'Take or upload a photo in Scan first.';}
 function drawTry(){
  const c=$('trycv'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
  if(!img){ctx.fillStyle='#222';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.font='22px sans-serif';ctx.fillText('Take or upload a selfie first',105,390);return;}
- const scale=Math.min(c.width/img.width,c.height/img.height),w=img.width*scale,h=img.height*scale,x=(c.width-w)/2,y=(c.height-h)/2;
- ctx.fillStyle='#111';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,x,y,w,h);
+ const source=generatedImg||img;const scale=Math.min(c.width/source.width,c.height/source.height),w=source.width*scale,h=source.height*scale,x=(c.width-w)/2,y=(c.height-h)/2;
+ ctx.fillStyle='#111';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(source,x,y,w,h);if(generatedImg){$('trycv').classList.add('generated');return;}else $('trycv').classList.remove('generated');
  const top=pts&&pts[0]?{x:x+pts[0][0]*w,y:y+pts[0][1]*h}:{x:c.width/2,y:c.height*.28};
  const left=pts&&pts[4]?{x:x+pts[4][0]*w,y:y+pts[4][1]*h}:{x:c.width*.34,y:c.height*.42};
  const right=pts&&pts[5]?{x:x+pts[5][0]*w,y:y+pts[5][1]*h}:{x:c.width*.66,y:c.height*.42};
@@ -799,6 +817,8 @@ function drawTry(){
  if(name.includes('curtain')||name.includes('comma')||name.includes('fringe')||name.includes('crop')||name.includes('caesar')){ctx.beginPath();ctx.moveTo(cx,base-height*.48);ctx.quadraticCurveTo(cx-width*.18,base+height*.12,left.x+width*.12,base+height*.15);ctx.quadraticCurveTo(cx-width*.1,base-height*.12,cx,base-height*.18);ctx.quadraticCurveTo(cx+width*.18,base+height*.02,right.x-width*.1,base+height*.15);ctx.quadraticCurveTo(cx+width*.08,base-height*.2,cx,base-height*.48);ctx.fill();}
  ctx.restore();
 }
+async function imageToDataUrl(image){const max=1280,scale=Math.min(1,max/image.width);const c=document.createElement('canvas');c.width=Math.round(image.width*scale);c.height=Math.round(image.height*scale);c.getContext('2d').drawImage(image,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.88);}
+async function generateAI(){if(!img){$('trymsg').textContent='Please take or upload your selfie in Scan first.';return;}if(!useCredit())return;generatedImg=null;generatedUrl='';drawTry();$('renderTry').disabled=true;$('renderTry').textContent='Submitting…';$('trymsg').textContent='Sending your photo securely to the AI service. Please wait…';try{const imageDataUrl=await imageToDataUrl(img);const res=await fetch(CUTFIT_API+'/api/try-on',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageDataUrl,hairstyle:selectedTry[0]})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Could not start AI generation.');const id=data.request_id;if(!id)throw new Error('The AI service did not return a request ID.');$('trymsg').textContent='AI is creating your '+selectedTry[0]+'. This may take a little while…';let done=false;for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,2500));const poll=await fetch(CUTFIT_API+'/api/status?id='+encodeURIComponent(id));const status=await poll.json();if(!poll.ok)throw new Error(status.error||'Could not check AI status.');if(status.status==='COMPLETED'&&status.imageUrl){const out=new Image();out.crossOrigin='anonymous';await new Promise((resolve,reject)=>{out.onload=resolve;out.onerror=reject;out.src=status.imageUrl});generatedImg=out;generatedUrl=status.imageUrl;drawTry();done=true;$('trymsg').textContent='Your AI hairstyle preview is ready. Compare it with the original and save it if you like.';break;}if(status.status==='FAILED')throw new Error(status.error||'AI generation failed.');}if(!done)throw new Error('This generation is taking longer than expected. Please try again later.');}catch(e){$('trymsg').textContent='AI try-on error: '+(e.message||'Please try again.');}finally{$('renderTry').disabled=creditsLeft()<=0;$('renderTry').textContent='✦ Generate AI';updateCredits();}}
 $('tryStyle').onchange=()=>{selectedTry=CM[$('tryStyle').value]||CT[0];drawTry();updateFitLabel()};
 $('hairColor').onchange=$('hairOpacity').oninput=drawTry;
 $('retakeFit').onclick=()=>{tab('scan');$('retake').hidden=false;$('retake').click()};
@@ -806,8 +826,8 @@ $('adjustFit').onclick=()=>{$('fitAdjustments').hidden=!$('fitAdjustments').hidd
 $('colorFit').onclick=()=>{$('fitAdjustments').hidden=false;$('hairColor').focus()};
 $('tutorialFit').onclick=()=>window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(selectedTry[0]+' men haircut tutorial barber step by step'),'_blank','noopener');
 $('saveTrySecondary').onclick=()=>$('saveTry').click();
-$('renderTry').onclick=()=>{if(!useCredit())return;selectedTry=CM[$('tryStyle').value]||CT[0];drawTry();updateFitLabel();$('trymsg').textContent=img?'Preview refreshed. This is an illustrative overlay, not a photorealistic AI try-on.':'Take or upload a photo in Scan first.'};
-$('saveTry').onclick=()=>{if(!img){$('trymsg').textContent='Take or upload a photo first.';return;}if(!isFav(selectedTry[0])){favs.push(selectedTry[0]);saveFavs();renderSaved();updateFitLabel();}const exportCanvas=document.createElement('canvas');exportCanvas.width=$('trycv').width;exportCanvas.height=$('trycv').height;const ex=exportCanvas.getContext('2d');ex.drawImage($('trycv'),0,0);ex.fillStyle='rgba(255,255,255,.86)';ex.fillRect(18,exportCanvas.height-58,190,38);ex.fillStyle='#171717';ex.font='600 18px Arial';ex.fillText('CUTfit  •  STYLE PREVIEW',28,exportCanvas.height-33);const a=document.createElement('a');a.download='cutfit-'+selectedTry[0].toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-preview.png';a.href=exportCanvas.toDataURL('image/png');a.click();$('trymsg').textContent=selectedTry[0]+' saved to My looks and preview downloaded. Remember: this is an illustrative concept, not a photorealistic replacement.';};
+$('renderTry').onclick=generateAI;
+$('saveTry').onclick=()=>{if(!img){$('trymsg').textContent='Take or upload a photo first.';return;}if(!isFav(selectedTry[0])){favs.push(selectedTry[0]);saveFavs();renderSaved();updateFitLabel();}if(generatedUrl){const direct=document.createElement('a');direct.href=generatedUrl;direct.target='_blank';direct.rel='noopener';direct.download='cutfit-'+selectedTry[0].toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-ai.png';direct.click();$('trymsg').textContent=selectedTry[0]+' saved to My looks. Open the generated image to save it to your device.';return;}const exportCanvas=document.createElement('canvas');exportCanvas.width=$('trycv').width;exportCanvas.height=$('trycv').height;const ex=exportCanvas.getContext('2d');ex.drawImage($('trycv'),0,0);ex.fillStyle='rgba(255,255,255,.86)';ex.fillRect(18,exportCanvas.height-58,190,38);ex.fillStyle='#171717';ex.font='600 18px Arial';ex.fillText('CUTfit  •  STYLE PREVIEW',28,exportCanvas.height-33);const a=document.createElement('a');a.download='cutfit-'+selectedTry[0].toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-preview.png';a.href=exportCanvas.toDataURL('image/png');a.click();$('trymsg').textContent=selectedTry[0]+' saved to My looks and preview downloaded.';};
 function openTry(name){selectedTry=CM[name]||CT[0];$('tryStyle').value=selectedTry[0];tab('try');drawTry();$('trymsg').textContent=img?'Selected '+selectedTry[0]+'. Adjust the preview and compare styles.':'Take or upload a photo in Scan first.';}
 
 // ---------- barbers and reviews ----------
@@ -836,7 +856,7 @@ const R=[
 [/accura|how.*(work|measure)|ratio/,'It compares your face length with the width of your forehead, cheekbones and jaw, then matches those ratios to 7 classic shapes. The more precisely you place the dots, the better the match.'],
 [/barber|salon|price|rate|review|near/,'Open Barbers for nearby shops with ratings, price levels and hours. Tap Write a review to save your own rating on this device, and confirm prices with the shop.'],
 [/spin|roulette|game|random|fun/,'Open Roulette and tap Spin to discover a men’s haircut. The wheel includes men’s and unisex styles.'],
-[/try.on|preview|edit|credit/,'Open Try-on, choose a hairstyle, adjust the color and overlay strength, then save your concept preview. You have six preview edits per day. This is not yet realistic AI hair replacement.'],
+[/try.on|preview|edit|credit/,'Open Try-on, upload a selfie in Scan, choose a modern haircut and tap Generate AI. You start with 10 credits and regain 1 credit every 3 hours, up to 10.'],
 [/style|library|old|classic|modern|trend|haircut/,'Styles shows men’s and unisex cuts with illustrations. Filter by Classic oldies or Modern, length and haircut category, then move between pages.'],
 [/privacy|data|safe|store|terms|agree/,'Your photo stays in your browser and is never uploaded. I’ve opened the full terms for you.'],
 [/^(hi|hello|hey)|help/,'Hi! I can guide you through scanning, face shapes, the style library, the roulette and the barbers.']];
@@ -858,10 +878,12 @@ const send=()=>{const v=$('bi').value.trim();if(v){$('bi').value='';ask(v)}};
 $('bs').onclick=send;$('bi').onkeydown=e=>{if(e.key=='Enter')send()};
 ['styleSearch','styleLength','styleType'].forEach(id=>$(id).addEventListener(id==='styleSearch'?'input':'change',()=>{libraryPage=1;lib()}));
 $('barberSearch').addEventListener('input',bl);
+
+
 // ---------- clicks ----------
 document.onclick=e=>{
  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
- if(d.t)tab(d.t);if(d.go)tab(d.go);if(d.preview)openTry(d.preview);if(d.fav)toggleFav(d.fav);
+ if(d.t)tab(d.t);if(d.go)tab(d.go);if(d.preview)openTry(d.preview);if(d.details)showHaircutDetails(d.details);if(d.fav)toggleFav(d.fav);
  if(d.k){cur=d.k;dt()}if(d.g){g=d.g;dt()}if(d.l){l=d.l;dt()}
  if(d.e){le=d.e;libraryPage=1;lib()}if(d.q){lg='m';libraryPage=1;lib()}if(d.page){const n=Math.max(1,Math.ceil(libraryTotal/12));libraryPage=d.page==='next'?Math.min(n,libraryPage+1):d.page==='prev'?Math.max(1,libraryPage-1):Math.min(n,+d.page);lib();sc($('p-lib'));}
  if(d.rv){const f=$('rf'+d.rv);f.hidden=!f.hidden}
@@ -870,11 +892,8 @@ document.onclick=e=>{
 };
 lib();wheel();dt();bl();setupTry();drawTry();updateCredits();
 if(!agreed)terms();
+setInterval(updateCredits,60000);
 window.addEventListener('load',()=>setTimeout(()=>$('loadingScreen')?.classList.add('done'),850));setTimeout(()=>$('loadingScreen')?.classList.add('done'),2200);
-
-const CUTFIT_API =
-  "https://cutfit-api-ai.jhayc-chua06.workers.dev";
-  
 </script>
 </body>
 </html>
