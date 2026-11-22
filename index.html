@@ -273,6 +273,19 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 #haircutModal{position:fixed;inset:0;z-index:80;background:#000d;display:grid;place-items:center;padding:14px}#haircutModal[hidden]{display:none}#haircutModal .modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:#171717;color:#f5f5f5;border:1px solid #444;border-radius:22px;padding:18px}#haircutModal .modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}#haircutModal .views{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}#haircutModal .view-link{display:block;border:1px solid #444;border-radius:14px;padding:14px 8px;text-align:center;color:#fff;text-decoration:none;background:#242424}#haircutModal .view-link b{display:block;font-size:1.05rem}#haircutModal .view-link small{color:#bbb}#haircutModal .detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}#tryCredits{font-size:.78rem;color:#eee;background:#242424;border:1px solid #444;padding:8px 11px;border-radius:999px}#trycv.generated{outline:2px solid #777}
 @media(max-width:520px){#haircutModal .views{grid-template-columns:1fr}#haircutModal .view-link{text-align:left}}
 
+#studio{position:fixed;inset:0;z-index:90;background:#000d;display:grid;place-items:center;padding:12px}#studio[hidden]{display:none}
+#studio .st-card{width:min(720px,100%);max-height:94vh;overflow:auto;background:#171717;color:#f5f5f5;border-radius:18px;padding:16px}
+.st-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.st-stage{background:radial-gradient(#3a3a3a,#151515);border-radius:14px;margin:10px 0}
+#stcv{display:block;width:100%;height:min(52vh,380px);touch-action:none;cursor:grab}
+#studio .chip{color:#f5f5f5;border-color:#4a4a4a}#studio .chip[aria-pressed=true]{background:#f5f5f5;color:#111;border-color:#f5f5f5}
+#studio .btn{background:#f5f5f5;color:#111;border-color:#f5f5f5}#studio .btn.alt{background:none;color:#f5f5f5;border-color:#666}
+.st-row{display:grid;grid-template-columns:104px 1fr 22px;align-items:center;gap:8px;font-size:.9rem;margin:.25rem 0}
+.st-row input{width:100%;accent-color:#f5f5f5;padding:0;border:0;background:none}
+.st-sw{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.st-sw button{width:30px;height:30px;border-radius:50%;border:2px solid #555;cursor:pointer;padding:0}.st-sw button[aria-pressed=true]{border-color:#fff;outline:2px solid #fff;outline-offset:1px}
+.st-sw input[type=color]{width:36px;height:30px;padding:0;border:0;background:none}
+#stName{width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:10px;padding:10px 12px;margin-top:1rem}
+.plus{font-size:1.25em;line-height:1;margin-right:.35em}.try-card.add .plus{display:grid;place-items:center;font-size:2.4rem;height:64px;margin:0}
 </style>
 </head>
 <body>
@@ -336,11 +349,13 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 <section id="p-lib" hidden>
 <h1>Style library</h1>
 <p class="lead">Explore men’s cuts, from timeless barber classics to current Korean-inspired and street styles.</p><p class="fine mute">Every style includes a quick description, try-on shortcut, save option and a step-by-step video search.</p>
+<div class="row"><button class="btn" data-add="1" aria-label="Create your own haircut"><b class="plus">+</b> Create your own haircut</button></div>
 <div class="library-tools"><label class="search-label" for="styleSearch">Search hairstyles</label><input id="styleSearch" type="search" placeholder="Try “two-block”, “fade”, “quiff”…" autocomplete="off"><label class="search-label" for="styleLength">Length</label><select id="styleLength"><option value="a">Any length</option><option value="s">Short</option><option value="m">Medium</option><option value="l">Long</option></select><label class="search-label" for="styleType">Style type</label><select id="styleType"><option value="a">All styles</option><option value="fade">Fades & tapers</option><option value="fringe">Fringe & curtains</option><option value="curl">Curls & texture</option><option value="long">Long & layered</option><option value="classic">Classic cuts</option><option value="korean">Korean-inspired</option><option value="natural">Natural texture</option></select></div>
 <div id="ll"></div>
 </section>
 <section id="p-saved" hidden>
-<h1>Your Cutfit shelf.</h1><p class="lead">A personal shortlist of cuts you love. Saved on this device, ready for your next barber visit.</p><div id="savedList"></div>
+<h1>Your Cutfit shelf.</h1><p class="lead">A personal shortlist of cuts you love. Saved on this device, ready for your next barber visit.</p><div class="row"><button class="btn" data-add="1" aria-label="Create your own haircut"><b class="plus">+</b> Create your own haircut</button></div>
+<div id="savedList"></div>
 </section>
 
 <section id="p-spin" hidden>
@@ -403,6 +418,16 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
 
 <div id="haircutModal" hidden role="dialog" aria-modal="true" aria-labelledby="haircutTitle"><div class="modal-card"><div class="modal-top"><div><p class="eyebrow">CUT DETAILS & REFERENCES</p><h2 id="haircutTitle">Haircut name</h2></div><button class="chip" id="closeHaircut" type="button">Close ✕</button></div><p id="haircutDescription" class="mute"></p><div class="spec-grid" id="haircutSpecs"></div><h3 style="margin-top:18px">Explore the real haircut from every angle</h3><p class="fine mute">These open photo references for the selected haircut. Check the side profile, back shape and front finish before choosing.</p><div class="views" id="haircutViews"></div><div class="detail-actions"><a class="btn alt" id="haircutVideo" href="#" target="_blank" rel="noopener">▶ Watch haircut videos</a><button class="btn" id="useHaircut" type="button">Use this haircut</button></div></div></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<div id="studio" hidden role="dialog" aria-modal="true" aria-labelledby="stt"><div class="st-card">
+<div class="st-top"><div><h2 id="stt" style="margin:0">Hair studio</h2><p class="fine" style="margin:.2rem 0 0;color:#aaa">Design your own cut on a 3D mannequin.</p></div><button class="chip" id="stClose">Close</button></div>
+<div class="st-stage"><canvas id="stcv" aria-label="3D head mannequin"></canvas></div>
+<div class="chips"><button class="chip" data-vw="0">Front</button><button class="chip" data-vw="1.5708">Side</button><button class="chip" data-vw="3.1416">Back</button></div>
+<p class="fine" id="stmsg" role="status" style="color:#aaa"></p>
+<div id="stCtl"></div>
+<input id="stName" maxlength="40" placeholder="Name your style" aria-label="Style name">
+<div class="row"><button class="btn" id="stSave">Save</button><button class="btn alt" id="stTry">Try on my photo</button><button class="btn alt" id="stAI">Generate with AI</button></div>
+</div></div>
 <script>
 const S={
 oval:{n:'Oval',d:'Length is about 1.5× the cheekbone width, the forehead is a touch wider than a soft jaw, and no feature dominates. Most cuts work.',g:'Keep the natural balance.',r:['Textured crop','Taper fade','Side part','Slick back','Pompadour','Long layers','Lob','Pixie cut','Curtain bangs','Beach waves'],a:'Heavy fringes that hide your balance.',t:'Choose by hair texture and lifestyle.'},
@@ -510,6 +535,7 @@ const ch=(on,at,t)=>`<button class="chip" aria-pressed="${on}" ${at}>${t}</butto
 let img,pts,drag=-1,bx=null,cur='oval',g='m',l='a',rank=null,m=null,le='a',lg='m',st=null,libraryPage=1,libraryTotal=0,agreed=ls.g('cf_ok')=='1',RV={},favs=[];
 try{favs=JSON.parse(ls.g('cf_favs')||'[]')}catch(_){}
 if(!Array.isArray(favs))favs=[];
+let customs=[];try{customs=JSON.parse(ls.g('cf_custom')||'[]')}catch(_){}if(!Array.isArray(customs))customs=[];
 const saveFavs=()=>ls.s('cf_favs',JSON.stringify(favs));
 const isFav=name=>favs.includes(name);
 function toggleFav(name){favs=isFav(name)?favs.filter(x=>x!==name):[...favs,name];saveFavs();renderSaved();if(!$('p-lib').hidden)lib();if(!$('p-scan').hidden&&rank)sm();updateFitLabel();}
@@ -744,8 +770,8 @@ function lib(){
 
 function renderSaved(){
  const list=$('savedList');if(!list)return;
- const styles=favs.map(n=>CM[n]).filter(c=>c&&(c[1]==='m'||c[1]==='u'));
- list.innerHTML=styles.length?`<p class="mute fine">${styles.length} saved ${styles.length===1?'style':'styles'}</p><div class="gr">${styles.map(c=>`<div class="cd">${fig(c[4])}<b>${esc(c[0])}</b><span>${E[c[3]]}, ${L[c[2]]}. ${esc(c[5])}</span><div class="actions"><button class="chip" data-preview="${esc(c[0])}">Open in try-on</button><button class="chip" data-fav="${esc(c[0])}" aria-pressed="true">Remove ♥</button></div></div>`).join('')}</div>`:`<div class="hint"><b>Your shelf is empty—for now.</b><p>Save a hairstyle from the Style Library or Virtual Fitting Room and it will appear here.</p><button class="btn" data-go="lib">Explore hairstyles</button></div>`;
+ const styles=[...new Set([...favs,...customs.map(r=>r.name)])].map(n=>CM[n]).filter(c=>c&&(c[1]==='m'||c[1]==='u'));
+ list.innerHTML=styles.length?`<p class="mute fine">${styles.length} saved ${styles.length===1?'style':'styles'}</p><div class="gr">${styles.map(c=>`<div class="cd">${fig(c[4])}<b>${esc(c[0])}</b><span>${E[c[3]]}, ${L[c[2]]}. ${esc(c[5])}</span><div class="actions"><button class="chip" data-preview="${esc(c[0])}">Open in try-on</button>${c[3]==='x'?`<button class="chip" data-edit="${esc(c[0])}">Edit</button><button class="chip" data-del="${esc(c[0])}">Delete</button>`:`<button class="chip" data-fav="${esc(c[0])}" aria-pressed="true">Remove ♥</button>`}</div></div>`).join('')}</div>`:`<div class="hint"><b>Your shelf is empty—for now.</b><p>Save a hairstyle from the Style Library or Virtual Fitting Room and it will appear here.</p><button class="btn" data-go="lib">Explore hairstyles</button></div>`;
 }
 
 // ---------- roulette ----------
@@ -769,7 +795,7 @@ $('sp').onclick=()=>{
 };
 
 // ---------- virtual hairstyle preview (illustrative overlay) ----------
-let selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];let generatedImg=null,generatedUrl='';const CUTFIT_API='https://cutfit-api-ai.jhayc-chua06.workers.dev';
+let selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];let generatedImg=null,generatedUrl='';const CUTFIT_API='https://cutfit-ai-api.jhayc-chua06.workers.dev';
 const creditKey='cf_ai_credit_state_v2';
 const CREDIT_MAX=10, CREDIT_INTERVAL=3*60*60*1000;
 function getCreditState(){let st;try{st=JSON.parse(ls.g(creditKey)||'null')}catch(_){}if(!st||typeof st.credits!=='number'){st={credits:CREDIT_MAX,last:Date.now()};ls.s(creditKey,JSON.stringify(st));}const now=Date.now();if(st.credits<CREDIT_MAX){const passed=Math.max(0,now-(st.last||now));const earned=Math.floor(passed/CREDIT_INTERVAL);if(earned>0){st.credits=Math.min(CREDIT_MAX,st.credits+earned);st.last=st.credits===CREDIT_MAX?now:(st.last||now)+earned*CREDIT_INTERVAL;}}else st.last=now;ls.s(creditKey,JSON.stringify(st));return st;}
@@ -780,8 +806,8 @@ function setupTry(){
  $('tryStyle').innerHTML=CT.filter(c=>c[1]==='m'||c[1]==='u').map(c=>`<option value="${esc(c[0])}">${esc(c[0])}</option>`).join('');
  const featured=['Korean two-block','Korean comma two-block','Mid taper with textured top','Burst fade','Drop fade','Modern mullet','Textured fringe','Modern slick back','Teddy bear cut','Japanese wolf cut','Edgar cut','Bro flow'];
  const items=featured.map(n=>CT.find(c=>(c[1]==='m'||c[1]==='u')&&c[0].toLowerCase()===n.toLowerCase())||CT.find(c=>(c[1]==='m'||c[1]==='u')&&c[0].toLowerCase().includes(n.split(' ')[0]))).filter(Boolean);
- $('tryCarousel').innerHTML=items.map(c=>`<button class="try-card" type="button" data-style="${esc(c[0])}" aria-pressed="${c[0]===selectedTry[0]}">${fig(c[4])}<span>${esc(c[0])}</span>${c[0]===selectedTry[0]?'<i class="picked">✓</i>':''}</button>`).join('');
- document.querySelectorAll('.try-card').forEach(b=>b.onclick=()=>{selectTry(b.dataset.style);showHaircutDetails(b.dataset.style)});updateFitLabel();
+ $('tryCarousel').innerHTML='<button class="try-card add" type="button" data-add="1"><b class="plus">+</b><span>Create your own</span></button>'+Object.values(CM).filter(c=>c[3]==='x').concat(items).map(c=>`<button class="try-card" type="button" data-style="${esc(c[0])}" aria-pressed="${c[0]===selectedTry[0]}">${fig(c[4])}<span>${esc(c[0])}</span>${c[0]===selectedTry[0]?'<i class="picked">✓</i>':''}</button>`).join('');
+ document.querySelectorAll('.try-card').forEach(b=>b.onclick=()=>{if(b.dataset.add)return;selectTry(b.dataset.style);if(CM[b.dataset.style][3]!=='x')showHaircutDetails(b.dataset.style)});updateFitLabel();
 }
 function showHaircutDetails(name){const c=CM[name]||CT[0];$('haircutTitle').textContent=c[0];$('haircutDescription').textContent=c[5]||'Modern haircut reference';const specs={sides:/fade|taper|undercut/.test(c[0].toLowerCase())?'Tapered or faded sides':'Clean, blended sides',top:c[2]==='s'?'Short textured top':c[2]==='m'?'Medium length with shape':'Longer layered length',finish:c[5]||'Natural finish'};$('haircutSpecs').innerHTML=`<div class="spec-grid"><div><small>SIDES</small><b>${specs.sides}</b></div><div><small>TOP</small><b>${specs.top}</b></div><div><small>FINISH</small><b>${esc(specs.finish)}</b></div></div>`;const q=encodeURIComponent(c[0]+' men haircut');$('haircutViews').innerHTML=[['Front','front view'],['Side','side profile view'],['Back','back view']].map(([label,view])=>`<a class="view-link" target="_blank" rel="noopener" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(c[0]+' haircut '+view)}"><b>${label} view ↗</b><small>Open photo references</small></a>`).join('');$('haircutVideo').href='https://www.youtube.com/results?search_query='+encodeURIComponent(c[0]+' haircut real life transformation barber tutorial');$('useHaircut').dataset.style=c[0];$('haircutModal').hidden=false;}
 $('closeHaircut').onclick=()=>$('haircutModal').hidden=true;
@@ -802,8 +828,8 @@ function drawTry(){
  const left=pts&&pts[4]?{x:x+pts[4][0]*w,y:y+pts[4][1]*h}:{x:c.width*.34,y:c.height*.42};
  const right=pts&&pts[5]?{x:x+pts[5][0]*w,y:y+pts[5][1]*h}:{x:c.width*.66,y:c.height*.42};
  const width=Math.max(80,Math.abs(right.x-left.x)*1.22),height=selectedTry[2]==='l'?width*.95:selectedTry[2]==='m'?width*.65:width*.43;
- const color=$('hairColor').value,alpha=+$('hairOpacity').value/100;ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.strokeStyle=color;ctx.lineWidth=5;
- const name=selectedTry[0].toLowerCase();const cx=(left.x+right.x)/2,base=top.y+8;
+ const color=(selectedTry[8]&&selectedTry[8].color)||$('hairColor').value,alpha=+$('hairOpacity').value/100;ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.strokeStyle=color;ctx.lineWidth=5;
+ const name=(selectedTry[6]||selectedTry[0]).toLowerCase();const cx=(left.x+right.x)/2,base=top.y+8;
  ctx.beginPath();
  if(name.includes('buzz')||name.includes('crew')||name.includes('crop')||name.includes('caesar')||name.includes('fade')||name.includes('pixie')||name.includes('bixie')){
   ctx.moveTo(left.x-width*.08,base+height*.25);ctx.quadraticCurveTo(cx-width*.62,base-height*.65,cx,base-height*.52);ctx.quadraticCurveTo(cx+width*.62,base-height*.65,right.x+width*.08,base+height*.25);ctx.quadraticCurveTo(cx,base-height*.05,left.x-width*.08,base+height*.25);
@@ -818,7 +844,7 @@ function drawTry(){
  ctx.restore();
 }
 async function imageToDataUrl(image){const max=1280,scale=Math.min(1,max/image.width);const c=document.createElement('canvas');c.width=Math.round(image.width*scale);c.height=Math.round(image.height*scale);c.getContext('2d').drawImage(image,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.88);}
-async function generateAI(){if(!img){$('trymsg').textContent='Please take or upload your selfie in Scan first.';return;}if(!useCredit())return;generatedImg=null;generatedUrl='';drawTry();$('renderTry').disabled=true;$('renderTry').textContent='Submitting…';$('trymsg').textContent='Sending your photo securely to the AI service. Please wait…';try{const imageDataUrl=await imageToDataUrl(img);const res=await fetch(CUTFIT_API+'/api/try-on',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageDataUrl,hairstyle:selectedTry[0]})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Could not start AI generation.');const id=data.request_id;if(!id)throw new Error('The AI service did not return a request ID.');$('trymsg').textContent='AI is creating your '+selectedTry[0]+'. This may take a little while…';let done=false;for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,2500));const poll=await fetch(CUTFIT_API+'/api/status?id='+encodeURIComponent(id));const status=await poll.json();if(!poll.ok)throw new Error(status.error||'Could not check AI status.');if(status.status==='COMPLETED'&&status.imageUrl){const out=new Image();out.crossOrigin='anonymous';await new Promise((resolve,reject)=>{out.onload=resolve;out.onerror=reject;out.src=status.imageUrl});generatedImg=out;generatedUrl=status.imageUrl;drawTry();done=true;$('trymsg').textContent='Your AI hairstyle preview is ready. Compare it with the original and save it if you like.';break;}if(status.status==='FAILED')throw new Error(status.error||'AI generation failed.');}if(!done)throw new Error('This generation is taking longer than expected. Please try again later.');}catch(e){$('trymsg').textContent='AI try-on error: '+(e.message||'Please try again.');}finally{$('renderTry').disabled=creditsLeft()<=0;$('renderTry').textContent='✦ Generate AI';updateCredits();}}
+async function generateAI(){if(!img){$('trymsg').textContent='Please take or upload your selfie in Scan first.';return;}if(!useCredit())return;generatedImg=null;generatedUrl='';drawTry();$('renderTry').disabled=true;$('renderTry').textContent='Submitting…';$('trymsg').textContent='Sending your photo securely to the AI service. Please wait…';try{const imageDataUrl=await imageToDataUrl(img);const res=await fetch(CUTFIT_API+'/api/try-on',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageDataUrl,hairstyle:selectedTry[7]||selectedTry[0]})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Could not start AI generation.');const id=data.request_id;if(!id)throw new Error('The AI service did not return a request ID.');$('trymsg').textContent='AI is creating your '+selectedTry[0]+'. This may take a little while…';let done=false;for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,2500));const poll=await fetch(CUTFIT_API+'/api/status?id='+encodeURIComponent(id));const status=await poll.json();if(!poll.ok)throw new Error(status.error||'Could not check AI status.');if(status.status==='COMPLETED'&&status.imageUrl){const out=new Image();out.crossOrigin='anonymous';await new Promise((resolve,reject)=>{out.onload=resolve;out.onerror=reject;out.src=status.imageUrl});generatedImg=out;generatedUrl=status.imageUrl;drawTry();done=true;$('trymsg').textContent='Your AI hairstyle preview is ready. Compare it with the original and save it if you like.';break;}if(status.status==='FAILED')throw new Error(status.error||'AI generation failed.');}if(!done)throw new Error('This generation is taking longer than expected. Please try again later.');}catch(e){$('trymsg').textContent='AI try-on error: '+(e.message||'Please try again.');}finally{$('renderTry').disabled=creditsLeft()<=0;$('renderTry').textContent='✦ Generate AI';updateCredits();}}
 $('tryStyle').onchange=()=>{selectedTry=CM[$('tryStyle').value]||CT[0];drawTry();updateFitLabel()};
 $('hairColor').onchange=$('hairOpacity').oninput=drawTry;
 $('retakeFit').onclick=()=>{tab('scan');$('retake').hidden=false;$('retake').click()};
@@ -852,6 +878,7 @@ function saveRv(i){
 
 // ---------- guide bot ----------
 const R=[
+[/studio|create|custom|mannequin|own (hair|style|cut)|build (a )?(hair|style)/,'Tap the + button in Try-on, Styles or My looks to open the Hair Studio. Shape a style on the 3D mannequin, save it, try it on your photo, or send it to AI.'],
 [/photo|camera|selfie|upload|picture|dots?/,'Open Scan, tap Take a photo or Upload a photo, then drag the dots onto your hairline, chin, temples, cheekbones and jaw corners. Tap Find my face shape when they sit right.'],
 [/accura|how.*(work|measure)|ratio/,'It compares your face length with the width of your forehead, cheekbones and jaw, then matches those ratios to 7 classic shapes. The more precisely you place the dots, the better the match.'],
 [/barber|salon|price|rate|review|near/,'Open Barbers for nearby shops with ratings, price levels and hours. Tap Write a review to save your own rating on this device, and confirm prices with the shop.'],
@@ -880,10 +907,140 @@ $('bs').onclick=send;$('bi').onkeydown=e=>{if(e.key=='Enter')send()};
 $('barberSearch').addEventListener('input',bl);
 
 
+// ---------- 3D hair studio ----------
+E.x='Custom';
+const SW=[['#16120f','black'],['#3b2a20','dark brown'],['#6b4a32','chestnut brown'],['#a97c50','light brown'],['#d6bf8f','blonde'],['#9a3b26','auburn red'],['#b9b9b9','silver grey'],['#3d6dcc','blue'],['#e86aa6','pink']];
+const SD={top:4,sides:2,back:2,fringe:4,wave:0,fr:'swept',part:1,color:'#3b2a20',fade:false,hawk:false,bun:false,afro:false};
+const PRE={Bald:{top:0,sides:0,back:0,fringe:0,fr:'none'},Buzz:{top:0,sides:1,back:1,fringe:0,fr:'none'},Crop:{top:2,sides:1,back:1,fringe:3,fr:'straight',fade:true},Quiff:{top:8,sides:1,back:1,fringe:3,fr:'swept',fade:true,wave:2},Bob:{top:2,sides:6,back:5,fringe:5,fr:'straight'},Long:{top:3,sides:9,back:10,fringe:4,fr:'curtain',wave:2},Curls:{top:6,sides:4,back:3,fringe:4,fr:'curtain',wave:9},Afro:{afro:true,fr:'none'},Mohawk:{hawk:true,top:6,fr:'none',fade:true},Bun:{bun:true,top:3,sides:2,back:3,fr:'none',fade:true}};
+const SL=[['top','Top length'],['sides','Sides'],['back','Back'],['fringe','Fringe length'],['wave','Waves & curls']];
+const FR=[['none','No fringe'],['straight','Straight'],['swept','Swept'],['curtain','Curtains']];
+let ST={...SD},T3=null,editing=null;
+customs=customs.filter(r=>r&&typeof r.name==='string').map(r=>({...SD,...r}));
+const hx=(h,a)=>parseInt(h.slice(a,a+2),16);
+const cw=h=>SW.map(([c,n])=>[n,Math.hypot(hx(h,1)-hx(c,1),hx(h,3)-hx(c,3),hx(h,5)-hx(c,5))]).sort((a,b)=>a[1]-b[1])[0][0];
+function desc(r){
+ const c=cw(r.color),tw=r.wave<2?'straight':r.wave<5?'wavy':'curly',T=['','very short','short','medium','long','very long'],lv=v=>T[Math.min(5,Math.ceil(v/2))];
+ if(r.afro)return `a natural round afro, ${c} hair`;
+ if(r.hawk)return `a mohawk with shaved sides and ${tw} hair, ${c} color`;
+ const fr={none:'hair swept back with no fringe',straight:'a straight fringe',swept:'a side-swept fringe',curtain:'curtain bangs parted in the middle'}[r.fr];
+ return [`${lv(r.top)||'very short'} ${tw} hair on top`,`${r.fade?'skin-faded':lv(r.sides)||'shaved'} sides`,r.back>=3?`${lv(r.back)} back`:'',fr,r.bun?'tied up in a bun':'',`${c} color`].filter(Boolean).join(', ');
+}
+function customEntry(r){
+ const mx=Math.max(r.sides,r.back),len=mx>=6?'l':mx>=3||r.top>=6?'m':'s',b=mx>=3?Math.min(104,50+mx*6):0,fl={none:0,straight:1,swept:2,curtain:3}[r.fr]||0,
+ fg=[Math.round(r.top*1.6),40-Math.round(r.fringe*.4),r.fade||r.hawk?40:46+Math.min(10,r.sides*2),fl,36+Math.round(r.fringe*1.2),b,Math.round(r.back/2),(r.fade?'F':'')+(r.hawk?'NH':'')+(r.bun?'K':'')+(r.afro?'A':'')+(r.wave>=7?'U':r.wave>=4&&b?'V':'')],
+ hint=r.afro?'afro':r.hawk?'mohawk':b&&mx<=6?'bob':b?'long layers':r.sides<=3&&r.top<=5?'crop fade':'textured top';
+ return [r.name,'u',len,'x',fg,'Made in the Hair Studio',hint+(r.fr!='none'?' fringe':''),desc(r),r];
+}
+customs.forEach(r=>{CM[r.name]=customEntry(r)});
+
+function head3(){
+ const M=new THREE.MeshStandardMaterial({color:0xe6e1da,roughness:.6}),g=new THREE.Group(),S=()=>new THREE.SphereGeometry(1,40,30),
+ add=(geo,sx,sy,sz,x,y,z)=>{const m=new THREE.Mesh(geo,M);m.scale.set(sx,sy,sz);m.position.set(x,y,z);g.add(m);return m};
+ add(S(),.84,1.05,.95,0,0,0);add(S(),.6,.55,.7,0,-.52,.22);
+ add(new THREE.ConeGeometry(.11,.36,16),1,1,1,0,-.18,.96).rotation.x=Math.PI/2;
+ [-1,1].forEach(s=>add(new THREE.SphereGeometry(.16,16,12),.4,1,.75,s*.86,-.05,-.02));
+ add(new THREE.CylinderGeometry(.36,.42,1,24),1,1,1,0,-1.45,-.05);add(S(),1.55,.42,.72,0,-2.15,-.05);
+ return g;
+}
+function shell(keep,thick){
+ const G=new THREE.SphereGeometry(1,56,40).toNonIndexed(),p=G.attributes.position,o=[],nn=[];
+ for(let i=0;i<p.count;i+=3){
+  const a=[0,1,2].map(k=>[p.getX(i+k),p.getY(i+k),p.getZ(i+k)]);
+  if(!keep((a[0][0]+a[1][0]+a[2][0])/3,(a[0][1]+a[1][1]+a[2][1])/3,(a[0][2]+a[1][2]+a[2][2])/3))continue;
+  a.forEach(([x,y,z])=>{const t=1+thick(x,y,z),l=Math.hypot(x/.84,y/1.05,z/.95)||1;o.push(x*.84*t,y*1.05*t,z*.95*t);nn.push(x/.84/l,y/1.05/l,z/.95/l)});
+ }
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(o,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nn,3));G.dispose();return g;
+}
+function drape(dl,db){
+ const N=28,R=8,o=[],ix=[];
+ for(let j=0;j<=R;j++)for(let i=0;i<=N;i++){
+  const a=(i/N*2-1)*2,k=(Math.cos(a)+1)/2,len=.9+dl*(1-k)+db*k,f=1+.14*j/R,w=1+ST.wave*.012*Math.sin(j*2.1+i*.8);
+  o.push(.9*f*w*Math.sin(a),.05-len*j/R,-1*f*w*Math.cos(a));
+ }
+ for(let j=0;j<R;j++)for(let i=0;i<N;i++){const a=j*(N+1)+i,c=a+N+1;ix.push(a,c,a+1,a+1,c,c+1)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(o,3));g.setIndex(ix);g.computeVertexNormals();return g;
+}
+function hair3D(){
+ if(!T3)return;const g=T3.hg;
+ while(g.children.length){const o=g.children.pop();if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()}
+ const s=ST,c01=v=>Math.max(0,Math.min(1,v)),M=o=>new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(s.color),roughness:.8,side:THREE.DoubleSide},o));
+ if(s.top+s.sides+s.back>0||s.afro||s.hawk||s.bun){
+  const fb=s.fr=='none'?.62:.6-s.fringe*.075,hl=x=>s.fr=='swept'?fb-.3*s.part*x:s.fr=='curtain'?fb+.35*(.35-Math.abs(x)):fb,
+  fx=s.fade||s.hawk,sR=fx?.5:.35-s.sides*.12,bR=fx?.45:.3-s.back*.14,tT=s.top*.04,pf=(s.sides+s.back)*.006,
+  keep=(x,y,z)=>{if(s.afro)return y>-.25&&!(z>.3&&y<.42);if(z>.28&&y<hl(x))return false;if(s.hawk)return Math.abs(x)<.2&&y>-.1;const k=c01((-z+.2)/1.2);return y>sR*(1-k)+bR*k},
+  thick=(x,y,z)=>s.afro?.38:.035+tT*Math.pow(c01((y-.1)/.9),1.3)+pf*(1-c01(y))+s.wave*.004*Math.sin(y*16+x*7+z*5)+(s.top>6&&z>.2&&y>.5?tT*.35:0);
+  g.add(new THREE.Mesh(shell(keep,thick),M()));
+  if(fx)g.add(new THREE.Mesh(shell((x,y,z)=>y>-.05&&!(z>.28&&y<.5),()=>.012),M({transparent:true,opacity:.5})));
+  if(s.bun){const b=new THREE.Mesh(new THREE.SphereGeometry(.34,24,18),M());b.position.set(0,1.1+s.top*.03,-.25);g.add(b)}
+  const dl=s.sides>6?(s.sides-6)*.3:0,db=s.back>6?(s.back-6)*.42:0;
+  if(!s.afro&&!s.hawk&&(dl||db))g.add(new THREE.Mesh(drape(dl,db),M()));
+ }
+ T3.draw();
+}
+function init3D(){
+ const cv=$('stcv'),r=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+ const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,50),rig=new THREE.Group(),hg=new THREE.Group(),dl=new THREE.DirectionalLight(0xffffff,.9);
+ cam.position.set(0,-.5,7.2);dl.position.set(2,3,4);sc.add(new THREE.HemisphereLight(0xffffff,0x555566,.9),dl,rig);rig.add(head3(),hg);
+ T3={rig,hg,draw(){r.render(sc,cam)},resize(){const w=cv.clientWidth||320,h=cv.clientHeight||360;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();T3.draw()}};
+ let dn=0,lx=0;
+ cv.onpointerdown=e=>{dn=1;lx=e.clientX;cv.setPointerCapture(e.pointerId)};
+ cv.onpointermove=e=>{if(!dn)return;rig.rotation.y+=(e.clientX-lx)*.01;lx=e.clientX;T3.draw()};
+ cv.onpointerup=cv.onpointercancel=()=>{dn=0};
+ cv.onwheel=e=>{e.preventDefault();cam.position.z=Math.min(10,Math.max(4.5,cam.position.z+e.deltaY*.005));T3.draw()};
+}
+function buildCtl(){
+ const b=(on,a,t)=>`<button class="chip" aria-pressed="${on}" ${a}>${t}</button>`,h=t=>`<p class="fine" style="margin:.9rem 0 .3rem;color:#aaa">${t}</p>`;
+ $('stCtl').innerHTML=h('Start from')+`<div class="chips">${Object.keys(PRE).map(k=>b(false,'data-pre="'+k+'"',k)).join('')}</div>`
+ +h('Shape it')+SL.map(([k,t])=>`<label class="st-row"><span>${t}</span><input type="range" min="0" max="10" value="${ST[k]}" data-sl="${k}"><b id="v_${k}">${ST[k]}</b></label>`).join('')
+ +h('Fringe')+`<div class="chips">${FR.map(([k,t])=>b(ST.fr==k,'data-fr="'+k+'"',t)).join('')}${b(false,'data-flip="1"','Flip side')}</div>`
+ +h('Extras')+`<div class="chips">${[['fade','Skin fade'],['hawk','Mohawk'],['bun','Bun'],['afro','Afro']].map(([k,t])=>b(!!ST[k],'data-opt="'+k+'"',t)).join('')}</div>`
+ +h('Color')+`<div class="st-sw">${SW.map(([c,n])=>`<button style="background:${c}" aria-label="${n}" aria-pressed="${ST.color==c}" data-col="${c}"></button>`).join('')}<input type="color" id="stCol" value="${ST.color}" aria-label="Pick any color"></div>`;
+}
+function saveStyle(){
+ let n=$('stName').value.trim().slice(0,40)||'My style';const old=editing;
+ if(CM[n]&&n!==old){let k=2;while(CM[n+' '+k])k++;n+=' '+k}
+ const rec={...ST,name:n};
+ if(old&&old!==n){customs=customs.filter(x=>x.name!==old);delete CM[old];favs=favs.map(f=>f===old?n:f)}
+ customs=customs.filter(x=>x.name!==n);customs.push(rec);ls.s('cf_custom',JSON.stringify(customs));
+ CM[n]=customEntry(rec);if(!isFav(n))favs.push(n);saveFavs();editing=n;$('stName').value=n;
+ renderSaved();setupTry();return n;
+}
+function delStyle(n){
+ if(typeof confirm==='function'&&!confirm('Delete “'+n+'”?'))return;
+ customs=customs.filter(x=>x.name!==n);delete CM[n];favs=favs.filter(f=>f!==n);ls.s('cf_custom',JSON.stringify(customs));saveFavs();
+ if(selectedTry[0]===n)selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];
+ renderSaved();setupTry();drawTry();
+}
+function openStudio(name){
+ const c=name&&CM[name];editing=c&&c[3]==='x'?name:null;ST=editing?{...c[8]}:{...SD};
+ $('studio').hidden=false;$('stName').value=editing||'';buildCtl();
+ if(!T3&&typeof THREE!=='undefined'){try{init3D()}catch(_){T3=null}}
+ if(T3){T3.resize();hair3D();$('stmsg').textContent='Drag the head to rotate. Shape your style, then save it, try it on, or send it to AI.'}
+ else $('stmsg').textContent='The 3D preview couldn’t load, but you can still design and save a style. Check your connection and reload to see the mannequin.';
+}
+const closeStudio=()=>{$('studio').hidden=true};
+$('stClose').onclick=closeStudio;
+$('stSave').onclick=()=>{const n=saveStyle();$('stmsg').textContent='Saved “'+n+'”. Find it in My looks and on the Try-on shelf.'};
+$('stTry').onclick=()=>{const n=saveStyle();closeStudio();selectTry(n);tab('try')};
+$('stAI').onclick=()=>{const n=saveStyle();closeStudio();selectTry(n);tab('try');generateAI()};
+$('studio').addEventListener('input',e=>{const t=e.target;if(t.dataset.sl){ST[t.dataset.sl]=+t.value;$('v_'+t.dataset.sl).textContent=t.value;hair3D()}else if(t.id==='stCol'){ST.color=t.value;hair3D();document.querySelectorAll('[data-col]').forEach(x=>x.setAttribute('aria-pressed','false'))}});
+$('studio').addEventListener('click',e=>{
+ if(e.target===$('studio')){closeStudio();return}
+ const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.pre){ST={...SD,...PRE[d.pre],color:ST.color};buildCtl();hair3D()}
+ if(d.fr){ST.fr=d.fr;buildCtl();hair3D()}
+ if(d.flip){ST.part*=-1;hair3D()}
+ if(d.opt){ST[d.opt]=!ST[d.opt];buildCtl();hair3D()}
+ if(d.col){ST.color=d.col;buildCtl();hair3D()}
+ if(d.vw!==undefined&&T3){T3.rig.rotation.y=+d.vw;T3.draw()}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('studio').hidden)closeStudio()});
+addEventListener('resize',()=>{if(T3&&!$('studio').hidden)T3.resize()});
+
 // ---------- clicks ----------
 document.onclick=e=>{
  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
- if(d.t)tab(d.t);if(d.go)tab(d.go);if(d.preview)openTry(d.preview);if(d.details)showHaircutDetails(d.details);if(d.fav)toggleFav(d.fav);
+ if(d.t)tab(d.t);if(d.go)tab(d.go);if(d.preview)openTry(d.preview);if(d.details)showHaircutDetails(d.details);if(d.fav)toggleFav(d.fav);if(d.add)openStudio();if(d.edit)openStudio(d.edit);if(d.del)delStyle(d.del);
  if(d.k){cur=d.k;dt()}if(d.g){g=d.g;dt()}if(d.l){l=d.l;dt()}
  if(d.e){le=d.e;libraryPage=1;lib()}if(d.q){lg='m';libraryPage=1;lib()}if(d.page){const n=Math.max(1,Math.ceil(libraryTotal/12));libraryPage=d.page==='next'?Math.min(n,libraryPage+1):d.page==='prev'?Math.max(1,libraryPage-1):Math.min(n,+d.page);lib();sc($('p-lib'));}
  if(d.rv){const f=$('rf'+d.rv);f.hidden=!f.hidden}
@@ -895,8 +1052,7 @@ if(!agreed)terms();
 setInterval(updateCredits,60000);
 window.addEventListener('load',()=>setTimeout(()=>$('loadingScreen')?.classList.add('done'),850));setTimeout(()=>$('loadingScreen')?.classList.add('done'),2200);
 
-const CUTFIT_API =
-  "https://cutfit-ai-api.jhayc-chua06.workers.dev";
+const CUTFIT_API = "https://cutfit-ai-api.jhayc-chua06.workers.dev";
 
 </script>
 </body>
