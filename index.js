@@ -1,4 +1,6 @@
 const MODEL = "fal-ai/qwen-image-edit/image-to-image";
+// fal status/result URLs use only owner/app, not the endpoint path (the path returns 405)
+const APP = MODEL.split("/").slice(0, 2).join("/");
 
 const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
@@ -60,11 +62,12 @@ export default {
         if (imageDataUrl.length > 18 * 1024 * 1024) {
           return json({ error: "Image is too large. Please use a smaller photo." }, 413, responseOrigin);
         }
-        if (!hairstyle || typeof hairstyle !== "string" || hairstyle.length > 100) {
+        if (!hairstyle || typeof hairstyle !== "string" || hairstyle.length > 240) {
           return json({ error: "Please select a valid hairstyle." }, 400, responseOrigin);
         }
 
-        const prompt = `Edit the uploaded portrait photo to realistically change only the person's hairstyle to ${hairstyle}. Preserve the person's facial identity, face shape, eyes, nose, mouth, skin tone, expression, age appearance, pose, clothing, background, and lighting. Replace only the hair with a natural, realistic ${hairstyle} haircut. Make the hair blend naturally with the person's head and hairline. Do not change the face or add accessories.`;
+        const style = hairstyle.replace(/[\u0000-\u001f"`<>{}\\]/g, " ").replace(/\s+/g, " ").trim();
+        const prompt = `Edit the uploaded portrait photo to realistically change only the person's hairstyle to: ${style}. Preserve the person's facial identity, face shape, eyes, nose, mouth, skin tone, expression, age appearance, pose, clothing, background, and lighting. Replace only the hair with a natural, realistic version of that hairstyle. Make the hair blend naturally with the person's head and hairline. Do not change the face or add accessories.`;
 
         const falResponse = await fetch(`https://queue.fal.run/${MODEL}`, {
           method: "POST",
@@ -90,14 +93,14 @@ export default {
         if (!requestId) return json({ error: "Missing request ID." }, 400, responseOrigin);
 
         const headers = { "Authorization": `Key ${env.FAL_KEY}` };
-        const statusResponse = await fetch(`https://queue.fal.run/${MODEL}/requests/${encodeURIComponent(requestId)}/status`, { headers });
+        const statusResponse = await fetch(`https://queue.fal.run/${APP}/requests/${encodeURIComponent(requestId)}/status`, { headers });
         const statusData = await statusResponse.json();
         if (!statusResponse.ok) {
           return json({ error: statusData.detail || "Unable to check generation status." }, statusResponse.status, responseOrigin);
         }
 
         if (statusData.status === "COMPLETED") {
-          const resultResponse = await fetch(`https://queue.fal.run/${MODEL}/requests/${encodeURIComponent(requestId)}`, { headers });
+          const resultResponse = await fetch(`https://queue.fal.run/${APP}/requests/${encodeURIComponent(requestId)}`, { headers });
           const result = await resultResponse.json();
           if (!resultResponse.ok) return json({ error: "Unable to retrieve generated image." }, resultResponse.status, responseOrigin);
           return json({ status: "COMPLETED", imageUrl: result.images?.[0]?.url || null }, 200, responseOrigin);
