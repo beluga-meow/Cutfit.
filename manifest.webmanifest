@@ -1,0 +1,24 @@
+{
+  "name": "Cutfit — haircuts for your face shape",
+  "short_name": "Cutfit",
+  "description": "Scan your face, find cuts that fit your features, preview them with AI, and show your barber the exact specs.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Scan", "short_name": "Scan", "url": "./index.html#scan" },
+    { "name": "Styles", "short_name": "Styles", "url": "./index.html#lib" },
+    { "name": "Try-on", "short_name": "Try-on", "url": "./index.html#try" },
+    { "name": "Barbers", "short_name": "Barbers", "url": "./index.html#bar" }
+  ]
+}

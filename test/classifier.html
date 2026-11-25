@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cutfit — classifier test bench</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  .bench{overflow-x:auto;margin:12px 0}
+  table{border-collapse:collapse;width:100%;font-size:.82rem}
+  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;white-space:nowrap}
+  th{font-size:.68rem;letter-spacing:.1em;color:#777;text-transform:uppercase}
+  tr.fail td{background:#fdf1f1}
+  .pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:.7rem;border:1px solid #ddd}
+  .pill.high{background:#eaf5ee;border-color:#bcdcc6}
+  .pill.medium{background:#fbf3e5;border-color:#e8d6b4}
+  .pill.low{background:#fbecec;border-color:#e6c3c3}
+  .live{display:grid;gap:8px;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--card);margin:16px 0}
+  .live label{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;font-size:.85rem}
+  .live input[type=range]{width:100%}
+  .live output{font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<main class="w">
+<header><div class="header-row">
+  <span class="logo">Cutfit<span class="brand-dot">.</span> bench</span>
+  <div class="header-tools"><a class="chip small" href="../index.html">Back to the app</a></div>
+</div></header>
+
+<h1>Face-shape classifier bench</h1>
+<p class="lead">Every row feeds a measurement set straight into <code>js/face-shape.js</code>. No camera, no network. Use this to check a calibration change before shipping it.</p>
+
+<h2>1. Prototype self-check</h2>
+<p class="fine mute">Each prototype should classify as itself with high confidence. A red row means the classifier is broken or two prototypes are too close.</p>
+<div class="bench"><table id="protoTable">
+<thead><tr><th>Preset</th><th>Length</th><th>Forehead</th><th>Jaw</th><th>Jaw angle</th><th>Chin</th><th>Expected</th><th>Got</th><th>Confidence</th><th>Margin</th></tr></thead>
+<tbody></tbody></table></div>
+
+<h2>2. Hard cases</h2>
+<p class="fine mute">Real faces sit between prototypes. These are the cases where the app should say Medium or Low instead of pretending to be sure.</p>
+<div class="bench"><table id="caseTable">
+<thead><tr><th>Case</th><th>Length</th><th>Forehead</th><th>Jaw</th><th>Jaw angle</th><th>Chin</th><th>Expected</th><th>Got</th><th>Confidence</th><th>Margin</th></tr></thead>
+<tbody></tbody></table></div>
+
+<h2>3. Live playground</h2>
+<div class="live" id="live">
+  <label>Face length <input type="range" id="length" min="90" max="190" value="142"><output id="lengthOut">1.42</output></label>
+  <label>Forehead width <input type="range" id="forehead" min="60" max="110" value="88"><output id="foreheadOut">0.88</output></label>
+  <label>Jaw width <input type="range" id="jaw" min="50" max="110" value="76"><output id="jawOut">0.76</output></label>
+  <label>Jaw angle <input type="range" id="jawAngle" min="95" max="160" value="128"><output id="jawAngleOut">128°</output></label>
+  <label>Chin width <input type="range" id="chin" min="15" max="50" value="30"><output id="chinOut">0.30</output></label>
+  <label>Scan quality <input type="range" id="quality" min="10" max="100" value="100"><output id="qualityOut">1.00</output></label>
+</div>
+<p id="liveOut" class="hint" role="status"></p>
+<div class="bench"><table id="liveTable">
+<thead><tr><th>Shape</th><th>Fit (0–1)</th><th>Distance map</th></tr></thead><tbody></tbody></table></div>
+
+<h2>4. How to read it</h2>
+<ul class="fine">
+  <li><b>Fit</b> is a Gaussian-weighted agreement between the measurement and the prototype, not a probability.</li>
+  <li><b>Confidence</b> combines fit, the margin over the runner-up, scan quality and frame stability. The app shows High/Medium/Low instead of a percentage.</li>
+  <li><b>Margin</b> under 0.20 means two shapes are close — the app deliberately drops to Medium.</li>
+</ul>
+<p class="fine mute">Run the automated suite with <code>npm test</code>; this page is the visual companion.</p>
+</main>
+
+<script type="module">
+import * as FS from "../js/face-shape.js";
+
+const pill = (c) => `<span class="pill ${c}">${c}</span>`;
+const num = (v, d = 2) => Number(v).toFixed(d);
+
+function row(cells, fail = false) {
+  return `<tr class="${fail ? "fail" : ""}">${cells.map((c) => `<td>${c}</td>`).join("")}</tr>`;
+}
+
+const protoBody = document.querySelector("#protoTable tbody");
+let prototypeFailures = 0;
+for (const key of FS.SHAPE_KEYS) {
+  const p = FS.PROTOTYPES[key];
+  const r = FS.classify({ ...p }, { quality: 1, stability: 1 });
+  const ok = r.shape === key && r.confidence === "high";
+  if (!ok) prototypeFailures += 1;
+  protoBody.insertAdjacentHTML(
+    "beforeend",
+    row(
+      [key, num(p.length), num(p.forehead), num(p.jaw), `${p.jawAngle}°`, num(p.chin), key, r.shape, pill(r.confidence), num(r.margin)],
+      !ok
+    )
+  );
+}
+
+const cases = [
+  {
+    name: "Oval ↔ rectangle (ambiguous)",
+    m: { length: 1.5, forehead: 0.9, jaw: 0.8, jawAngle: 122, chin: 0.3 },
+    expect: "not high"
+  },
+  {
+    name: "Heart with a wide jaw (mixed)",
+    m: { length: 1.42, forehead: 0.95, jaw: 0.88, jawAngle: 120, chin: 0.3 },
+    expect: "not high"
+  },
+  {
+    name: "Clean square",
+    m: { ...FS.PROTOTYPES.square },
+    expect: "square, high"
+  },
+  {
+    name: "Low-quality scan of an oval",
+    m: { ...FS.PROTOTYPES.oval },
+    quality: 0.25,
+    expect: "not high"
+  },
+  {
+    name: "Long face, narrow jaw",
+    m: { length: 1.62, forehead: 0.94, jaw: 0.82, jawAngle: 118, chin: 0.3 },
+    expect: "rect"
+  }
+];
+const caseBody = document.querySelector("#caseTable tbody");
+for (const c of cases) {
+  const r = FS.classify(c.m, { quality: c.quality ?? 1, stability: 1 });
+  const ok = c.expect === "not high" ? r.confidence !== "high" : r.shape === c.expect.split(",")[0];
+  caseBody.insertAdjacentHTML(
+    "beforeend",
+    row(
+      [
+        c.name,
+        num(c.m.length),
+        num(c.m.forehead),
+        num(c.m.jaw),
+        `${c.m.jawAngle}°`,
+        num(c.m.chin),
+        c.expect,
+        r.shape,
+        pill(r.confidence),
+        num(r.margin)
+      ],
+      !ok
+    )
+  );
+}
+
+document.querySelector("#protoTable").insertAdjacentHTML(
+  "beforeend",
+  `<caption style="caption-side:bottom;text-align:left;padding-top:8px" class="fine">${
+    prototypeFailures ? `❌ ${prototypeFailures} prototype row(s) failed` : "✅ all 7 prototypes classify as themselves"
+  }</caption>`
+);
+
+const ids = ["length", "forehead", "jaw", "jawAngle", "chin", "quality"];
+const scale = { length: 100, forehead: 100, jaw: 100, jawAngle: 1, chin: 100, quality: 100 };
+
+function live() {
+  const values = {};
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    values[id] = Number(el.value);
+    const out = document.getElementById(id + "Out");
+    out.textContent = id === "jawAngle" ? `${el.value}°` : num(Number(el.value) / 100);
+  }
+  const measurement = {
+    length: values.length / 100,
+    forehead: values.forehead / 100,
+    jaw: values.jaw / 100,
+    jawAngle: values.jawAngle,
+    chin: values.chin / 100
+  };
+  const r = FS.classify(measurement, { quality: values.quality / 100, stability: 0.9 });
+  document.getElementById("liveOut").innerHTML =
+    `Closest: <b>${r.shape}</b> · ${pill(r.confidence)} · margin ${num(r.margin)} · chin ${FS.chinShape(measurement)}`;
+  const body = document.querySelector("#liveTable tbody");
+  body.innerHTML = "";
+  for (const item of FS.scoreShapes(measurement)) {
+    const parts = Object.entries(item.parts)
+      .map(([k, v]) => `${k} ${v.toFixed(2)}`)
+      .join(" · ");
+    body.insertAdjacentHTML("beforeend", row([item.key, item.fit.toFixed(3), `<span class="fine mute">${parts}</span>`]));
+  }
+}
+
+for (const id of ids) document.getElementById(id).addEventListener("input", live);
+live();
+</script>
+</body>
+</html>

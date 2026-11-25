@@ -4,1055 +4,445 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cutfit: haircuts for your face shape</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap">
-<style>
-:root{--bg:#fff;--card:#f5f5f5;--ink:#111;--mute:#6e6e6e;--line:#e6e6e6;--sk:#e2e2e2;--sh:#cdcdcd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0e0e;--card:#181818;--ink:#f3f3f3;--mute:#9b9b9b;--line:#2a2a2a;--sk:#3d3d3d;--sh:#2b2b2b;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e0e0e;--card:#181818;--ink:#f3f3f3;--mute:#9b9b9b;--line:#2a2a2a;--sk:#3d3d3d;--sh:#2b2b2b;color-scheme:dark}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.w{max-width:620px;margin:0 auto;padding:18px 18px 96px}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:30px}
-.logo{font-weight:600;letter-spacing:-.02em}
-nav{display:flex;gap:13px;flex-wrap:wrap} .logo{font-size:1.18rem;letter-spacing:-.06em} .eyebrow{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:600} .previewbox{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px} .previewbox canvas{background:#111} .cd .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px} .cd .actions a,.cd .actions button{font-size:.72rem;padding:5px 8px} .scanring{border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--card)} .scanring strong{display:block} .smallbtn{font-size:.78rem;padding:7px 11px}
-nav button{font:inherit;font-size:.92rem;background:none;border:0;border-bottom:2px solid transparent;color:var(--mute);padding:4px 0;cursor:pointer}
-nav button[aria-pressed=true]{color:var(--ink);border-color:var(--ink)}
-h1,h2,h3{font-weight:600;letter-spacing:-.03em;line-height:1.1;margin:0 0 .6rem}
-h1{font-size:clamp(1.9rem,7.5vw,2.6rem)}h2{font-size:1.4rem}h3{font-size:1.05rem}
-.lead{color:var(--mute);max-width:44ch}.mute{color:var(--mute)}.fine{font-size:.84rem}
-hr{border:0;border-top:1px solid var(--line);margin:30px 0}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-.btn{font:inherit;font-weight:500;border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:999px;padding:10px 20px;cursor:pointer;text-decoration:none}
-.btn.alt{background:none;color:var(--ink)}
-.chip{font:inherit;font-size:.88rem;border:1px solid var(--line);background:none;color:var(--ink);border-radius:999px;padding:5px 13px;cursor:pointer;text-decoration:none}
-.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.lnk{font:inherit;background:none;border:0;padding:0;color:inherit;text-decoration:underline;cursor:pointer}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-input,select{font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:8px 10px}
-canvas{display:block;width:100%;height:auto;border-radius:12px;touch-action:none;background:#000}
-#vd{width:100%;border-radius:12px;background:#000;transform:scaleX(-1)}
-.bar{height:4px;background:var(--line);border-radius:2px;margin:10px 0}.bar i{display:block;height:100%;background:var(--ink);border-radius:2px}
-.gr{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0}
-@media(min-width:520px){.gr{grid-template-columns:repeat(3,1fr)}}
-.cd{background:var(--card);border-radius:14px;padding:10px 10px 12px}
-.cd b{display:block;font-weight:600;font-size:.95rem;margin-top:4px}
-.cd span{font-size:.78rem;color:var(--mute);line-height:1.3;display:block}
-.fg{display:block;width:100%;height:auto;max-height:150px}
-.sk{fill:var(--sk)}.sh{fill:var(--sh)}.hr{fill:var(--ink)}
-.wh{position:relative;width:min(86vw,340px);margin:26px auto 10px}
-.wh>div{transition:transform 4.2s cubic-bezier(.12,.7,.15,1)}
-.pt{position:absolute;top:-8px;left:50%;margin-left:-9px;width:0;height:0;border:9px solid transparent;border-top:16px solid var(--ink);border-bottom:0;z-index:1}
-.bb{border-top:1px solid var(--line);padding:16px 0}
-.bb .t{display:flex;justify-content:space-between;gap:10px;font-weight:600}
-.bb p{margin:.4rem 0}
-.rf{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.hint{padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:.86rem;color:var(--mute)}.rf input{flex:1;min-width:150px}
-#cb{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20}
-#bot{position:fixed;left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom,0px));max-width:380px;margin-left:auto;background:var(--bg);border:1px solid var(--line);border-radius:18px;z-index:21;max-height:68vh;display:flex;flex-direction:column;padding:12px}
-#ms{overflow:auto;flex:1}
-.m{margin:6px 0;padding:8px 12px;border-radius:14px;max-width:90%;font-size:.92rem}
-.m.b{background:var(--card)}.m.u{background:var(--ink);color:var(--bg);margin-left:auto}
-.ib{display:flex;gap:8px}.ib input{flex:1;min-width:0}
-#tm{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:30}
-#tm>div{background:var(--bg);border-radius:18px;max-width:480px;max-height:100%;overflow:auto;padding:22px}
-#tm li{margin:0 0 .6rem}#tm ul{padding-left:1.1rem;margin:0 0 .6rem}
-[hidden]{display:none!important}
-
-/* Cutfit fitting-room visual refresh */
-:root{--bg:#101010;--card:#1b1b1b;--ink:#f5f5f5;--mute:#a5a5a5;--line:#303030;--sk:#444;--sh:#292929;color-scheme:dark}
-body{background:#101010;color:#f5f5f5}.w{max-width:1180px;padding:22px 22px 125px}header{border:0;margin-bottom:28px;padding:4px 0 14px}.logo{font-size:1.55rem;font-weight:700;letter-spacing:-.07em}
-#nv{position:fixed;z-index:25;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(96vw,900px);display:flex;justify-content:space-around;gap:3px;padding:8px;background:rgba(25,25,25,.96);border:1px solid #414141;border-radius:24px;box-shadow:0 12px 40px #0009;backdrop-filter:blur(16px)}
-#nv button{flex:1;min-width:0;border:0;border-radius:17px;padding:10px 5px;color:#aaa;font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:3px}#nv button:before{font-size:1.15rem;line-height:1.1}#nv button[data-t="scan"]:before{content:"⌖"}#nv button[data-t="lib"]:before{content:"✂"}#nv button[data-t="spin"]:before{content:"⬡"}#nv button[data-t="try"]:before{content:"☆"}#nv button[data-t="bar"]:before{content:"♙"}#nv button[data-t="saved"]:before{content:"♡"}#nv button[aria-pressed=true]{background:#f5f5f5;color:#111;font-weight:700}
-h1{font-size:clamp(2rem,5vw,3rem)}.lead{color:#aaa}.btn{background:#f5f5f5;color:#111;border-color:#f5f5f5;font-weight:650}.btn.alt{background:transparent;color:#f5f5f5;border-color:#555}.chip{border-color:#454545;color:#eee}.chip[aria-pressed=true]{background:#f5f5f5;color:#111}.cd,.previewbox,.scanring,.hint{background:#1b1b1b;border-color:#333}input,select{background:#202020;color:#f5f5f5;border-color:#444}
-.fitting-room{max-width:1120px;margin:0 auto}.fit-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin:12px 0 22px}.fit-heading .eyebrow{color:#aaa;letter-spacing:.16em}.fit-heading h1{margin:5px 0 8px}.save-pill,.try-again{border:1px solid #555;background:#292929;color:#fff;border-radius:999px;padding:11px 17px;font:inherit;cursor:pointer;white-space:nowrap}
-.fit-stage{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(150px,.9fr) 78px;gap:10px;align-items:stretch}.fit-main{min-width:0;position:relative;border:1px solid #333;border-radius:22px;overflow:hidden;background:#181818}.fit-image-wrap{position:relative;background:#171717;min-height:320px}#trycv{width:100%;height:auto;max-height:620px;object-fit:contain;border-radius:0;background:#111}.view-tag,.angle-label{position:absolute;bottom:12px;right:12px;background:#222d;color:#fff;border:1px solid #ffffff24;border-radius:20px;padding:7px 12px;font-size:.75rem;letter-spacing:.04em}.fit-caption{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 15px;background:#171717}.fit-cut{display:flex;align-items:center;gap:10px;min-width:0}.fit-cut strong,.fit-cut small{display:block}.fit-cut strong{font-size:1rem}.fit-cut small{font-size:.8rem;color:#aaa;margin-top:2px}.checkmark{display:grid;place-items:center;width:32px;height:32px;flex:none;border-radius:50%;background:#f5f5f5;color:#111;font-weight:800}.try-again{font-size:.82rem;padding:9px 12px}
-.fit-angles{display:grid;grid-template-rows:1fr 1fr auto;gap:9px;min-width:0}.angle-card{position:relative;min-height:140px;border:1px solid #383838;border-radius:18px;overflow:hidden;background:linear-gradient(145deg,#d8d2c9,#a9a39a)}.angle-art{height:100%;min-height:140px;display:flex;align-items:center;justify-content:center}.angle-art svg{height:100%;width:100%;max-height:190px}.angle-note{font-size:.68rem;line-height:1.35;color:#999;margin:0}.fit-tools{display:flex;flex-direction:column;gap:10px}.tool-btn{border:1px solid #303030;border-radius:19px;background:#202020;color:#f5f5f5;min-height:76px;padding:9px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}.tool-btn span{font-size:1.5rem;line-height:1}.tool-btn small{font-size:.68rem;color:#ddd}
-.fit-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:13px 0;padding:13px 15px;border:1px solid #343434;border-radius:16px;background:#1a1a1a}.fit-controls label{font-size:.82rem;color:#bbb}.fit-controls input{max-width:180px;accent-color:#fff}.fit-controls select{min-width:145px}.fit-shelf-heading{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}.fit-shelf-heading strong,.fit-shelf-heading small{display:block}.fit-shelf-heading small{font-size:.8rem;color:#999;margin-top:3px}.text-action{border:0;background:none;color:#ddd;text-decoration:underline;font:inherit;font-size:.85rem;cursor:pointer}.try-carousel{display:grid;grid-template-columns:repeat(6,minmax(105px,1fr));gap:10px;overflow-x:auto;padding:2px 2px 10px}.try-card{position:relative;min-width:0;overflow:hidden;border:1px solid #393939;border-radius:17px;background:#222;color:#fff;padding:7px 7px 10px;text-align:center;cursor:pointer}.try-card[aria-pressed=true]{border:2px solid #f5f5f5;box-shadow:0 0 0 2px #fff2}.try-card svg{width:100%;height:100px;display:block}.try-card span{display:block;font-size:.76rem;line-height:1.2}.try-card .picked{position:absolute;right:7px;top:7px;background:#fff;color:#111;width:22px;height:22px;border-radius:50%;font-weight:800;display:grid;place-items:center}.fit-status{font-size:.78rem;color:#999;margin:10px 0}.fit-bottom-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 20px}.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:700px){.w{padding:15px 12px 120px}.fit-heading{margin:5px 2px 16px}.fit-heading .lead{font-size:.88rem}.save-pill{padding:9px 12px}.fit-stage{grid-template-columns:minmax(0,1fr) 66px;gap:7px}.fit-main{grid-row:1;grid-column:1}.fit-angles{grid-column:1;grid-row:2;grid-template-columns:1fr 1fr auto;align-items:stretch}.angle-card{min-height:108px}.angle-art{min-height:108px}.angle-art svg{max-height:120px}.angle-note{max-width:85px;align-self:center;font-size:.62rem}.fit-tools{grid-column:2;grid-row:1/3}.tool-btn{min-height:74px;border-radius:16px}.tool-btn small{font-size:.62rem}#trycv{max-height:520px}.fit-caption{padding:10px}.fit-cut strong{font-size:.88rem}.fit-cut small{font-size:.72rem}.try-again{font-size:.72rem;padding:8px}.try-carousel{grid-template-columns:repeat(6,112px);gap:8px}#nv{width:calc(100% - 16px);border-radius:20px;padding:6px}#nv button{font-size:.65rem;padding:8px 2px}}
-@media(min-width:900px){.fit-stage{grid-template-columns:minmax(0,1.65fr) minmax(180px,.85fr) 86px}.fit-tools .tool-btn{min-height:94px}}
-
-
-/* AI-style consultation workflow inspired by the supplied barber-studio demo */
-.consult-card{margin:20px 0 16px;padding:20px;border:1px solid #393939;border-radius:22px;background:linear-gradient(145deg,#1d1d1f,#141414)}
-.consult-head h2{margin:4px 0;font-size:1.55rem}.consult-head .eyebrow,.analysis-top .eyebrow{letter-spacing:.16em;color:#c9aebc;font-size:.72rem}
-.consult-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:16px}
-.consult-grid label{display:grid;gap:7px;color:#c7c7c7;font-size:.82rem}
-.consult-grid select{width:100%;padding:12px;border-radius:12px;background:#222;border:1px solid #454545;color:#fff}
-.pref-checks{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}.pref-checks>span{width:100%;font-size:.82rem;color:#bbb}
-.pref-checks label,.beard-choice{display:flex;align-items:center;gap:7px;padding:8px 11px;border:1px solid #444;border-radius:30px;font-size:.78rem;color:#ddd}
-.pref-checks input,.beard-choice input{accent-color:#f4dce7}
-.beard-choice{display:inline-flex;margin-top:12px}
-.analysis-top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin:18px 0 8px}
-.analysis-top h2{margin:3px 0;font-size:2rem}.confidence-ring{width:76px;height:76px;border-radius:50%;border:5px solid #d8b8c8;display:flex;flex-direction:column;justify-content:center;align-items:center;flex:none}
-.confidence-ring b{font-size:1.25rem}.confidence-ring small{font-size:.55rem;color:#aaa}
-.profile-tags{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0 20px}.profile-tags span{padding:6px 10px;border:1px solid #414141;border-radius:30px;font-size:.72rem;color:#ddd}
-.result-title{margin-top:24px}.recommend-list{display:grid;gap:13px}
-.recommend-card{padding:15px;border:1px solid #3b3b3b;border-radius:19px;background:#191919}
-.recommend-head{display:grid;grid-template-columns:112px 1fr;gap:13px;align-items:center}
-.recommend-head .fg{width:100%;height:120px;background:#242424;border-radius:13px}
-.recommend-copy h3{font-size:1.1rem;margin:3px 0}.recommend-copy p{font-size:.8rem;color:#aaa;margin:3px 0 8px}
-.rank-label{font-size:.65rem;letter-spacing:.14em;color:#d8b8c8}
-.fit-meter{height:6px;border-radius:10px;background:#383838;overflow:hidden;margin:7px 0 3px}.fit-meter i{display:block;height:100%;background:#d8b8c8;border-radius:10px}
-.recommend-copy small{font-size:.68rem;color:#aaa}
-.spec-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:13px 0}
-.spec-grid div{padding:10px;border-radius:11px;background:#222}
-.spec-grid small,.spec-grid b{display:block}.spec-grid small{font-size:.62rem;letter-spacing:.12em;color:#aaa;margin-bottom:4px}.spec-grid b{font-size:.76rem;font-weight:550;line-height:1.35}
-.upkeep{font-size:.75rem;color:#ccc;margin:7px 0 12px}
-.recommend-actions{gap:8px}.recommend-actions .btn{font-size:.78rem;padding:9px 12px}
-.analysis-note{margin:16px 0;padding:15px;border:1px solid #383838;border-radius:15px;background:#202020}.analysis-note p{font-size:.86rem;color:#ccc;margin:7px 0}
-@media(max-width:520px){.consult-card{padding:15px}.consult-grid{grid-template-columns:1fr}.recommend-head{grid-template-columns:90px 1fr}.recommend-head .fg{height:104px}.spec-grid b{font-size:.72rem}.analysis-top h2{font-size:1.6rem}}
-
-
-/* Practical upgrades: saved looks, search, keyboard and mobile comfort */
-.access-toggle{border:1px solid #454545;background:#202020;color:#fff;border-radius:999px;padding:8px 12px;font:inherit;font-size:.78rem;cursor:pointer}.large-text body{font-size:18px}.large-text .fine,.large-text .mute,.large-text .cd span,.large-text .tool-btn small{font-size:1rem}.large-text button,.large-text input,.large-text select{font-size:1rem}.large-text #nv button{font-size:.75rem}
-.library-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:15px;margin:16px 0;border:1px solid #343434;border-radius:17px;background:#191919}
-.library-tools input,.library-tools select{width:100%;min-width:0;padding:11px 12px}.search-label{display:block;font-size:.78rem;color:#bbb;align-self:end}.library-tools .search-label:first-child{grid-column:1/-1}.library-tools input[type=search]{grid-column:1/-1}
-.cd .actions{align-items:center}.cd .actions .chip{min-height:34px}.cd .actions button[aria-pressed=true]{border-color:#d8b8c8;color:#f3dce7}
-#p-saved .hint{padding:22px}#p-saved .hint p{margin:7px 0 14px}
-#barberSearch{width:100%;max-width:520px;margin:7px 0 18px;padding:12px}
-#clearPhoto{border-color:#654b4b;color:#f0caca}
-button:disabled{opacity:.55;cursor:not-allowed}
-@media(max-width:520px){.library-tools{grid-template-columns:1fr}.library-tools .search-label:first-child,.library-tools input[type=search]{grid-column:1}.library-tools input,.library-tools select{font-size:16px}#nv button{font-size:.59rem}.w{padding-bottom:135px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
-
-
-/* Cutfit clean studio: bright, calm, mobile-first */
-:root{--bg:#fff!important;--card:#f7f7f5!important;--ink:#171717!important;--mute:#666!important;--line:#e8e8e5!important;--sk:#e4ded7!important;--sh:#d1c4b7!important;color-scheme:light!important}
-body{background:#fff!important;color:#171717!important}
-.w{max-width:980px;padding:22px 22px 118px}
-header{border-bottom:1px solid #ededeb!important;margin-bottom:28px;padding:6px 0 16px}
-.logo{font-size:1.55rem!important;font-weight:750;letter-spacing:-.075em!important}
-.brand-dot{color:#9b755d}
-h1{font-size:clamp(2rem,5vw,3.25rem);letter-spacing:-.055em}
-h2,h3{letter-spacing:-.04em}
-.lead{color:#666;max-width:58ch}
-.btn{background:#171717!important;color:#fff!important;border-color:#171717!important;border-radius:13px!important;padding:12px 18px!important}
-.btn.alt{background:#fff!important;color:#171717!important;border-color:#dededb!important}
-.chip{background:#fff!important;color:#333!important;border-color:#dededb!important;border-radius:999px}
-.chip[aria-pressed=true]{background:#171717!important;color:#fff!important;border-color:#171717!important}
-.cd,.previewbox,.scanring,.hint,.consult-card,.library-tools,.recommend-card,.analysis-note{background:#f8f8f6!important;border-color:#e8e8e5!important;color:#171717}
-input,select{background:#fff!important;color:#171717!important;border-color:#dededb!important;border-radius:12px!important}
-.mute,.fine{color:#686868}
-#nv{background:rgba(255,255,255,.96)!important;border:1px solid #e5e5e2!important;box-shadow:0 8px 30px #00000012!important;border-radius:22px!important;backdrop-filter:blur(16px)}
-#nv button{color:#777!important}
-#nv button[aria-pressed=true]{background:#171717!important;color:#fff!important}
-#nv button:before{filter:grayscale(1)}
-.scanring{padding:14px 16px;border-radius:15px;margin:18px 0}
-.scan-workspace{margin:20px 0 24px;border:1px solid #e7e7e4;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 12px 36px #00000008}
-.scan-photo{position:relative;background:#f2f0ed;padding:10px}
-.scan-photo canvas{width:100%;max-height:68vh;object-fit:contain;background:#eee;border-radius:15px}
-.photo-badge{position:absolute;left:22px;top:22px;padding:6px 10px;background:#ffffffdf;border:1px solid #fff;border-radius:30px;color:#333;font-size:.64rem;letter-spacing:.13em;font-weight:700}
-.scan-panel{padding:17px 18px 18px}
-.scan-panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.scan-panel-head .eyebrow{margin:0 0 4px;color:#8a715f}
-.scan-panel-head h3{margin:0;font-size:1.25rem}
-.scan-step{font-size:.72rem;color:#888;letter-spacing:.1em}
-.scan-help{margin:8px 0 12px}
-.scan-actions{margin:0 0 12px;gap:8px}
-.scan-actions .btn{font-size:.88rem}
-.scan-actions .remove-photo{color:#8b5555!important;border-color:#eadede!important}
-#aihint{margin:0;background:#f6f6f4;border-color:#e9e9e6;color:#666}
-#msg{margin:12px 0}
-#s2 h3:not(.scan-panel-head h3){display:none}
-#s2>p:not(#aihint){display:none}
-.consult-card{border-radius:20px;padding:20px}
-.consult-head .eyebrow,.analysis-top .eyebrow{color:#8a715f!important}
-.consult-grid label,.pref-checks>span{color:#555}
-.consult-grid select{background:#fff!important;color:#171717!important;border-color:#dededb!important}
-.pref-checks label,.beard-choice{border-color:#e1e1dd;color:#444}
-.analysis-top h2{color:#171717}
-.confidence-ring{border-color:#b9a18e}
-.profile-tags span{border-color:#e3e0dc;color:#555}
-.recommend-card{background:#fff!important;border-color:#e8e8e5!important}
-.recommend-copy p,.recommend-copy small{color:#666}
-.spec-grid div{background:#f5f5f3}
-.spec-grid small{color:#777}
-.spec-grid b{color:#222}
-.fit-heading h1{color:#171717}
-.fit-main,.fit-caption,.angle-card,.tool-btn,.fit-controls,.try-card{background:#f7f7f5!important;color:#171717!important;border-color:#e5e5e2!important}
-.fit-caption{background:#fff!important}
-.fit-cut small,.angle-note,.tool-btn small,.fit-status{color:#666!important}
-.tool-btn{border-radius:14px}
-.try-card{color:#171717!important}
-.try-card[aria-pressed=true]{border:2px solid #171717;box-shadow:0 0 0 2px #17171712}
-.fit-controls{background:#fafaf9!important}
-.save-pill,.try-again{background:#fff!important;color:#171717!important;border-color:#ddd!important}
-.library-tools{background:#fafaf9!important}
-#clearPhoto{color:#8b5555!important}
-@media(max-width:700px){
- .w{padding:16px 14px 118px}
- header{margin-bottom:24px}
- #nv{width:calc(100% - 18px);padding:6px}
- #nv button{font-size:.65rem;padding:9px 2px}
- .scan-workspace{border-radius:18px}
- .scan-photo{padding:7px}
- .scan-panel{padding:14px}
- .scan-actions{display:grid;grid-template-columns:1fr 1fr}
- .scan-actions .btn{width:100%;padding:11px 8px!important}
- .scan-photo canvas{max-height:64vh}
+<meta name="description" content="Cutfit scans your face in the browser, recommends haircuts that suit your features, previews them with AI, and builds a barber-ready card with exact specs.">
+<meta name="theme-color" content="#ffffff">
+<meta name="cutfit-api" content="https://cutfit-ai-api.jhayc-chua06.workers.dev">
+<link rel="canonical" href="https://beluga-meow.github.io/Cutfit/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cutfit: haircuts for your face shape">
+<meta property="og:description" content="Scan your face, find cuts that fit your features, preview with AI, and hand your barber a one-page card.">
+<meta property="og:image" content="assets/icons/og-cover.png">
+<meta property="og:url" content="https://beluga-meow.github.io/Cutfit/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https://cutfit-ai-api.jhayc-chua06.workers.dev https://cdn.jsdelivr.net https://storage.googleapis.com https://fal.media https://*.fal.ai https://*.fal.run https://cloudflareinsights.com; worker-src 'self' blob:; frame-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Cutfit",
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Any",
+  "description": "Face-shape haircut recommendations, AI hairstyle previews and a shareable barber card.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "PHP" },
+  "featureList": [
+    "On-device face scanning with MediaPipe",
+    "Haircut recommendations by face shape",
+    "Mask-based AI hairstyle preview",
+    "3D head simulator",
+    "Barber instructions in English and Filipino"
+  ]
 }
-
-
-/* Cutfit Studio 2.0 — clean men's grooming experience */
-:root{--bg:#fff!important;--card:#f7f7f5!important;--ink:#171717!important;--mute:#707070!important;--line:#e7e7e4!important;--sk:#e5e2dc!important;--sh:#cfc8be!important;color-scheme:light!important}
-body{background:#fff!important;color:#171717!important}
-.w{max-width:980px;padding:18px 18px 118px}
-header{display:block;border-bottom:1px solid #eee;padding-bottom:15px;margin-bottom:24px}
-.logo{font-size:1.65rem!important;color:#111}
-#nv{gap:5px;background:rgba(255,255,255,.96)!important;border:1px solid #e6e6e3!important;box-shadow:0 8px 28px #00000012!important;backdrop-filter:blur(18px)}
-#nv button{color:#777!important;transition:background .22s ease,color .22s ease,transform .22s ease}
-#nv button[aria-pressed=true]{background:#171717!important;color:#fff!important;transform:translateY(-2px)}
-button,.btn,.chip,.tool-btn,.try-card{transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease}
-button:active,.btn:active,.chip:active,.tool-btn:active,.try-card:active{transform:scale(.97)}
-.btn{background:#171717!important;color:#fff!important;border-color:#171717!important}
-.btn.alt{background:#fff!important;color:#171717!important;border-color:#d9d9d6!important}
-.chip{background:#fff!important;color:#222!important;border-color:#dededb!important}
-.chip[aria-pressed=true]{background:#171717!important;color:#fff!important;border-color:#171717!important}
-input,select{background:#fff!important;color:#171717!important;border-color:#dededb!important}
-.cd,.previewbox,.scanring,.hint,.consult-card{background:#f8f8f6!important;border-color:#e7e7e4!important;color:#171717!important}
-.consult-card{padding:18px!important;border-radius:20px!important;background:#fafaf9!important}
-.consult-head .eyebrow,.analysis-top .eyebrow{color:#777!important}
-.consult-grid label{color:#555!important}
-.scan-workspace{display:grid;gap:12px;margin-top:14px}
-.scan-photo,.scan-panel{background:#fafaf9!important;border:1px solid #e8e8e5!important;border-radius:18px!important;padding:12px!important}
-.scan-photo canvas{max-height:58vh;object-fit:contain}
-.scan-panel-head{display:flex;justify-content:space-between;align-items:center}
-.scan-actions{display:flex!important;gap:8px!important;flex-wrap:wrap}
-.scan-actions .btn{flex:1;min-width:120px}
-/* Try-on is one tidy vertical workspace on phones */
-.fit-heading{margin:8px 0 16px}
-.fit-heading .eyebrow{color:#777!important}
-.fit-stage{display:flex!important;flex-direction:column!important;gap:10px!important}
-.fit-main{width:100%;border:1px solid #e6e6e3!important;border-radius:20px!important;background:#fafaf9!important}
-.fit-image-wrap{min-height:0!important;background:#f3f3f1!important}
-#trycv{width:100%;max-height:62vh!important;object-fit:contain;background:#f2f2f0!important}
-.fit-caption{background:#fff!important;color:#171717!important}
-.fit-cut small{color:#777!important}
-.checkmark{background:#171717!important;color:#fff!important}
-.fit-tools{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important;order:2}
-.tool-btn{min-height:66px!important;border:1px solid #e4e4e0!important;background:#fafaf9!important;color:#171717!important;border-radius:15px!important}
-.tool-btn small{color:#555!important}
-.fit-angles{display:none!important}
-.fit-controls{display:grid!important;grid-template-columns:1fr 1fr;gap:10px!important;background:#fafaf9!important;border:1px solid #e6e6e3!important;color:#171717!important;border-radius:16px!important}
-.fit-controls[hidden]{display:none!important}
-.fit-controls label{color:#555!important}
-.fit-controls select,.fit-controls input{width:100%;max-width:none!important}
-.fit-shelf-heading{margin-top:20px}
-.try-carousel{grid-template-columns:repeat(3,minmax(0,1fr))!important;overflow:visible!important}
-.try-card{background:#fafaf9!important;color:#171717!important;border-color:#e5e5e1!important}
-.try-card[aria-pressed=true]{border:2px solid #171717!important;box-shadow:0 0 0 3px #1717170d!important}
-.try-card svg{height:88px!important}
-.fit-status{padding:10px 12px;background:#f7f7f5;border:1px solid #e8e8e5;border-radius:12px;color:#555!important}
-.fit-bottom-actions{display:grid;grid-template-columns:1fr 1fr}
-.fit-bottom-actions .btn{width:100%;padding:11px 9px}
-#tryCredits{font-size:.78rem;color:#666;background:#f7f7f5;border:1px solid #e8e8e5;padding:8px 11px;border-radius:999px;white-space:nowrap}
-.library-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
-.library-tools .search-label{grid-column:span 2;margin-top:4px}
-.library-tools input{grid-column:span 2;width:100%;padding:12px;border-radius:12px}
-.library-tools select{width:100%;padding:11px}
-.library-pagination{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:18px 0}
-.library-pagination button{min-width:40px;min-height:40px;border:1px solid #ddd;background:#fff;border-radius:12px;color:#171717}
-.library-pagination button[aria-current=page]{background:#171717;color:#fff;border-color:#171717}
-.library-pagination button:disabled{opacity:.35}
-.library-count{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-#loadingScreen{position:fixed;inset:0;z-index:9999;background:#fff;display:grid;place-items:center;transition:opacity .45s ease,visibility .45s ease}
-#loadingScreen.done{opacity:0;visibility:hidden;pointer-events:none}
-.loading-brand{font-size:2.4rem;font-weight:700;letter-spacing:-.08em;color:#111;text-align:center}
-.loading-brand span{display:block;font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:#888;margin-top:8px}
-.loading-line{width:130px;height:3px;background:#eee;border-radius:4px;margin:22px auto 0;overflow:hidden}
-.loading-line i{display:block;width:40%;height:100%;background:#171717;animation:loadbar 1s ease-in-out infinite alternate}
-@keyframes loadbar{from{transform:translateX(-5%)}to{transform:translateX(155%)}}
-.page-enter{animation:pageIn .32s ease both}
-@keyframes pageIn{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:520px){.w{padding:14px 14px 112px}.try-carousel{grid-template-columns:repeat(2,minmax(0,1fr))!important}.fit-bottom-actions{grid-template-columns:1fr}.library-tools{grid-template-columns:1fr 1fr}.gr{grid-template-columns:repeat(2,minmax(0,1fr))}.consult-grid{grid-template-columns:1fr}.fit-heading h1{font-size:1.8rem}.fit-heading .lead{font-size:.9rem}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
-
-
-/* CutFit modern haircut detail + AI try-on */
-#haircutModal{position:fixed;inset:0;z-index:80;background:#000d;display:grid;place-items:center;padding:14px}#haircutModal[hidden]{display:none}#haircutModal .modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:#171717;color:#f5f5f5;border:1px solid #444;border-radius:22px;padding:18px}#haircutModal .modal-top{display:flex;justify-content:space-between;align-items:center;gap:12px}#haircutModal .views{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}#haircutModal .view-link{display:block;border:1px solid #444;border-radius:14px;padding:14px 8px;text-align:center;color:#fff;text-decoration:none;background:#242424}#haircutModal .view-link b{display:block;font-size:1.05rem}#haircutModal .view-link small{color:#bbb}#haircutModal .detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}#tryCredits{font-size:.78rem;color:#eee;background:#242424;border:1px solid #444;padding:8px 11px;border-radius:999px}#trycv.generated{outline:2px solid #777}
-@media(max-width:520px){#haircutModal .views{grid-template-columns:1fr}#haircutModal .view-link{text-align:left}}
-
-#studio{position:fixed;inset:0;z-index:90;background:#000d;display:grid;place-items:center;padding:12px}#studio[hidden]{display:none}
-#studio .st-card{width:min(720px,100%);max-height:94vh;overflow:auto;background:#171717;color:#f5f5f5;border-radius:18px;padding:16px}
-.st-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.st-stage{background:radial-gradient(#3a3a3a,#151515);border-radius:14px;margin:10px 0}
-#stcv{display:block;width:100%;height:min(52vh,380px);touch-action:none;cursor:grab}
-#studio .chip{color:#f5f5f5;border-color:#4a4a4a}#studio .chip[aria-pressed=true]{background:#f5f5f5;color:#111;border-color:#f5f5f5}
-#studio .btn{background:#f5f5f5;color:#111;border-color:#f5f5f5}#studio .btn.alt{background:none;color:#f5f5f5;border-color:#666}
-.st-row{display:grid;grid-template-columns:104px 1fr 22px;align-items:center;gap:8px;font-size:.9rem;margin:.25rem 0}
-.st-row input{width:100%;accent-color:#f5f5f5;padding:0;border:0;background:none}
-.st-sw{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.st-sw button{width:30px;height:30px;border-radius:50%;border:2px solid #555;cursor:pointer;padding:0}.st-sw button[aria-pressed=true]{border-color:#fff;outline:2px solid #fff;outline-offset:1px}
-.st-sw input[type=color]{width:36px;height:30px;padding:0;border:0;background:none}
-#stName{width:100%;background:#222;color:#fff;border:1px solid #444;border-radius:10px;padding:10px 12px;margin-top:1rem}
-.plus{font-size:1.25em;line-height:1;margin-right:.35em}.try-card.add .plus{display:grid;place-items:center;font-size:2.4rem;height:64px;margin:0}
-</style>
+</script>
 </head>
 <body>
-<div id="loadingScreen" aria-label="Loading Cutfit"><div><div class="loading-brand">Cutfit<span>MEN’S GROOMING STUDIO</span></div><div class="loading-line"><i></i></div></div></div>
+<div id="loadingScreen" aria-label="Loading Cutfit"><div><div class="loading-brand">Cutfit<span data-i18n="app.tagline">MEN’S GROOMING STUDIO</span></div><div class="loading-line"><i></i></div></div></div>
+
 <main class="w">
-<header><b class="logo">Cutfit<span class="brand-dot">.</span></b>
-<nav id="nv" aria-label="Main navigation"><button data-t="scan" aria-pressed="true">Scan</button><button data-t="lib" aria-pressed="false">Styles</button><button data-t="spin" aria-pressed="false">Roulette</button><button data-t="try" aria-pressed="false">Try-on</button><button data-t="saved" aria-pressed="false">My looks</button><button data-t="bar" aria-pressed="false">Barbers</button></nav></header>
+<header>
+  <div class="header-row">
+    <button class="logo-btn" id="logoBtn" type="button" aria-label="Cutfit home">Cutfit<span class="brand-dot">.</span></button>
+    <div class="header-tools">
+      <div class="chips lang-chips" role="group" aria-label="Language">
+        <button class="chip small" data-lang-pick="en" aria-pressed="true" type="button">EN</button>
+        <button class="chip small" data-lang-pick="fil" aria-pressed="false" type="button">FIL</button>
+      </div>
+      <button class="access-toggle" id="installBtn" type="button" hidden data-i18n="common.install">Install app</button>
+    </div>
+  </div>
+  <nav id="nv" aria-label="Main navigation">
+    <button data-t="scan" aria-pressed="true"><span data-i18n="nav.scan">Scan</span></button>
+    <button data-t="lib" aria-pressed="false"><span data-i18n="nav.styles">Styles</span></button>
+    <button data-t="spin" aria-pressed="false"><span data-i18n="nav.roulette">Roulette</span></button>
+    <button data-t="try" aria-pressed="false"><span data-i18n="nav.try">Try-on</span></button>
+    <button data-t="view3d" aria-pressed="false"><span>3D</span></button>
+    <button data-t="saved" aria-pressed="false"><span data-i18n="nav.saved">My looks</span></button>
+    <button data-t="bar" aria-pressed="false"><span data-i18n="nav.barbers">Barbers</span></button>
+  </nav>
+</header>
 
+<p class="offline-chip" id="offlineChip" hidden role="status"></p>
+
+<!-- ================= SCAN ================= -->
 <section id="p-scan">
-<h1>Find the cut that fits your face</h1>
-<p class="lead">Scan your face, discover cuts that fit your features, then explore styles and reference videos. Your photo is processed in your browser.</p><div class="scanring"><strong>For a better scan</strong><span class="fine mute">Face the camera • keep your whole face visible • use even lighting • remove hats and heavy filters.</span></div>
-<div class="row" id="photoStart"><button class="btn" id="b1">Take a photo</button><button class="btn alt" id="b2">Upload a photo</button></div>
-<div id="cam" hidden><video id="vd" playsinline muted></video><div class="row"><button class="btn" id="sn">Capture</button><button class="btn alt" id="cc">Cancel</button></div></div>
-<input id="f1" type="file" accept="image/*" capture="user" hidden><input id="f2" type="file" accept="image/*" hidden>
-<p class="mute fine" id="msg" role="status">Face the camera, hair pulled back, even light.</p>
-<div id="s2" class="scan-workspace" hidden>
-<div class="scan-photo"><canvas id="cv" aria-label="Your photo with draggable measuring dots"></canvas><span class="photo-badge">FACE ALIGNMENT</span></div>
-<div class="scan-panel">
- <div class="scan-panel-head"><div><p class="eyebrow">YOUR SCAN</p><h3>Adjust your face points</h3></div><span class="scan-step">01 / 02</span></div>
- <p class="mute fine scan-help">Move a point only if it misses your face. Cutfit automatically places the landmarks when possible.</p>
- <div class="row scan-actions"><button class="btn" id="auto">Auto-detect</button><button class="btn alt" id="rs">Reset points</button><button class="btn alt" id="retake" hidden>Change photo</button><button class="btn alt remove-photo" id="clearPhoto" hidden>Remove</button></div>
- <p class="hint" id="aihint">Preparing smart face alignment…</p>
-</div>
- <div class="consult-card" id="consultCard">
-   <div class="consult-head"><p class="eyebrow">YOUR STYLE PROFILE</p><h2>Build your Smart Style Match</h2><p class="mute fine">Cutfit uses your scan estimate and these preferences to build a practical shortlist—no long quiz needed.</p></div>
-   <div class="consult-grid">
-     <label>Hair texture
-       <select id="hairTexture"><option value="straight">Straight</option><option value="wavy">Wavy</option><option value="curly">Curly</option><option value="coily">Coily</option><option value="unsure">Not sure</option></select>
-     </label>
-     <label>Hair thickness
-       <select id="hairDensity"><option value="thick">Thick / dense</option><option value="medium" selected>Medium</option><option value="fine">Fine / thin</option><option value="unsure">Not sure</option></select>
-     </label>
-     <label>Daily maintenance
-       <select id="maintenance"><option value="low">Low maintenance</option><option value="medium" selected>Some styling is okay</option><option value="high">I enjoy styling</option></select>
-     </label>
-     <label>Preferred vibe
-       <select id="vibe"><option value="clean">Clean / office-ready</option><option value="trendy" selected>Trendy / Korean-inspired</option><option value="classic">Classic / timeless</option><option value="bold">Bold / expressive</option></select>
-     </label>
-     <label>Length preference
-       <select id="lengthPref"><option value="keep">Keep my current length</option><option value="short">Shorter is okay</option><option value="any" selected>Open to anything</option></select>
-     </label>
-     <label>Fringe preference
-       <select id="fringePref"><option value="keep">Keep bangs / fringe</option><option value="open" selected>Open to anything</option><option value="off">Keep forehead open</option></select>
-     </label>
-   </div>
-   <div class="pref-checks">
-     <span>What matters most?</span>
-     <label><input type="checkbox" name="priority" value="face" checked> Suit my face shape</label>
-     <label><input type="checkbox" name="priority" value="easy"> Easy to maintain</label>
-     <label><input type="checkbox" name="priority" value="volume"> Add volume</label>
-     <label><input type="checkbox" name="priority" value="forehead"> Hide my forehead</label>
-   </div>
-   <label class="beard-choice"><input type="checkbox" id="beardPref"> Include beard / facial-hair grooming tips</label>
- </div>
- <div class="row"><button class="btn" id="go">Analyze my face & find my cuts</button></div>
-</div>
-<div id="sum" hidden></div>
-<div id="dt"></div>
+  <h1 data-i18n="scan.h1">Find the cut that fits your face</h1>
+  <p class="lead" data-i18n="scan.lead">Scan your face, discover cuts that fit your features, then explore styles and reference videos. Your photo is processed in your browser.</p>
+  <div class="scanring"><strong data-i18n="scan.tipsTitle">For a better scan</strong><span class="fine mute" data-i18n="scan.tips">Face the camera • keep your whole face visible • use even lighting • remove hats and heavy filters.</span></div>
+
+  <div class="row" id="photoStart">
+    <button class="btn" id="b1" type="button" data-i18n="scan.photo">Take a photo</button>
+    <button class="btn alt" id="b2" type="button" data-i18n="scan.upload">Upload a photo</button>
+  </div>
+  <input id="f1" type="file" accept="image/*" capture="user" hidden>
+  <input id="f2" type="file" accept="image/*" hidden>
+
+  <div id="cam" hidden>
+    <div class="scan-live" id="scanLive" hidden>
+      <div class="scan-live-frame">
+        <video id="vd" playsinline muted aria-label="Live camera preview"></video>
+        <canvas id="scanOverlay" class="scan-overlay" aria-hidden="true"></canvas>
+      </div>
+      <p class="scan-hint" id="scanHint" role="status">Move your face inside the oval.</p>
+      <div class="hold-track" aria-hidden="true"><i id="scanHold"></i></div>
+      <div class="row">
+        <button class="btn alt" id="liveStop" type="button" data-i18n="scan.liveStop">Stop camera</button>
+      </div>
+    </div>
+    <div class="row" id="camManual">
+      <button class="btn" id="sn" type="button" data-i18n="scan.capture">Capture</button>
+      <button class="btn alt" id="cc" type="button" data-i18n="scan.cancel">Cancel</button>
+    </div>
+  </div>
+
+  <p class="mute fine" id="msg" role="status" data-i18n="scan.status">Face the camera, hair pulled back, even light.</p>
+
+  <div id="s2" class="scan-workspace" hidden>
+    <div class="scan-photo">
+      <canvas id="cv" aria-label="Your photo with a light face contour and mesh"></canvas>
+      <span class="photo-badge">FACE ALIGNMENT</span>
+    </div>
+    <div class="scan-panel">
+      <div class="scan-panel-head">
+        <div><p class="eyebrow" data-i18n="scan.panelTitle">Your scan</p><h3 data-i18n="scan.panelAdjust">Your face points</h3></div>
+        <span class="scan-step" data-i18n="scan.step">01 / 02</span>
+      </div>
+      <p class="mute fine scan-help" data-i18n="scan.help">Contour and mesh only — no dots. Open Fine-tune if a point is off.</p>
+      <div class="scan-quality" id="scanQuality"></div>
+      <div class="row scan-actions">
+        <button class="btn" id="auto" type="button" data-i18n="scan.auto">Auto-detect</button>
+        <button class="btn alt" id="finetune" type="button" aria-pressed="false" data-i18n="scan.finetune">Fine-tune</button>
+        <button class="btn alt" id="rs" type="button" data-i18n="scan.reset">Reset points</button>
+        <button class="btn alt" id="retake" type="button" hidden data-i18n="scan.retake">Change photo</button>
+        <button class="btn alt remove-photo" id="clearPhoto" type="button" hidden data-i18n="scan.remove">Remove</button>
+      </div>
+      <p class="hint" id="aihint">Preparing the on-device face scanner…</p>
+    </div>
+  </div>
+
+  <div class="consult-card" id="consultCard">
+    <div class="consult-head">
+      <p class="eyebrow">YOUR STYLE PROFILE</p>
+      <h2>Build your Smart Style Match</h2>
+      <p class="mute fine">Cutfit uses your scan estimate and these preferences to build a practical shortlist—no long quiz needed.</p>
+    </div>
+    <div class="consult-grid">
+      <label>Hair texture
+        <select id="hairTexture"><option value="straight">Straight</option><option value="wavy">Wavy</option><option value="curly">Curly</option><option value="coily">Coily</option><option value="unsure">Not sure</option></select>
+      </label>
+      <label>Hair thickness
+        <select id="hairDensity"><option value="thick">Thick / dense</option><option value="medium" selected>Medium</option><option value="fine">Fine / thin</option><option value="unsure">Not sure</option></select>
+      </label>
+      <label>Daily maintenance
+        <select id="maintenance"><option value="low">Low maintenance</option><option value="medium" selected>Some styling is okay</option><option value="high">I enjoy styling</option></select>
+      </label>
+      <label>Preferred vibe
+        <select id="vibe"><option value="clean">Clean / office-ready</option><option value="trendy" selected>Trendy / Korean-inspired</option><option value="classic">Classic / timeless</option><option value="bold">Bold / expressive</option></select>
+      </label>
+      <label>Length preference
+        <select id="lengthPref"><option value="keep">Keep my current length</option><option value="short">Shorter is okay</option><option value="any" selected>Open to anything</option></select>
+      </label>
+      <label>Fringe preference
+        <select id="fringePref"><option value="keep">Keep bangs / fringe</option><option value="open" selected>Open to anything</option><option value="off">Keep forehead open</option></select>
+      </label>
+      <label>Styles to include
+        <select id="audiencePref"><option value="all" selected>Men’s, women’s &amp; neutral</option><option value="m">Men’s</option><option value="f">Women’s</option><option value="neutral">Gender-neutral</option></select>
+      </label>
+    </div>
+    <div class="pref-checks">
+      <span>What matters most?</span>
+      <label><input type="checkbox" name="priority" value="face" checked> Suit my face shape</label>
+      <label><input type="checkbox" name="priority" value="easy"> Easy to maintain</label>
+      <label><input type="checkbox" name="priority" value="volume"> Add volume</label>
+      <label><input type="checkbox" name="priority" value="forehead"> Hide my forehead</label>
+    </div>
+    <label class="beard-choice"><input type="checkbox" id="beardPref"> Include beard / facial-hair grooming tips</label>
+  </div>
+
+  <div class="row"><button class="btn" id="go" type="button" data-i18n="scan.analyze">Analyze my face &amp; find my cuts</button></div>
+  <div id="sum" hidden></div>
+  <div id="dt"></div>
 </section>
 
+<!-- ================= LIBRARY ================= -->
 <section id="p-lib" hidden>
-<h1>Style library</h1>
-<p class="lead">Explore men’s cuts, from timeless barber classics to current Korean-inspired and street styles.</p><p class="fine mute">Every style includes a quick description, try-on shortcut, save option and a step-by-step video search.</p>
-<div class="row"><button class="btn" data-add="1" aria-label="Create your own haircut"><b class="plus">+</b> Create your own haircut</button></div>
-<div class="library-tools"><label class="search-label" for="styleSearch">Search hairstyles</label><input id="styleSearch" type="search" placeholder="Try “two-block”, “fade”, “quiff”…" autocomplete="off"><label class="search-label" for="styleLength">Length</label><select id="styleLength"><option value="a">Any length</option><option value="s">Short</option><option value="m">Medium</option><option value="l">Long</option></select><label class="search-label" for="styleType">Style type</label><select id="styleType"><option value="a">All styles</option><option value="fade">Fades & tapers</option><option value="fringe">Fringe & curtains</option><option value="curl">Curls & texture</option><option value="long">Long & layered</option><option value="classic">Classic cuts</option><option value="korean">Korean-inspired</option><option value="natural">Natural texture</option></select></div>
-<div id="ll"></div>
+  <h1>Style library</h1>
+  <p class="lead">Explore men’s, women’s and gender-neutral cuts, from timeless barber classics to current Korean-inspired and street styles.</p>
+  <p class="fine mute">Every style includes a quick description, a try-on shortcut, a save option and a step-by-step video search.</p>
+  <div class="row"><button class="btn" type="button" data-open-3d="1"><b class="plus">+</b> Create your own in 3D</button></div>
+  <div class="library-tools">
+    <label class="search-label" for="styleSearch">Search hairstyles</label>
+    <input id="styleSearch" type="search" placeholder="Try “two-block”, “fade”, “quiff”…" autocomplete="off">
+    <label class="search-label" for="styleLength">Length</label>
+    <select id="styleLength"><option value="a">Any length</option><option value="s">Short</option><option value="m">Medium</option><option value="l">Long</option></select>
+    <label class="search-label" for="styleEra">Era</label>
+    <select id="styleEra"><option value="a">All eras</option><option value="c">Classic oldies</option><option value="m">Modern</option></select>
+    <label class="search-label" for="styleType">Style type</label>
+    <select id="styleType"><option value="a">All styles</option><option value="fade">Fades &amp; tapers</option><option value="fringe">Fringe &amp; curtains</option><option value="curl">Curls &amp; texture</option><option value="long">Long &amp; layered</option><option value="classic">Classic cuts</option><option value="korean">Korean-inspired</option><option value="natural">Natural texture</option></select>
+    <label class="search-label" for="styleAudience">Audience</label>
+    <select id="styleAudience"><option value="all">Everyone</option><option value="m">Men’s</option><option value="f">Women’s</option><option value="neutral">Gender-neutral</option></select>
+    <label class="search-label" for="styleHair">Hair type</label>
+    <select id="styleHair"><option value="all">Any hair type</option><option value="straight">Straight</option><option value="wavy">Wavy</option><option value="curly">Curly</option><option value="coily">Coily</option></select>
+  </div>
+  <div id="ll"></div>
 </section>
+
+<!-- ================= SAVED ================= -->
 <section id="p-saved" hidden>
-<h1>Your Cutfit shelf.</h1><p class="lead">A personal shortlist of cuts you love. Saved on this device, ready for your next barber visit.</p><div class="row"><button class="btn" data-add="1" aria-label="Create your own haircut"><b class="plus">+</b> Create your own haircut</button></div>
-<div id="savedList"></div>
+  <h1>Your Cutfit shelf.</h1>
+  <p class="lead">A personal shortlist of cuts you love. Saved on this device, ready for your next barber visit.</p>
+  <div class="row"><button class="btn" type="button" data-open-3d="1"><b class="plus">+</b> Create your own in 3D</button></div>
+  <div id="savedList"></div>
+  <p class="fine mute">Your saved looks and scans stay on this device. <button class="lnk" id="deletePhotos" type="button" data-i18n="consent.delete">Delete my photos</button></p>
 </section>
 
+<!-- ================= ROULETTE ================= -->
 <section id="p-spin" hidden>
-<h1>Cut roulette</h1>
-<p class="lead">Spin for a fresh men’s haircut idea—from classic barber cuts to modern trends.</p><div class="chips" id="rouletteGender"><button class="chip" data-wg="m" aria-pressed="true">Men’s cuts</button></div><p class="mute fine" id="wheelCount"></p>
-<div class="wh"><i class="pt"></i><div id="wd"></div></div>
-<div class="row" style="justify-content:center"><button class="btn" id="sp">Spin</button><button class="btn alt" id="sf">Shuffle wheel</button></div>
-<div id="wr" role="status"></div>
+  <h1>Cut roulette</h1>
+  <p class="lead">Spin for a fresh haircut idea—from classic barber cuts to modern trends.</p>
+  <div class="chips" id="rouletteGender"><button class="chip" data-wg="m" aria-pressed="true" type="button">All cuts</button></div>
+  <p class="mute fine" id="wheelCount"></p>
+  <div class="wh"><i class="pt"></i><div id="wd"></div></div>
+  <div class="row" style="justify-content:center"><button class="btn" id="sp" type="button">Spin</button><button class="btn alt" id="sf" type="button">Shuffle wheel</button></div>
+  <div id="wr" role="status"></div>
 </section>
 
+<!-- ================= TRY-ON ================= -->
 <section id="p-try" hidden class="fitting-room">
-<div class="fit-heading"><div><p class="eyebrow">YOUR VIRTUAL FITTING ROOM</p><h1>Find your next look.</h1><p class="lead">Choose a modern cut, generate a realistic AI preview, and compare real haircut references before visiting your barber.</p></div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span id="tryCredits">10 AI credits</span><button class="save-pill" id="saveTry" aria-label="Save hairstyle preview">♡ <span>Save</span></button></div></div>
-<div class="fit-stage">
- <div class="fit-main"><div class="fit-image-wrap"><canvas id="trycv" width="640" height="800" aria-label="Your photo with hairstyle preview"></canvas><span class="view-tag">FRONT VIEW</span></div>
-  <div class="fit-caption"><div class="fit-cut"><span class="checkmark">✓</span><div><strong id="fitStyleName">Korean Two-Block</strong><small id="fitStyleDesc">Soft textured fringe</small></div></div><button class="try-again" id="renderTry">✦ <span>Generate AI</span></button></div>
- </div>
- <aside class="fit-angles">
-  <div class="angle-card"><div class="angle-art"><svg viewBox="0 0 180 190" role="img" aria-label="Side profile haircut guide"><path d="M35 190Q40 150 65 143L70 125Q48 111 47 79Q45 35 87 23Q128 14 143 51Q151 73 133 95L125 123Q117 139 101 145L112 190Z" fill="#d5b39a"/><path d="M44 80Q37 32 83 17Q133 4 148 51Q151 68 140 87Q132 66 113 62Q86 56 70 75Q57 91 48 105Z" fill="#211d1b"/></svg></div><span class="angle-label">SIDE GUIDE</span></div>
-  <div class="angle-card"><div class="angle-art"><svg viewBox="0 0 180 190" role="img" aria-label="Back view haircut guide"><path d="M25 190Q34 145 62 139L63 116Q43 95 43 64Q43 18 90 16Q137 18 137 64Q137 95 117 116L118 139Q146 145 155 190Z" fill="#d5b39a"/><path d="M40 72Q31 16 90 10Q149 16 140 72L133 119Q122 136 90 138Q58 136 47 119Z" fill="#211d1b"/></svg></div><span class="angle-label">BACK GUIDE</span></div>
-  <p class="angle-note">Open a haircut’s details for real front, side and back reference searches.</p>
- </aside>
- <div class="fit-tools"><button class="tool-btn" id="retakeFit" type="button"><span>◎</span><small>Retake</small></button><button class="tool-btn" id="adjustFit" type="button"><span>☷</span><small>Adjust</small></button><button class="tool-btn" id="colorFit" type="button"><span>◉</span><small>Hair color</small></button><button class="tool-btn" id="tutorialFit" type="button"><span>▷</span><small>Tutorial</small></button></div>
-</div>
-<div class="fit-controls" id="fitAdjustments" hidden><label for="hairColor">Hair color</label><select id="hairColor"><option value="#241b18">Natural black</option><option value="#493027">Dark brown</option><option value="#76513a">Chestnut</option><option value="#b58a55">Light brown</option><option value="#d5c09a">Blonde</option></select><label for="hairOpacity">Overlay strength</label><input id="hairOpacity" type="range" min="35" max="100" value="88"></div>
-<div class="fit-shelf-heading"><div><strong>Choose your hairstyle</strong><small>Tap a style to preview it</small></div><button class="text-action" data-go="lib">See all</button></div>
-<div id="tryCarousel" class="try-carousel" aria-label="Hairstyle choices"></div>
-<select id="tryStyle" aria-label="Choose a haircut" class="visually-hidden"></select>
-<p class="fit-status" id="trymsg" role="status">Upload a selfie in Scan, choose a haircut, then tap Generate AI.</p>
-<div class="fit-bottom-actions"><button class="btn alt" data-go="lib">Explore all hairstyles</button><button class="btn" id="saveTrySecondary" type="button">Save preview ↓</button></div>
+  <div class="fit-heading">
+    <div>
+      <p class="eyebrow">YOUR VIRTUAL FITTING ROOM</p>
+      <h1 data-i18n="try.h1">Find your next look.</h1>
+      <p class="lead" data-i18n="try.lead">Choose a modern cut, generate a realistic AI preview, and compare real haircut references before visiting your barber.</p>
+    </div>
+    <div class="fit-heading-actions">
+      <span id="tryCredits">— AI credits</span>
+      <button class="save-pill" id="saveTry" type="button">♡ <span data-i18n="try.save">Save</span></button>
+    </div>
+  </div>
+
+  <div class="fit-stage">
+    <div class="fit-main">
+      <div class="fit-image-wrap">
+        <div class="compare" id="compare">
+          <canvas id="cmpBefore" width="640" height="800" aria-label="Your original photo"></canvas>
+          <div class="compare-after"><canvas id="cmpAfter" width="640" height="800" aria-label="AI hairstyle preview"></canvas></div>
+          <span class="compare-label left" data-i18n="try.before">Original</span>
+          <span class="compare-label right" data-i18n="try.after">AI preview</span>
+        </div>
+        <label class="compare-slider" for="cmpRange">
+          <span class="visually-hidden" data-i18n="try.compare">Drag to compare</span>
+          <input id="cmpRange" type="range" min="0" max="100" value="50" aria-label="Compare before and after">
+        </label>
+        <span class="view-tag" id="viewTag">FRONT VIEW</span>
+      </div>
+      <div class="fit-caption">
+        <div class="fit-cut"><span class="checkmark">✓</span><div><strong id="fitStyleName">Korean Two-Block</strong><small id="fitStyleDesc">Soft textured fringe</small></div></div>
+        <div class="fit-caption-actions">
+          <button class="try-again" id="renderTry" type="button">✦ <span data-i18n="try.generate">Generate AI</span></button>
+          <button class="try-again" id="regenerate" type="button" data-i18n="try.regenerate">Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fit-views" role="group" aria-label="Views">
+    <button class="chip" data-view-tab="front" aria-pressed="true" type="button" data-i18n="try.front">Front</button>
+    <button class="chip" data-view-tab="side" aria-pressed="false" type="button" data-i18n="try.side">Side</button>
+    <button class="chip" data-view-tab="back" aria-pressed="false" type="button" data-i18n="try.back">Back</button>
+    <label class="seed-field"><span data-i18n="try.seed">Seed</span><input id="seedInput" type="number" min="0" max="2147483647" placeholder="random" inputmode="numeric"></label>
+  </div>
+
+  <div class="fit-controls" id="fitAdjustments" hidden>
+    <label for="hairColor" data-i18n="try.color">Hair color</label>
+    <select id="hairColor">
+      <option value="">Keep natural colour</option>
+      <option value="#241b18">Natural black</option>
+      <option value="#493027">Dark brown</option>
+      <option value="#76513a">Chestnut</option>
+      <option value="#b58a55">Light brown</option>
+      <option value="#d5c09a">Blonde</option>
+      <option value="#9a3b26">Auburn red</option>
+    </select>
+    <button class="btn alt smallbtn" id="beardBtn" type="button" data-i18n="try.beard">Style the beard too</button>
+  </div>
+
+  <div class="fit-progress" id="tryProgress" hidden>
+    <div class="bar"><i id="tryProgressBar" style="width:0%"></i></div>
+    <p class="fit-status" id="tryStage" role="status" aria-live="polite">Preparing your photo…</p>
+  </div>
+
+  <div class="fit-shelf-heading">
+    <div><strong>Choose your hairstyle</strong><small>Tap a style to preview it</small></div>
+    <button class="text-action" type="button" data-go="lib">See all</button>
+  </div>
+  <div id="tryCarousel" class="try-carousel" aria-label="Hairstyle choices"></div>
+  <select id="tryStyle" aria-label="Choose a haircut" class="visually-hidden"></select>
+  <p class="fit-status" id="trymsg" role="status">Upload a selfie in Scan, choose a haircut, then tap Generate AI.</p>
+  <p class="fine mute" id="tryAI" hidden></p>
+
+  <div class="fit-tools">
+    <button class="tool-btn" id="adjustFit" type="button"><span>☷</span><small>Colour &amp; more</small></button>
+    <button class="tool-btn" id="shareTry" type="button"><span>↗</span><small>Share</small></button>
+    <button class="tool-btn" id="cardFromTry" type="button"><span>▤</span><small>Barber card</small></button>
+    <button class="tool-btn" id="tutorialFit" type="button"><span>▷</span><small>Tutorial</small></button>
+  </div>
+  <div class="fit-bottom-actions">
+    <button class="btn alt" type="button" data-go="lib">Explore all hairstyles</button>
+    <button class="btn" id="saveTrySecondary" type="button">Save preview ↓</button>
+  </div>
 </section>
 
+<!-- ================= 3D ================= -->
+<section id="p-view3d" hidden>
+  <h1 data-i18n="viewer.h1">3D head simulator</h1>
+  <p class="lead" data-i18n="viewer.lead">Lazy-loaded Three.js viewer built from your face mesh.</p>
+  <div class="viewer-shell">
+    <canvas id="stcv" aria-label="3D head built from your photo"></canvas>
+    <div class="viewer-bar" role="group" aria-label="Camera presets">
+      <button class="chip" data-view="front" type="button">Front</button>
+      <button class="chip" data-view="side" type="button">Side</button>
+      <button class="chip" data-view="back" type="button">Back</button>
+      <button class="chip" data-view="top" type="button">Top</button>
+    </div>
+  </div>
+  <p class="fit-status" id="stmsg" role="status">Add a photo in Scan, then come back here.</p>
+  <div class="viewer-controls" id="viewerControls">
+    <label class="viewer-row"><span data-i18n="viewer.length">Length</span><input id="lengthRange" type="range" min="0" max="100" value="50"><b id="lengthValue">50%</b></label>
+    <label class="viewer-row"><span data-i18n="viewer.fade">Fade / taper</span><input id="fadeRange" type="range" min="0" max="100" value="50"><b id="fadeValue">50%</b></label>
+    <label class="viewer-row"><span data-i18n="viewer.light">Lighting</span>
+      <select id="lightingPreset">
+        <option value="studio">Studio</option>
+        <option value="warm">Warm</option>
+        <option value="barbershop">Barbershop</option>
+        <option value="soft">Soft</option>
+      </select>
+    </label>
+    <label class="viewer-row"><span>Hair colour</span><input id="viewerColor" type="color" value="#2b2320"></label>
+    <label class="viewer-row"><span>Hair style</span><select id="hairStyle"></select></label>
+    <div class="row">
+      <button class="btn alt" id="snapshot" type="button" data-i18n="viewer.shot">Save snapshot</button>
+    </div>
+  </div>
+  <p class="hint" id="hairNotice" hidden></p>
+  <p class="hint warn" id="viewerFallback" hidden>Open Try-on for the AI photo preview instead — it works without WebGL.</p>
+  <p class="hint" id="viewerOff" hidden data-i18n="flags.off">This feature is turned off in this build.</p>
+</section>
+
+<!-- ================= BARBERS ================= -->
 <section id="p-bar" hidden>
-<h1>Barbers near you</h1>
-<p class="lead">Explore the listed shops and check details directly before visiting. Directory details can change.</p><label class="search-label" for="barberSearch">Search shops or areas</label><input id="barberSearch" type="search" placeholder="Search by shop or location…" autocomplete="off"><div id="bl"></div>
-<div class="row"><a class="btn alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/barber+shop+near+me">See more on Google Maps</a></div>
+  <h1 data-i18n="barbers.h1">Barbers near you</h1>
+  <p class="lead" data-i18n="barbers.lead">Explore the listed shops and check details directly before visiting. Directory details can change.</p>
+  <label class="search-label" for="barberSearch" data-i18n="barbers.search">Search shops or areas</label>
+  <input id="barberSearch" type="search" placeholder="Search by shop or location…" autocomplete="off">
+  <label class="search-label" for="barberShopName">Your shop (optional, for the card)</label>
+  <input id="barberShopName" type="text" maxlength="60" placeholder="e.g. Fadeday Studio" autocomplete="off">
+  <div id="bl"></div>
+  <div class="row"><a class="btn alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/barber+shop+near+me">See more on Google Maps</a></div>
 </section>
 
 <hr>
-<footer class="mute fine"><p>Results are estimates. Hair texture, density and taste matter as much as face shape.</p><button class="lnk" id="tl">Terms of use</button></footer>
+<footer class="mute fine">
+  <p>Results are estimates. Hair texture, density and taste matter as much as face shape. Prices are shown in pesos.</p>
+  <p>
+    <button class="lnk" id="tl" type="button">Terms of use</button> ·
+    <button class="lnk" id="privacyLink" type="button" data-i18n="privacy.open">Privacy notice</button> ·
+    <button class="lnk" id="deletePhotosFooter" type="button" data-i18n="consent.delete">Delete my photos</button>
+  </p>
+</footer>
 </main>
 
 <button id="cb" class="btn" aria-label="Open the guide chat">Guide</button>
-<div id="bot" hidden><div id="ms" aria-live="polite"></div><div class="chips" id="qc"></div><div class="ib"><input id="bi" placeholder="Ask the guide" autocomplete="off"><button class="btn" id="bs">Send</button></div></div>
 
+<div id="bot" hidden>
+  <div class="bot-head"><strong>Cutfit guide</strong><button class="chip small" id="guideClose" type="button" aria-label="Close guide">✕</button></div>
+  <div id="ms" aria-live="polite"></div>
+  <div class="chips" id="qc"></div>
+  <div class="ib"><input id="bi" placeholder="Ask the guide" autocomplete="off"><button class="btn" id="bs" type="button">Send</button></div>
+</div>
+
+<!-- Terms (kept from the original site) -->
 <div id="tm" role="dialog" aria-modal="true" aria-labelledby="tt" hidden><div>
 <h2 id="tt">Terms of use</h2>
 <ul>
-<li><b>Photo processing.</b> Basic face scanning happens in your browser. If you choose Generate AI, your selected photo is sent to the CutFit AI service and fal.ai to create the hairstyle preview. Do not upload someone else’s photo without permission.</li>
-<li><b>Estimates only.</b> Smart face landmarks help place measurement dots, but face-shape results are estimates. Review and adjust the dots yourself.</li>
-<li><b>Barber details are a snapshot.</b> Ratings, hours and prices came from Google Maps on Nov 21, 2026 and may have changed. Shops are listed for convenience, not endorsed.</li>
-<li><b>Your reviews and saved looks stay local.</b> Reviews and favorite hairstyles are stored in this browser on this device only. Clearing browser data may erase them.</li>
-<li><b>Permissions.</b> Your browser asks before using the camera. You can decline and upload a photo instead.</li>
+<li><b>Photo processing.</b> Face scanning and the 3D viewer run in your browser. If you choose Generate AI, the single photo you selected and a hair mask are sent to the CutFit AI service and fal.ai to create the hairstyle preview. Do not upload someone else’s photo without permission.</li>
+<li><b>Estimates only.</b> Face landmarks and the hair segmenter help measure your face, but face-shape results are estimates. Confidence is shown as High, Medium or Low, and you can fine-tune the points yourself.</li>
+<li><b>Barber details are a snapshot.</b> Ratings, hours and prices came from Google Maps on Nov 21, 2026 and may have changed. Shops are listed for convenience, not endorsed. Prices are in pesos.</li>
+<li><b>Your reviews, scans and saved looks stay local.</b> They are stored in this browser on this device. Clearing browser data may erase them, and “Delete my photos” removes them on demand.</li>
+<li><b>AI results are temporary.</b> Generated images are stored for a short time on our worker so you can view and download them, then deleted automatically.</li>
+<li><b>Permissions.</b> Your browser asks before using the camera, and we show a photo notice first. You can decline and upload a photo instead.</li>
 <li><b>Use your own photos.</b> Only use photos of yourself or of people who agreed.</li>
-<li><b>Credits.</b> This demo stores the 10-credit balance in this browser. Clearing site data or switching devices may reset it; it is not a secure account-wide limit.</li>
-<li><b>AI try-on and references.</b> AI results are generated estimates and may not perfectly match a real haircut. Front, side and back reference links show examples of the selected style, not views of your own head.</li>
+<li><b>Credits.</b> AI credits are limited per device and per network address on the server. Abuse protection may block repeated requests.</li>
+<li><b>AI try-on and references.</b> AI results are generated estimates and may not perfectly match a real haircut. Side and back buttons show reference searches unless you add a side photo.</li>
 <li><b>Just for fun.</b> The roulette and the guide chat are automated and are not recommendations.</li>
 </ul>
-<div class="row"><button class="btn" id="ag">I agree</button><button class="btn alt" id="dc">Decline</button></div>
+<div class="row"><button class="btn" id="ag" type="button">I agree</button><button class="btn alt" id="dc" type="button">Decline</button></div>
 </div></div>
 
-<div id="haircutModal" hidden role="dialog" aria-modal="true" aria-labelledby="haircutTitle"><div class="modal-card"><div class="modal-top"><div><p class="eyebrow">CUT DETAILS & REFERENCES</p><h2 id="haircutTitle">Haircut name</h2></div><button class="chip" id="closeHaircut" type="button">Close ✕</button></div><p id="haircutDescription" class="mute"></p><div class="spec-grid" id="haircutSpecs"></div><h3 style="margin-top:18px">Explore the real haircut from every angle</h3><p class="fine mute">These open photo references for the selected haircut. Check the side profile, back shape and front finish before choosing.</p><div class="views" id="haircutViews"></div><div class="detail-actions"><a class="btn alt" id="haircutVideo" href="#" target="_blank" rel="noopener">▶ Watch haircut videos</a><button class="btn" id="useHaircut" type="button">Use this haircut</button></div></div></div>
+<!-- Consent (face data) -->
+<div id="consent" class="modal" role="dialog" aria-modal="true" aria-labelledby="consentTitle" hidden>
+  <div class="modal-card consent-card">
+    <h2 id="consentTitle" data-i18n="consent.title">Your face data</h2>
+    <p data-i18n="consent.body">Photos and face measurements can count as biometric data. Cutfit scans in your browser. Nothing is uploaded until you press Generate AI, and then only the single photo you chose is sent to our worker and fal.ai to make the preview. Other photos stay on this device.</p>
+    <ul class="consent-list">
+      <li data-i18n="consent.point1">Face scanning and the 3D viewer run entirely in your browser.</li>
+      <li data-i18n="consent.point2">AI previews send one photo + a hair mask to our worker and fal.ai, then the result is stored for a short time and deleted automatically.</li>
+      <li data-i18n="consent.point3">We do not create an account, and we do not sell data.</li>
+      <li data-i18n="consent.point4">You can delete every photo Cutfit holds with one button.</li>
+    </ul>
+    <div class="row">
+      <button class="btn" id="consentAccept" type="button" data-i18n="consent.accept">I understand and agree</button>
+      <button class="btn alt" id="consentDecline" type="button" data-i18n="consent.decline">Not now</button>
+    </div>
+    <p class="fine"><a href="privacy.html" data-i18n="privacy.open">Privacy notice</a></p>
+  </div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<div id="studio" hidden role="dialog" aria-modal="true" aria-labelledby="stt"><div class="st-card">
-<div class="st-top"><div><h2 id="stt" style="margin:0">Hair studio</h2><p class="fine" style="margin:.2rem 0 0;color:#aaa">Design your own cut on a 3D mannequin.</p></div><button class="chip" id="stClose">Close</button></div>
-<div class="st-stage"><canvas id="stcv" aria-label="3D head mannequin"></canvas></div>
-<div class="chips"><button class="chip" data-vw="0">Front</button><button class="chip" data-vw="1.5708">Side</button><button class="chip" data-vw="3.1416">Back</button></div>
-<p class="fine" id="stmsg" role="status" style="color:#aaa"></p>
-<div id="stCtl"></div>
-<input id="stName" maxlength="40" placeholder="Name your style" aria-label="Style name">
-<div class="row"><button class="btn" id="stSave">Save</button><button class="btn alt" id="stTry">Try on my photo</button><button class="btn alt" id="stAI">Generate with AI</button></div>
-</div></div>
-<script>
-const S={
-oval:{n:'Oval',d:'Length is about 1.5× the cheekbone width, the forehead is a touch wider than a soft jaw, and no feature dominates. Most cuts work.',g:'Keep the natural balance.',r:['Textured crop','Taper fade','Side part','Slick back','Pompadour','Long layers','Lob','Pixie cut','Curtain bangs','Beach waves'],a:'Heavy fringes that hide your balance.',t:'Choose by hair texture and lifestyle.'},
-round:{n:'Round',d:'Width and length are nearly equal, with full cheeks and a soft, curved jaw.',g:'Add length and definition.',r:['Pompadour','Fade quiff','Flat top','Slick back','Taper fade','Long layers','Asymmetric bob','Pixie cut','Lob','Beehive'],a:'Chin-length bobs, round fringes and volume at the sides.',t:'Keep volume on top, not at the cheeks.'},
-square:{n:'Square',d:'A strong, angular jaw, with forehead, cheekbones and jaw of similar width.',g:'Soften the angles with texture.',r:['Side part','Textured crop','Buzz cut','Crew cut','Curtains','Ivy League','Long layers','Beach waves','Lob','Pixie cut'],a:'Blunt jaw-length cuts and heavy straight fringes.',t:'Layers, waves and side parts soften the jaw.'},
-rect:{n:'Rectangle',d:'Noticeably longer than wide, with a straight cheek line and similar forehead, cheek and jaw widths.',g:'Add width and shorten the look of length.',r:['Textured crop','Ivy League','Curtains','Bowl cut','Curtain bangs','Shag','Wolf cut','1920s bob','Asymmetric bob','Beach waves'],a:'Very long, flat hair and tall volume on top.',t:'Go for fullness at the sides and a fringe.'},
-heart:{n:'Heart',d:'A wider forehead and cheekbones taper to a narrower, often pointed chin.',g:'Balance the chin with width lower down.',r:['Side part','Textured crop','Curtains','Ivy League','Lob','1920s bob','Curtain bangs','Long layers','Curly fade','Asymmetric bob'],a:'Slick-backs and heavy volume on top.',t:'Part to the side and keep fullness near the chin.'},
-diamond:{n:'Diamond',d:'Cheekbones are the widest point, with a narrower forehead and jaw.',g:'Soften the cheekbones and add width at the forehead and jaw.',r:['Textured crop','Curtains','Fade quiff','Curtain bangs','Lob','Pixie cut','Beach waves','Shag','Wolf cut','Taper fade'],a:'Tight, slicked-back or center-parted styles.',t:'Add width at the forehead and chin.'},
-tri:{n:'Triangle',d:'The jaw is the widest part, with a narrower forehead and cheekbones.',g:'Add volume at the forehead and crown.',r:['Pompadour','Fade quiff','Textured crop','Slick back','Flat top','Lob','Pixie cut','Beehive','Afro','Wolf cut'],a:'Chin-length bobs and fullness at the jaw.',t:'Keep volume up top and sleek around the jaw.'}};
-// [length÷cheekbones, forehead÷cheekbones, jaw÷cheekbones]
-const P={oval:[1.42,.88,.76],round:[1.2,.88,.8],square:[1.25,.96,.94],rect:[1.58,.95,.93],heart:[1.45,.98,.62],diamond:[1.45,.76,.68],tri:[1.35,.78,1]};
-// name, gender, length, era, [top,hairline,sideburn,fringe,fringeEnd,backEnd,backExtra,flags], note
-const CT=[
-['Pompadour','m','m','c',[14,35,42,0,0,0,0,'F'],'1950s lift, sleek sides'],
-['Ducktail','m','m','c',[10,36,44,0,0,82,0,'MF'],'Greaser sides combed back'],
-['Crew cut','m','s','c',[0,33,44,0,0,0,0,'F'],'Short, neat, military'],
-['Flat top','m','s','c',[0,34,42,0,0,0,0,'LF'],'Boxy top, tight sides'],
-['Ivy League','m','s','c',[3,37,46,2,40,0,0,''],'Short, parted, polished'],
-['Side part','m','s','c',[4,38,46,2,42,0,0,''],'The timeless business cut'],
-['Slick back','m','m','c',[3,32,46,0,0,0,0,''],'Combed straight back'],
-['Bowl cut','u','s','c',[0,42,58,1,44,0,0,''],'Even fringe all round'],
-['Mullet','m','l','c',[3,36,48,0,0,104,0,'M'],'Short top, long back'],
-['1920s bob','f','m','c',[0,38,60,1,44,74,2,''],'Sleek jaw-length bob'],
-['Beehive','f','l','c',[20,36,50,1,40,60,0,''],'1960s tall volume'],
-['Shag','u','m','c',[3,38,56,3,48,84,5,''],'1970s choppy layers'],
-['Afro','u','m','c',[0,38,48,0,0,0,0,'A'],'Full, round natural volume'],
-['Mohawk','u','s','c',[0,36,40,0,0,0,0,'NH'],'Shaved sides, tall center'],
-['Textured crop','m','s','m',[3,37,42,1,38,0,0,'F'],'Short, textured, easy'],
-['Taper fade','m','s','m',[5,36,40,2,40,0,0,'F'],'Gradual fade, swept top'],
-['Fade quiff','m','s','m',[10,35,38,2,38,0,0,'F'],'Height up front, faded sides'],
-['Buzz cut','m','s','m',[-1,36,44,0,0,0,0,'Z'],'One length, zero fuss'],
-['Man bun','m','l','m',[1,35,46,0,0,0,0,'K'],'Long hair tied up'],
-['Curtains','m','m','m',[3,38,52,3,48,0,0,''],'Center part, face-framing'],
-['Wolf cut','u','m','m',[4,38,52,3,46,86,5,''],'Shaggy layers, lifted top'],
-['Lob','f','m','m',[1,37,50,2,44,86,2,''],'Long bob at the collarbone'],
-['Pixie cut','f','s','m',[4,36,46,2,40,0,0,''],'Cropped, swept fringe'],
-['Curtain bangs','f','l','m',[1,38,52,3,50,100,4,''],'Long hair, soft bangs'],
-['Beach waves','u','l','m',[2,37,50,2,42,96,6,'V'],'Loose, tousled waves'],
-['Box braids','u','l','m',[0,40,48,0,0,104,0,'R'],'Protective braids'],
-['Curly fade','m','s','m',[6,36,40,0,0,0,0,'FU'],'Curls on top, faded sides'],
-['Long layers','f','l','m',[2,37,52,2,44,100,4,''],'Soft, flowing layers'],
-['Asymmetric bob','f','m','m',[0,38,60,2,46,78,3,''],'Angled, longer on one side'],
-['French crop','m','s','m',[2,38,42,1,36,0,0,'F'],'Short textured top with a neat fringe'],
-['Low taper','m','s','m',[3,37,43,1,39,0,0,'F'],'Subtle clean taper around the edges'],
-['Mid fade','m','s','m',[4,36,40,1,39,0,0,'F'],'Balanced fade with textured top'],
-['High fade','m','s','m',[5,35,38,1,38,0,0,'F'],'High contrast faded sides'],
-['Caesar cut','m','s','c',[0,39,43,1,34,0,0,'F'],'Short forward fringe'],
-['Modern mullet','u','m','m',[5,37,49,2,44,94,5,'M'],'Modern layered back with shorter sides'],
-['Perm curls','u','m','m',[8,36,50,2,45,76,3,'U'],'Defined curls with soft volume'],
-['French bob','f','s','m',[0,39,59,1,42,70,2,''],'Chic chin-length bob'],
-['Butterfly cut','f','l','m',[5,37,53,2,47,100,6,'V'],'Long airy layers framing the face'],
-['Hush cut','f','m','m',[3,38,54,3,49,88,5,'V'],'Soft Korean-inspired layers'],
-['Korean two-block','m','m','m',[4,39,52,3,48,0,0,''],'Longer top with separated sides'],
-['Comma hair','m','m','m',[5,37,51,3,47,0,0,''],'Curved fringe with a soft side part'],
-['Side-swept fringe','u','m','m',[4,38,53,2,47,80,3,''],'Soft diagonal fringe'],
-['Buzz fade','m','s','m',[-1,36,42,0,0,0,0,'Z'],'Very short buzz with faded sides'],
-['Shoulder-length layers','f','l','m',[2,38,54,2,46,108,6,'V'],'Movement and shape around shoulders'],
-['Bixie','f','s','m',[2,38,55,2,46,70,2,''],'Pixie and bob hybrid'],
-['Slick back undercut','m','m','m',[4,34,43,0,0,0,0,'F'],'Long slicked top and tight sides'],
-['Textured quiff','m','s','m',[9,36,42,2,39,0,0,'F'],'Messy volume at the front'],
-['Natural curls','u','m','m',[7,38,50,1,44,82,4,'U'],'Defined natural curl shape'],
-['Korean comma two-block','m','m','m',[5,37,52,3,47,0,0,''],'Two-block sides with signature comma fringe'],
-['Middle part','u','m','m',[3,38,53,3,48,82,4,''],'Balanced center part with soft movement'],
-['Wolf cut with bangs','u','m','m',[5,38,55,3,48,92,6,'V'],'Choppy crown layers and face-framing fringe'],
-['Modern shag','u','m','m',[4,38,55,3,48,90,5,'V'],'Airy layers with lived-in texture'],
-['Burst fade','m','s','m',[5,36,43,1,40,0,0,'F'],'Curved fade around the ears'],
-['Drop fade','m','s','m',[4,36,42,1,40,0,0,'F'],'Fade that drops behind the ear'],
-['Skin fade','m','s','m',[3,36,40,1,39,0,0,'F'],'Very close fade at the sides'],
-['Mid taper with textured top','m','s','m',[6,36,43,2,40,0,0,'F'],'Natural texture with a neat mid taper'],
-['Bro flow','m','l','m',[5,37,52,2,45,100,5,'V'],'Medium-long hair swept back naturally'],
-['Modern slick back','m','m','m',[5,34,48,0,0,0,0,''],'Clean swept-back shape with natural volume'],
-['Edgar cut','m','s','m',[2,39,42,1,34,0,0,'F'],'Defined blunt fringe and faded sides'],
-['Textured fringe','m','m','m',[4,39,52,3,46,0,0,''],'Choppy fringe with soft layers'],
-['Teddy bear cut','u','m','m',[8,38,54,2,47,82,5,'U'],'Rounded soft layers with airy volume'],
-['Korean layered cut','u','m','m',[4,38,54,3,48,92,5,'V'],'Light layers and soft face framing'],
-['Japanese wolf cut','u','m','m',[5,38,55,3,48,96,5,'V'],'Feathered layers with a tapered silhouette'],
-['A-line bob','f','m','m',[1,38,59,1,43,80,3,''],'Shorter at the back, longer toward the chin'],
-['C-curtain layers','f','l','m',[3,38,53,3,48,100,5,'V'],'Long layers with inward-curving ends'],
-['Wispy bangs','f','l','m',[2,39,53,3,47,100,4,''],'Light see-through fringe with long hair'],
-['Micro bob','f','s','m',[0,39,60,1,42,66,1,''],'Compact bob around cheek-to-jaw length'],
-['Modern pixie','f','s','m',[4,36,50,2,42,0,0,''],'Soft textured pixie with a longer top'],
-['Tapered afro','u','s','m',[5,38,48,0,0,0,0,'A'],'Natural coils shaped close at the sides'],
-['Coily high top','u','s','m',[10,36,45,0,0,0,0,'A'],'Full coily height with clean sides'],
-['Shoulder-length wolf cut','u','l','m',[5,38,55,3,48,102,6,'V'],'Long wolf layers with movement']];
-const CM=Object.fromEntries(CT.map(c=>[c[0],c])),K=Object.keys(S),E={c:'Classic oldies',m:'Modern'},L={s:'Short',m:'Medium',l:'Long'};
-// name, address, km, rating, reviews, price level, hours, phone, place id, summary
-const B=[
-['District Barbers','226 Reparo Rd, Caloocan',.7,0,0,0,'','','ChIJ1XBq1Lm2lzMR3fSV9RAazaw','No Google rating or reviews yet.'],
-['Tres Manos Barbers','3 Milagrosa, Bagong Barrio West, Caloocan',1.1,5,2,0,'9AM–10PM daily','+639673996554','ChIJHy11WgC3lzMR5p8fnNMN1gw','Reviewers call the barbers friendly and approachable, with good cuts.'],
-['City Cut Barbershop','90 Malolos Ave, Bagong Barrio West, Caloocan',1.2,5,1,0,'7AM–8PM daily','','ChIJIxR-VAC3lzMRmChfnp1Sefg','One review so far, and it recommends the shop.'],
-['Supremo Barber, Tandang Sora','13 Tandang Sora Ave, Quezon City',1.9,3.6,21,1,'','','ChIJDaLHss-2lzMR0MpxR34U7wU','Reviewers like the skilled barbers and friendly chat. One complains about vaping indoors.'],
-['Fadeday Studio','Goodwill Homes, Katipunan Ave, Novaliches',4,4.7,65,1,'9AM–9PM daily','+639171165936','ChIJ0atMIjKxlzMRJpCT_XBChvA','Reviewers praise the cut quality, relaxed vibe, hot towel finish and coffee.'],
-['Hollywood Barbers','LRI Building, Congressional Ave, Project 8, Quezon City',4.3,5,108,2,'11AM–8PM daily','+639458295788','ChIJG1w5RAC3lzMRHGBACnBI-9w','Retro-style shop. Reviewers like the assess-first approach, hot towel and massage. One mentions cuts up to about ₱700.'],
-['Game Day Barbershop','410 N.S. Amoranto Sr. St, Maharlika, Quezon City',4.8,4.9,91,0,'9AM–8PM daily','+63284412479','ChIJBf55BzU1A40R33XUgwBNxU8','Reviewers like the careful, unhurried cuts, hot towel finish, clean shop and GCash payments.'],
-['Hype District','141 N.S. Amoranto Sr. St, La Loma, Quezon City',5.2,4.8,1482,0,'9AM–9PM daily','+639260267536','ChIJG21y5EO3lzMRTuVsaVljJRc','Known for perms and wolf cuts. Most reviews are positive, but a few recent ones report uneven cuts and a scalp reaction after a perm.']];
+<!-- Haircut details -->
+<div id="haircutModal" hidden role="dialog" aria-modal="true" aria-labelledby="haircutTitle">
+  <div class="modal-card">
+    <div class="modal-top">
+      <div><p class="eyebrow">CUT DETAILS &amp; REFERENCES</p><h2 id="haircutTitle">Haircut name</h2></div>
+      <button class="chip" id="closeHaircut" type="button">Close ✕</button>
+    </div>
+    <p id="haircutDescription" class="mute"></p>
+    <div class="spec-grid" id="haircutSpecs"></div>
+    <h3 style="margin-top:18px">Explore the real haircut from every angle</h3>
+    <p class="fine mute">These open photo references for the selected haircut. Check the side profile, back shape and front finish before choosing.</p>
+    <div class="views" id="haircutViews"></div>
+    <div class="detail-actions">
+      <a class="btn alt" id="haircutVideo" href="#" target="_blank" rel="noopener">▶ Watch haircut videos</a>
+      <button class="btn" id="useHaircut" type="button">Use this haircut</button>
+    </div>
+  </div>
+</div>
 
-const $=i=>document.getElementById(i),cv=$('cv'),x2=cv.getContext('2d');
-const CL=['#202020','#202020','#202020','#202020','#202020','#202020','#202020','#202020'];
-const ls={g:k=>{try{return localStorage.getItem(k)}catch(_){return null}},s:(k,v)=>{try{localStorage.setItem(k,v)}catch(_){}}};
-const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const rm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
-const sc=e=>e.scrollIntoView({behavior:rm()?'auto':'smooth'});
-const cl=v=>Math.min(.98,Math.max(.02,v));
-const ch=(on,at,t)=>`<button class="chip" aria-pressed="${on}" ${at}>${t}</button>`;
-let img,pts,drag=-1,bx=null,cur='oval',g='m',l='a',rank=null,m=null,le='a',lg='m',st=null,libraryPage=1,libraryTotal=0,agreed=ls.g('cf_ok')=='1',RV={},favs=[];
-try{favs=JSON.parse(ls.g('cf_favs')||'[]')}catch(_){}
-if(!Array.isArray(favs))favs=[];
-let customs=[];try{customs=JSON.parse(ls.g('cf_custom')||'[]')}catch(_){}if(!Array.isArray(customs))customs=[];
-const saveFavs=()=>ls.s('cf_favs',JSON.stringify(favs));
-const isFav=name=>favs.includes(name);
-function toggleFav(name){favs=isFav(name)?favs.filter(x=>x!==name):[...favs,name];saveFavs();renderSaved();if(!$('p-lib').hidden)lib();if(!$('p-scan').hidden&&rank)sm();updateFitLabel();}
-try{RV=JSON.parse(ls.g('cf_rv')||'{}')}catch(_){}
+<!-- Barber card -->
+<div id="cardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cardTitle" hidden>
+  <div class="modal-card">
+    <div class="modal-top">
+      <h2 id="cardTitle" data-i18n="barbers.cardTitle">Your Cutfit barber card</h2>
+      <button class="chip" id="cardClose" type="button">Close ✕</button>
+    </div>
+    <img id="cardPreview" alt="Preview of your one-page barber card" class="card-preview">
+    <div class="row">
+      <button class="btn" id="cardDownload" type="button">Download PNG</button>
+      <button class="btn alt" id="cardPrint" type="button">Save as PDF</button>
+      <button class="btn alt" id="cardShare" type="button" data-i18n="share.button">Share</button>
+    </div>
+    <p class="fine mute">Show this to your barber. Specs come from the cut you picked; adjust anything they suggest.</p>
+  </div>
+</div>
 
-// ---------- haircut pictures (inline SVG) ----------
-function fig(p){
- const [t,h,s,f,y,b,w,x]=p,tp=20-t,k=c=>x.includes(c),o=k('Z')?.55:k('N')?.28:1,
- mr=d=>`<path d="${d}" opacity=".3"/><path d="${d}" opacity=".3" transform="matrix(-1 0 0 1 100 0)"/>`;
- let a='',z='';
- if(k('A'))a+='<circle cx="50" cy="38" r="35"/>';
- if(k('M'))a+=`<rect x="32" y="48" width="36" height="${b-48}" rx="8"/>`;
- else if(b){const x0=24-w;a+=`<rect x="${x0}" y="26" width="${52+2*w}" height="${b-26}" rx="13"/>`;if(k('V'))a+=[0,.33,.67,1].map(q=>`<circle cx="${Math.round(x0+6+q*(40+2*w))}" cy="${b-2}" r="7"/>`).join('')}
- z+=`<path opacity="${o}" d="M25.5 ${s}C24 ${tp+14} 36 ${tp} 50 ${tp}S76 ${tp+14} 74.5 ${s}L70 ${s}C69 ${h+2} 62 ${h-3} 50 ${h-3}S31 ${h+2} 30 ${s}Z"/>`;
- if(f==1)z+=`<path d="M29 ${h-6}H71V${y}Q50 ${y+3} 29 ${y}Z"/>`;
- if(f==2)z+=`<path d="M72 ${h-8}V${h+1}Q52 ${h-2} 29 ${y}V${h-8}Z"/>`;
- if(f==3)z+=`<path d="M29 ${h-8}H50Q49 ${y} 29 ${y+4}ZM71 ${h-8}H50Q51 ${y} 71 ${y+4}Z"/>`;
- if(k('F'))z+=mr(`M25.5 ${s}H30L31 ${s+14}H27Z`);
- if(k('H'))z+=`<path d="M44 40V${tp+2}Q50 ${tp-6} 56 ${tp+2}V40Z"/>`;
- if(k('K'))z+=`<circle cx="50" cy="${tp-5}" r="9"/>`;
- if(k('L'))z+=`<rect x="29" y="${tp-5}" width="42" height="14" rx="2"/>`;
- if(k('U'))z+=[...Array(9)].map((_,i)=>{const q=Math.PI*(1+i/8);return `<circle cx="${(50+26*Math.cos(q)).toFixed(1)}" cy="${(46+28*Math.sin(q)).toFixed(1)}" r="7.5"/>`}).join('');
- if(k('R'))z+=`<path d="M38 ${tp+2}V${h}M44 ${tp}V${h-2}M50 ${tp}V${h-3}M56 ${tp}V${h-2}M62 ${tp+2}V${h}" stroke="var(--sk)" stroke-width="1.4" fill="none"/>`;
- return `<svg class="fg" viewBox="0 0 100 110" aria-hidden="true"><path class="sh" d="M10 110Q12 88 40 84H60Q88 88 90 110Z"/><g class="hr">${a}</g><rect class="sk" x="43" y="66" width="14" height="22"/><ellipse class="sk" cx="50" cy="50" rx="21" ry="26"/><g class="hr">${z}</g></svg>`;
-}
-const card=c=>`<div class="cd">${fig(c[4])}<b>${esc(c[0])}</b><span>${E[c[3]]}, ${L[c[2]]}. ${esc(c[5])}</span><div class="actions"><button class="chip" data-preview="${esc(c[0])}">Try this</button><button class="chip" data-details="${esc(c[0])}">Details + views</button><button class="chip" data-fav="${esc(c[0])}" aria-pressed="${isFav(c[0])}">${isFav(c[0])?'♥ Saved':'♡ Save'}</button><a class="chip" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c[0]+' haircut tutorial step by step barber guide') }">Tutorial</a></div></div>`;
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<div id="debugPanel" class="debug-panel" hidden></div>
 
-// ---------- tabs, terms ----------
-function tab(t){['scan','lib','spin','try','saved','bar'].forEach(i=>{$('p-'+i).hidden=i!=t});const active=$('p-'+t);if(active){active.classList.remove('page-enter');void active.offsetWidth;active.classList.add('page-enter')}if(t==='saved')renderSaved();
-
-// ---------- consultation result actions ----------
-document.addEventListener('click',e=>{
- const tryBtn=e.target.closest('[data-preview]');
- if(tryBtn){selectTry(tryBtn.dataset.preview);tab('try');return;}
- const noteBtn=e.target.closest('[data-barber-note]');
- if(noteBtn){
-  const p=getPrefs(),c=CM[noteBtn.dataset.barberNote],sp=barberSpecs(c,p);
-  const note=`Please give me a ${c[0]} haircut. Face shape: ${S[cur].n}. Hair texture: ${p.texture}.\nSides: ${sp.sides}.\nTop: ${sp.top}.\nFade: ${sp.fade}.\nFinish: ${sp.finish}.\nMaintenance: ${sp.upkeep}. Please adjust to my actual hair growth and head shape.`;
-  if(navigator.clipboard?.writeText){navigator.clipboard.writeText(note).then(()=>alert('Barber instructions copied!')).catch(()=>prompt('Copy these barber instructions:',note));}
-  else prompt('Copy these barber instructions:',note);
- }
-});
-document.querySelectorAll('#nv button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.t==t));scrollTo(0,0)}
-const terms=()=>{$('tm').hidden=false};
-const need=()=>{if(agreed)return 0;terms();return 1};
-$('ag').onclick=()=>{agreed=true;ls.s('cf_ok','1');$('tm').hidden=true};
-$('dc').onclick=()=>{$('tm').hidden=true;$('msg').textContent='Agree to the terms to use the camera or photo upload.'};
-$('tl').onclick=terms;
-
-// ---------- photo: camera or upload ----------
-async function cam(){
- if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('f1').click();return}
- try{st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}});$('vd').srcObject=st;await $('vd').play();$('cam').hidden=false;$('msg').textContent='Center your face, then tap Capture.'}
- catch(_){$('msg').textContent='Live camera isn’t available here. Use Upload a photo, or allow camera access and try again.';$('f1').click()}
-}
-function stop(){if(st)st.getTracks().forEach(t=>t.stop());st=null;$('cam').hidden=true}
-$('b1').onclick=()=>{if(!need())cam()};
-$('b2').onclick=()=>{if(!need())$('f2').click()};
-$('retake').onclick=()=>{if(st)stop();cam()};
-$('clearPhoto').onclick=()=>{if(st)stop();img=null;generatedImg=null;pts=null;rank=null;m=null;$('s2').hidden=true;$('photoStart').hidden=false;$('sum').hidden=true;$('clearPhoto').hidden=true;$('retake').hidden=true;$('msg').textContent='Photo removed from this page. You can take or upload another one anytime.';drawTry();};
-$('cc').onclick=stop;
-$('sn').onclick=()=>{const v=$('vd'),c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);stop();c.toBlob(b=>load(URL.createObjectURL(b)),'image/jpeg',.92)};
-const pick=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;if(!f.type.startsWith('image/')){$('msg').textContent='Please choose an image file.';return}if(f.size>12*1024*1024){$('msg').textContent='That photo is over 12 MB. Choose a smaller image for a faster scan.';return}load(URL.createObjectURL(f))};
-$('f1').onchange=$('f2').onchange=pick;
-function load(u){
- const i=new Image();
- i.onload=async()=>{
-  img=i;generatedImg=null;cv.width=640;cv.height=Math.round(640*i.height/i.width);
-  $('s2').hidden=false;$('photoStart').hidden=true;$('sum').hidden=true;rank=null;bx=null;$('retake').hidden=false;$('clearPhoto').hidden=false;
-  init();draw();dt();URL.revokeObjectURL(u);$('msg').textContent='';
-  $('aihint').textContent='Trying smart face-landmark detection…';
-  const ok=await autoAlign(false);
-  if(!ok)$('aihint').textContent='Auto scan could not detect a clear face. Adjust the dots manually or try a brighter, front-facing photo.';
-  drawTry();sc($('s2'));
- };
- i.onerror=()=>{$('msg').textContent='That file didn’t open. Try a JPG or PNG photo.'};
- i.src=u;
-}
-
-// ---------- smart face landmarks (MediaPipe) ----------
-let faceLandmarkerPromise=null;
-async function getFaceLandmarker(){
- if(!faceLandmarkerPromise){
-  faceLandmarkerPromise=(async()=>{
-   const vision=await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14');
-   const files=await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-   return await vision.FaceLandmarker.createFromOptions(files,{
-    baseOptions:{modelAssetPath:'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task'},
-    runningMode:'IMAGE',numFaces:1
-   });
-  })().catch(err=>{faceLandmarkerPromise=null;throw err});
- }
- return faceLandmarkerPromise;
-}
-async function autoAlign(showMessage=true){
- if(!img)return false;
- try{
-  $('auto').disabled=true;
-  const detector=await getFaceLandmarker(),result=detector.detect(img);
-  const face=result.faceLandmarks&&result.faceLandmarks[0];
-  if(!face||face.length<455)throw new Error('No face landmarks');
-  // Face mesh anchors: forehead, chin, cheekbones and jaw corners.
-  const ids=[10,152,54,284,234,454,172,397];
-  const raw=ids.map(i=>[face[i].x,face[i].y]);
-  for(const j of [2,4,6])if(raw[j][0]>raw[j+1][0])[raw[j],raw[j+1]]=[raw[j+1],raw[j]];
-  pts=raw.map(([x,y])=>[cl(x),cl(y)]);
-  draw();
-  $('aihint').textContent='Smart alignment found a face. Review the dots—camera angle, hair and lighting can affect accuracy. Move any dot that is off.';
-  if(showMessage)$('msg').textContent='Dots auto-aligned. Review them before finding your face shape.';
-  return true;
- }catch(err){
-  if(showMessage)$('msg').textContent='Could not auto-detect a clear face. Please adjust the dots manually.';
-  return false;
- }finally{$('auto').disabled=false}
-}
-$('auto').onclick=()=>autoAlign(true);
-
-// ---------- measuring dots ----------
-function init(){
- const b=bx||{x:.3,y:.3,w:.4,h:.5},c=b.x+b.w/2,t=(y,f)=>[[c-f*b.w/2,y],[c+f*b.w/2,y]];
- pts=[[c,b.y-.28*b.h],[c,b.y+b.h],...t(b.y+.02*b.h,.78),...t(b.y+.42*b.h,1),...t(b.y+.78*b.h,.74)].map(p=>[cl(p[0]),cl(p[1])]);
-}
-function draw(){
- const W=cv.width,H=cv.height,k=W/cv.getBoundingClientRect().width;
- x2.drawImage(img,0,0,W,H);
- const p=pts.map(a=>[a[0]*W,a[1]*H]);
- x2.lineWidth=2*k;
- [[0,1],[2,3],[4,5],[6,7]].forEach(([a,b])=>{x2.strokeStyle=CL[a];x2.beginPath();x2.moveTo(p[a][0],p[a][1]);x2.lineTo(p[b][0],p[b][1]);x2.stroke()});
- p.forEach((q,i)=>{x2.fillStyle=CL[i];x2.strokeStyle='#fff';x2.beginPath();x2.arc(q[0],q[1],9*k,0,7);x2.fill();x2.stroke()});
-}
-cv.onpointerdown=e=>{
- const r=cv.getBoundingClientRect(),k=cv.width/r.width,x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
- let best=1e9;drag=-1;
- pts.forEach((p,i)=>{const d=Math.hypot((p[0]-x)*cv.width,(p[1]-y)*cv.height);if(d<best){best=d;drag=i}});
- if(best>40*k)drag=-1;else cv.setPointerCapture(e.pointerId);
-};
-cv.onpointermove=e=>{if(drag<0)return;const r=cv.getBoundingClientRect();pts[drag]=[cl((e.clientX-r.left)/r.width),cl((e.clientY-r.top)/r.height)];draw()};
-cv.onpointerup=cv.onpointercancel=()=>{drag=-1};
-addEventListener('resize',()=>{if(img&&!$('s2').hidden)draw()});
-$('rs').onclick=()=>{init();draw()};
-
-// ---------- face shape ----------
-$('go').onclick=()=>{
- const W=cv.width,H=cv.height,d=(a,b)=>Math.hypot((pts[a][0]-pts[b][0])*W,(pts[a][1]-pts[b][1])*H);
- const Lh=d(0,1),F=d(2,3),Q=d(4,5),J=d(6,7);
- if(Q<30||Lh<30||F<20||J<20){$('msg').textContent='Drag the dots onto your face, then try again.';sc($('s2'));return}
- $('msg').textContent='';
- const x=[Lh/Q,F/Q,J/Q],w=[1.2,2.2,2.2];
- const q=K.map(k=>x.reduce((s,v,i)=>s+w[i]*(v-P[k][i])**2,0)),mn=Math.min(...q);
- const e=K.map((k,i)=>[k,Math.exp(-14*(q[i]-mn))]),t=e.reduce((s,a)=>s+a[1],0);
- rank=e.map(a=>[a[0],Math.round(a[1]/t*100)]).sort((a,b)=>b[1]-a[1]);
- m=x;cur=rank[0][0];sm();dt();sc($('sum'));
-};
-function getPrefs(){
- const priorities=[...document.querySelectorAll('input[name="priority"]:checked')].map(x=>x.value);
- return {
-  texture:$('hairTexture').value,density:$('hairDensity').value,maintenance:$('maintenance').value,
-  vibe:$('vibe').value,length:$('lengthPref').value,fringe:$('fringePref').value,
-  priorities,beard:$('beardPref').checked
- };
-}
-function styleScore(c,s,p,index){
- let score=Math.max(65,94-index*4);
- const n=c[0].toLowerCase(),desc=c[5].toLowerCase();
- if(p.length==='short'&&c[2]==='s')score+=5;
- if(p.length==='keep'&&c[2]==='l')score-=10;
- if(p.length==='keep'&&c[2]==='m')score+=2;
- if(p.maintenance==='low'&&/(buzz|crew|crop|ivy|taper)/.test(n))score+=5;
- if(p.maintenance==='low'&&/(pompadour|slick|quiff|long|wolf)/.test(n))score-=5;
- if(p.vibe==='trendy'&&/(korean|two-block|comma|wolf|shag|textured|curtain)/.test(n))score+=7;
- if(p.vibe==='clean'&&/(ivy|taper|crew|side part|french crop)/.test(n))score+=6;
- if(p.vibe==='classic'&&/(side part|crew|ivy|pompadour|slick)/.test(n))score+=6;
- if(p.vibe==='bold'&&/(mullet|wolf|shag|flat top|perm)/.test(n))score+=7;
- if(p.fringe==='keep'&&/(fringe|crop|caesar|bang|two-block|curtain)/.test(n))score+=7;
- if(p.fringe==='off'&&/(slick|pompadour|quiff|side part)/.test(n))score+=5;
- if(p.texture==='curly'||p.texture==='coily'){
-  if(/curl|afro|perm|shag/.test(n))score+=8;
-  if(/slick|side part/.test(n))score-=6;
- }
- if(p.texture==='wavy'&&/(shag|wolf|layers|curtain|textured)/.test(n))score+=4;
- if(p.density==='fine'&&/(textured|crop|quiff|layers)/.test(n))score+=3;
- return Math.max(61,Math.min(98,score));
-}
-function barberSpecs(c,p){
- const n=c[0].toLowerCase();
- let sides='Low taper, keep the blend soft',top='2–3 in, textured with scissors',fade='Low / natural taper',finish='Matte clay or light texture cream',upkeep='Every 3–4 weeks';
- if(/buzz|crew/.test(n)){sides='Tapered sides, even blend';top='Short and even, clipper + scissor detail';fade='Low taper';finish='Minimal product';upkeep='Every 2–3 weeks'}
- else if(/french crop|caesar|textured crop/.test(n)){sides='Low taper or #2 sides';top='2–3 in, point-cut texture';fade='Low taper, not skin';finish='Matte clay';upkeep='Every 3–4 weeks'}
- else if(/two-block|comma|curtain|side-swept/.test(n)){sides='Two-block sides, softly tapered around ears';top='3–4 in, layered and feathered';fade='No high skin fade';finish='Light cream or soft wax';upkeep='Every 4–6 weeks'}
- else if(/pompadour|quiff|slick/.test(n)){sides='Low / mid taper, clean around ears';top='3–4 in, leave length at front';fade='Low to mid';finish='Pre-styler + matte paste';upkeep='Every 3–4 weeks'}
- if(p.maintenance==='low'){finish='Lightweight matte cream; keep styling simple';upkeep='Every 4–5 weeks'}
- return {sides,top,fade,finish,upkeep};
-}
-function sm(){
- const [a,b]=rank,s=S[a[0]],p=getPrefs();
- const pool=s.r.map(n=>CM[n]).filter(c=>c&&(c[1]==='m'||c[1]==='u'));
- const unique=[...new Map(pool.map(c=>[c[0],c])).values()];
- const ranked=unique.map((c,i)=>({c,score:styleScore(c,s,p,i)})).sort((x,y)=>y.score-x.score).slice(0,5);
- $('sum').hidden=false;
- $('sum').innerHTML=`<div class="analysis-top"><div><p class="eyebrow">CUTfit FACE ANALYSIS</p><h2>${s.n} face shape</h2><p class="mute fine">Estimated from your photo landmarks. Review the dots before relying on the result.</p></div><div class="confidence-ring"><b>${a[1]}%</b><small>shape match</small></div></div>
- <div class="bar"><i style="width:${a[1]}%"></i></div>
- <p class="fine mute">Next closest: ${S[b[0]].n} (${b[1]}%). Your measured ratios: face length ${m[0].toFixed(2)}× cheekbone width · forehead ${Math.round(m[1]*100)}% · jaw ${Math.round(m[2]*100)}%.</p>
- <div class="profile-tags"><span>${p.texture==='unsure'?'Texture not set':p.texture+' hair'}</span><span>${p.density==='unsure'?'Density not set':p.density+' density'}</span><span>${p.maintenance==='low'?'Low maintenance':p.maintenance==='high'?'Styling-friendly':'Moderate styling'}</span><span>${p.vibe.replace('-',' ')}</span></div>
- <h3 class="result-title">Your best haircut matches</h3><p class="mute fine">Your Smart Style Match ranks cuts using your face-shape estimate, hair preferences and routine. These are guidance scores, not a trained AI diagnosis.</p>
- <div class="recommend-list">${ranked.map(({c,score},i)=>{const sp=barberSpecs(c,p);return `<article class="recommend-card"><div class="recommend-head">${fig(c[4])}<div class="recommend-copy"><span class="rank-label">#${i+1} MATCH</span><h3>${c[0]}</h3><p>${c[5]}</p><div class="fit-meter"><i style="width:${score}%"></i></div><small>${score}% style match estimate</small></div></div><div class="spec-grid"><div><small>SIDES</small><b>${sp.sides}</b></div><div><small>TOP</small><b>${sp.top}</b></div><div><small>FADE</small><b>${sp.fade}</b></div><div><small>FINISH</small><b>${sp.finish}</b></div></div><p class="upkeep">Upkeep: ${sp.upkeep}</p><div class="row recommend-actions"><button class="btn" data-preview="${esc(c[0])}">Try this look</button><button class="btn alt" data-barber-note="${esc(c[0])}">Barber instructions</button></div></article>`}).join('')}</div>
- <div class="analysis-note"><b>Face-shape guidance</b><p>${s.g} ${s.t}</p><p><b>Usually avoid:</b> ${s.a}</p></div>
- ${p.beard?'<div class="analysis-note"><b>Facial-hair note</b><p>Ask your barber to keep cheek and neckline edges balanced with your haircut. The best beard length depends on your growth pattern and personal preference.</p></div>':''}
- <p class="mute fine">Hair texture and density are based on your selections, not automatically diagnosed from the selfie. Cutfit processes the photo locally for this basic scan.</p>`;
-}
-function dt(){
- const s=S[cur],tp=rank?rank[0][0]:'',cs=s.r.map(n=>CM[n]).filter(c=>(g=='a'||c[1]=='u'||c[1]==g)&&(l=='a'||c[2]==l));
- $('dt').innerHTML=`<hr><h2>Face shapes and cuts</h2>
-<div class="chips">${K.map(k=>ch(k==cur,'data-k="'+k+'"',S[k].n+(k==tp?' ✓':''))).join('')}</div>
-<h3 style="margin-top:1rem">${s.n}${cur==tp?' (yours)':''}</h3><p>${s.d}</p><p><b>Goal:</b> ${s.g}</p>
-<div class="chips"><span class="chip" aria-pressed="true">Men’s cuts</span></div>
-<div class="chips">${[['a','Any length'],['s','Short'],['m','Medium'],['l','Long']].map(([v,t])=>ch(l==v,'data-l="'+v+'"',t)).join('')}</div>
-<div class="gr">${cs.map(card).join('')||'<p class="mute">No cuts match these filters.</p>'}</div>
-<p><b>Skip:</b> ${s.a}</p><p><b>Tip:</b> ${s.t}</p>`;
-}
-
-// ---------- style library ----------
-function lib(){
- const q=($('styleSearch')?.value||'').trim().toLowerCase(),len=$('styleLength')?.value||'a',type=$('styleType')?.value||'a';
- const terms={fade:/fade|taper|undercut|bald/,fringe:/fringe|curtain|bang|crop|caesar|comma/,curl:/curl|afro|wave|shag|wolf|texture|perm/,long:/long|layer|lob|bob|shag|wolf/,classic:/pompadour|ducktail|crew|ivy|side part|slick|flat top|buzz|beehive|bob/,korean:/korean|comma|two.block|hush|teddy/,natural:/afro|coily|curl|braid|natural|perm/};
- const cs=CT.filter(c=>(c[1]=='m'||c[1]=='u')&&(le=='a'||c[3]==le)&&(len=='a'||c[2]==len)&&(type=='a'||terms[type]?.test(c[0].toLowerCase()))&&(!q||(c[0]+' '+c[5]+' '+E[c[3]]+' '+L[c[2]]).toLowerCase().includes(q)));
- libraryTotal=cs.length;const pages=Math.max(1,Math.ceil(cs.length/12));libraryPage=Math.min(libraryPage,pages);const shown=cs.slice((libraryPage-1)*12,libraryPage*12);
- $('ll').innerHTML=`<div class="chips">${[['a','All eras'],['c','Classic oldies'],['m','Modern']].map(([v,t])=>ch(le==v,'data-e="'+v+'"',t)).join('')}</div>
-<div class="chips"><span class="chip" aria-pressed="true">Men’s cuts</span></div>
-<div class="library-count"><p class="mute fine">${cs.length} ${cs.length===1?'cut':'cuts'} found${q?' for “'+esc(q)+'”':''}</p><p class="mute fine">Page ${libraryPage} of ${pages}</p></div><div class="gr">${shown.map(card).join('')||'<p class="mute">No cuts found. Try a different search or filter.</p>'}</div>
-<div class="library-pagination"><button data-page="prev" ${libraryPage===1?'disabled':''} aria-label="Previous page">‹</button>${Array.from({length:pages},(_,i)=>i+1).slice(Math.max(0,libraryPage-3),Math.max(0,libraryPage-3)+5).map(n=>`<button data-page="${n}" aria-current="${n===libraryPage?'page':'false'}">${n}</button>`).join('')}<button data-page="next" ${libraryPage===pages?'disabled':''} aria-label="Next page">›</button></div>`;
-}
-
-function renderSaved(){
- const list=$('savedList');if(!list)return;
- const styles=[...new Set([...favs,...customs.map(r=>r.name)])].map(n=>CM[n]).filter(c=>c&&(c[1]==='m'||c[1]==='u'));
- list.innerHTML=styles.length?`<p class="mute fine">${styles.length} saved ${styles.length===1?'style':'styles'}</p><div class="gr">${styles.map(c=>`<div class="cd">${fig(c[4])}<b>${esc(c[0])}</b><span>${E[c[3]]}, ${L[c[2]]}. ${esc(c[5])}</span><div class="actions"><button class="chip" data-preview="${esc(c[0])}">Open in try-on</button>${c[3]==='x'?`<button class="chip" data-edit="${esc(c[0])}">Edit</button><button class="chip" data-del="${esc(c[0])}">Delete</button>`:`<button class="chip" data-fav="${esc(c[0])}" aria-pressed="true">Remove ♥</button>`}</div></div>`).join('')}</div>`:`<div class="hint"><b>Your shelf is empty—for now.</b><p>Save a hairstyle from the Style Library or Virtual Fitting Room and it will appear here.</p><button class="btn" data-go="lib">Explore hairstyles</button></div>`;
-}
-
-// ---------- roulette ----------
-let W=[],rot=0,busy=0,wg='m';
-const wheelCuts=()=>CT.filter(c=>c[1]=='m'||c[1]=='u');
-function wheel(){
- const pool=wheelCuts();W=[...pool].sort(()=>Math.random()-.5).slice(0,12);$('wheelCount').textContent=`${pool.length} eligible hairstyles in this challenge`; 
- const a=30,pt=(r,d)=>[(r*Math.cos(d*Math.PI/180)).toFixed(1),(r*Math.sin(d*Math.PI/180)).toFixed(1)];
- $('wd').style.transition='none';$('wd').style.transform='rotate(0deg)';rot=0;$('wr').innerHTML='';
- $('wd').innerHTML='<svg viewBox="-102 -102 204 204" style="display:block;width:100%">'+W.map((c,i)=>{const s=-90+i*a,[x0,y0]=pt(100,s),[x1,y1]=pt(100,s+a);return `<path d="M0 0L${x0} ${y0}A100 100 0 0 1 ${x1} ${y1}Z" fill="${i%2?'var(--card)':'var(--sk)'}" stroke="var(--bg)" stroke-width="1.5"/><text transform="rotate(${s+a/2}) translate(96 0)" text-anchor="end" dominant-baseline="middle" font-size="8" fill="var(--ink)">${c[0]}</text>`}).join('')+'</svg>';
-}
-$('sf').onclick=()=>{if(!busy)wheel()};
-document.querySelectorAll('[data-wg]').forEach(b=>b.onclick=()=>{if(busy)return;wg=b.dataset.wg;document.querySelectorAll('[data-wg]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));wheel()});
-$('sp').onclick=()=>{
- if(busy)return;busy=1;$('wr').innerHTML='';
- const i=Math.floor(Math.random()*W.length),a=360/W.length,d=$('wd');
- rot=Math.ceil(rot/360)*360+1800-(i+.5)*a+(Math.random()-.5)*a*.6;
- d.style.transition=rm()?'none':'transform 4.2s cubic-bezier(.12,.7,.15,1)';d.style.transform=`rotate(${rot}deg)`;
- setTimeout(()=>{busy=0;const c=W[i],q=['Hope your barber is ready.','No take-backs.','Confidence required.','Bold choice. We’re rooting for you.'][Math.floor(Math.random()*4)];
-  $('wr').innerHTML=`<div class="cd" style="max-width:220px;margin:18px auto 8px;text-align:center">${fig(c[4])}<b>${c[0]}</b><span>${E[c[3]]}, ${L[c[2]]}. ${c[5]}</span></div><p style="text-align:center">HAHA, ${c[0]}! ${q}</p><div class="row" style="justify-content:center"><button class="btn alt" data-go="bar">Find a barber</button></div>`},rm()?50:4300);
-};
-
-// ---------- virtual hairstyle preview (illustrative overlay) ----------
-let selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];let generatedImg=null,generatedUrl='';const CUTFIT_API='https://cutfit-ai-api.jhayc-chua06.workers.dev';
-const creditKey='cf_ai_credit_state_v3';
-const CREDIT_MAX=10, CREDIT_INTERVAL=3*60*60*1000;
-function getCreditState(){let st;try{st=JSON.parse(ls.g(creditKey)||'null')}catch(_){}if(!st||typeof st.credits!=='number'){st={credits:CREDIT_MAX,last:Date.now()};ls.s(creditKey,JSON.stringify(st));}const now=Date.now();if(st.credits<CREDIT_MAX){const passed=Math.max(0,now-(st.last||now));const earned=Math.floor(passed/CREDIT_INTERVAL);if(earned>0){st.credits=Math.min(CREDIT_MAX,st.credits+earned);st.last=st.credits===CREDIT_MAX?now:(st.last||now)+earned*CREDIT_INTERVAL;}}else st.last=now;ls.s(creditKey,JSON.stringify(st));return st;}
-function creditsLeft(){return getCreditState().credits;}
-function updateCredits(){const st=getCreditState(),n=st.credits;let extra='';if(n<CREDIT_MAX){const ms=Math.max(0,CREDIT_INTERVAL-(Date.now()-st.last));const mins=Math.ceil(ms/60000);extra=' · +1 in '+Math.floor(mins/60)+'h '+(mins%60)+'m';}$('tryCredits').textContent=n+'/'+CREDIT_MAX+' AI credits'+extra;$('renderTry').disabled=n<=0;}
-function useCredit(){const st=getCreditState();if(st.credits<=0){$('trymsg').textContent='No AI credits left. One credit returns every 3 hours, up to 10 credits.';return false;}st.credits--;if(st.credits===CREDIT_MAX-1&&st.last>Date.now())st.last=Date.now();ls.s(creditKey,JSON.stringify(st));updateCredits();return true;}
-function refundCredit(){const st=getCreditState();st.credits=Math.min(CREDIT_MAX,st.credits+1);ls.s(creditKey,JSON.stringify(st));}
-function setupTry(){
- $('tryStyle').innerHTML=CT.filter(c=>c[1]==='m'||c[1]==='u').map(c=>`<option value="${esc(c[0])}">${esc(c[0])}</option>`).join('');
- const featured=['Korean two-block','Korean comma two-block','Mid taper with textured top','Burst fade','Drop fade','Modern mullet','Textured fringe','Modern slick back','Teddy bear cut','Japanese wolf cut','Edgar cut','Bro flow'];
- const items=featured.map(n=>CT.find(c=>(c[1]==='m'||c[1]==='u')&&c[0].toLowerCase()===n.toLowerCase())||CT.find(c=>(c[1]==='m'||c[1]==='u')&&c[0].toLowerCase().includes(n.split(' ')[0]))).filter(Boolean);
- $('tryCarousel').innerHTML='<button class="try-card add" type="button" data-add="1"><b class="plus">+</b><span>Create your own</span></button>'+Object.values(CM).filter(c=>c[3]==='x').concat(items).map(c=>`<button class="try-card" type="button" data-style="${esc(c[0])}" aria-pressed="${c[0]===selectedTry[0]}">${fig(c[4])}<span>${esc(c[0])}</span>${c[0]===selectedTry[0]?'<i class="picked">✓</i>':''}</button>`).join('');
- document.querySelectorAll('.try-card').forEach(b=>b.onclick=()=>{if(b.dataset.add)return;selectTry(b.dataset.style);if(CM[b.dataset.style][3]!=='x')showHaircutDetails(b.dataset.style)});updateFitLabel();
-}
-function showHaircutDetails(name){const c=CM[name]||CT[0];$('haircutTitle').textContent=c[0];$('haircutDescription').textContent=c[5]||'Modern haircut reference';const specs={sides:/fade|taper|undercut/.test(c[0].toLowerCase())?'Tapered or faded sides':'Clean, blended sides',top:c[2]==='s'?'Short textured top':c[2]==='m'?'Medium length with shape':'Longer layered length',finish:c[5]||'Natural finish'};$('haircutSpecs').innerHTML=`<div class="spec-grid"><div><small>SIDES</small><b>${specs.sides}</b></div><div><small>TOP</small><b>${specs.top}</b></div><div><small>FINISH</small><b>${esc(specs.finish)}</b></div></div>`;const q=encodeURIComponent(c[0]+' men haircut');$('haircutViews').innerHTML=[['Front','front view'],['Side','side profile view'],['Back','back view']].map(([label,view])=>`<a class="view-link" target="_blank" rel="noopener" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(c[0]+' haircut '+view)}"><b>${label} view ↗</b><small>Open photo references</small></a>`).join('');$('haircutVideo').href='https://www.youtube.com/results?search_query='+encodeURIComponent(c[0]+' haircut real life transformation barber tutorial');$('useHaircut').dataset.style=c[0];$('haircutModal').hidden=false;}
-$('closeHaircut').onclick=()=>$('haircutModal').hidden=true;
-$('haircutModal').addEventListener('click',e=>{if(e.target===$('haircutModal'))$('haircutModal').hidden=true});
-$('useHaircut').onclick=()=>{const n=$('useHaircut').dataset.style;$('haircutModal').hidden=true;selectTry(n);tab('try');};
-
-function updateFitLabel(){
- $('fitStyleName').textContent=selectedTry[0];$('fitStyleDesc').textContent=selectedTry[5]||'Custom hairstyle preview';$('saveTry').innerHTML=isFav(selectedTry[0])?'♥ <span>Saved</span>':'♡ <span>Save</span>'; 
- document.querySelectorAll('.try-card').forEach(b=>{const on=b.dataset.style===selectedTry[0];b.setAttribute('aria-pressed',on?'true':'false');const old=b.querySelector('.picked');if(old)old.remove();if(on){const i=document.createElement('i');i.className='picked';i.textContent='✓';b.appendChild(i)}});
-}
-function selectTry(name){const next=CM[name]||CT[0];selectedTry=next;generatedImg=null;generatedUrl='';$('tryStyle').value=selectedTry[0];drawTry();updateFitLabel();$('trymsg').textContent=img?'Preview updated: '+selectedTry[0]+'. This is a visual concept overlay, not AI hair replacement.':'Take or upload a photo in Scan first.';}
-function drawTry(){
- const c=$('trycv'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
- if(!img){ctx.fillStyle='#222';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.font='22px sans-serif';ctx.fillText('Take or upload a selfie first',105,390);return;}
- const source=generatedImg||img;const scale=Math.min(c.width/source.width,c.height/source.height),w=source.width*scale,h=source.height*scale,x=(c.width-w)/2,y=(c.height-h)/2;
- ctx.fillStyle='#111';ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(source,x,y,w,h);if(generatedImg){$('trycv').classList.add('generated');return;}else $('trycv').classList.remove('generated');
- const top=pts&&pts[0]?{x:x+pts[0][0]*w,y:y+pts[0][1]*h}:{x:c.width/2,y:c.height*.28};
- const left=pts&&pts[4]?{x:x+pts[4][0]*w,y:y+pts[4][1]*h}:{x:c.width*.34,y:c.height*.42};
- const right=pts&&pts[5]?{x:x+pts[5][0]*w,y:y+pts[5][1]*h}:{x:c.width*.66,y:c.height*.42};
- const width=Math.max(80,Math.abs(right.x-left.x)*1.22),height=selectedTry[2]==='l'?width*.95:selectedTry[2]==='m'?width*.65:width*.43;
- const color=(selectedTry[8]&&selectedTry[8].color)||$('hairColor').value,alpha=+$('hairOpacity').value/100;ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.strokeStyle=color;ctx.lineWidth=5;
- const name=(selectedTry[6]||selectedTry[0]).toLowerCase();const cx=(left.x+right.x)/2,base=top.y+8;
- ctx.beginPath();
- if(name.includes('buzz')||name.includes('crew')||name.includes('crop')||name.includes('caesar')||name.includes('fade')||name.includes('pixie')||name.includes('bixie')){
-  ctx.moveTo(left.x-width*.08,base+height*.25);ctx.quadraticCurveTo(cx-width*.62,base-height*.65,cx,base-height*.52);ctx.quadraticCurveTo(cx+width*.62,base-height*.65,right.x+width*.08,base+height*.25);ctx.quadraticCurveTo(cx,base-height*.05,left.x-width*.08,base+height*.25);
- }else if(name.includes('bob')||name.includes('lob')){
-  ctx.moveTo(left.x-width*.12,base+height*.55);ctx.quadraticCurveTo(cx-width*.65,base-height*.7,cx,base-height*.55);ctx.quadraticCurveTo(cx+width*.65,base-height*.7,right.x+width*.12,base+height*.55);ctx.lineTo(right.x+width*.18,base+height*1.25);ctx.quadraticCurveTo(cx,base+height*1.42,left.x-width*.18,base+height*1.25);ctx.closePath();
- }else{
-  ctx.moveTo(left.x-width*.12,base+height*.65);ctx.bezierCurveTo(cx-width*.75,base-height*.8,cx-width*.18,base-height*.85,cx,base-height*.62);ctx.bezierCurveTo(cx+width*.35,base-height*.9,right.x+width*.65,base-height*.35,right.x+width*.12,base+height*.65);ctx.quadraticCurveTo(cx+width*.4,base+height*.1,cx,base+height*.28);ctx.quadraticCurveTo(cx-width*.4,base+height*.1,left.x-width*.12,base+height*.65);ctx.closePath();
- }
- ctx.fill();
- // Fringe detail gives a recognizable style cue, but is intentionally illustrative.
- if(name.includes('curtain')||name.includes('comma')||name.includes('fringe')||name.includes('crop')||name.includes('caesar')){ctx.beginPath();ctx.moveTo(cx,base-height*.48);ctx.quadraticCurveTo(cx-width*.18,base+height*.12,left.x+width*.12,base+height*.15);ctx.quadraticCurveTo(cx-width*.1,base-height*.12,cx,base-height*.18);ctx.quadraticCurveTo(cx+width*.18,base+height*.02,right.x-width*.1,base+height*.15);ctx.quadraticCurveTo(cx+width*.08,base-height*.2,cx,base-height*.48);ctx.fill();}
- ctx.restore();
-}
-async function imageToDataUrl(image){const max=1280,scale=Math.min(1,max/image.width);const c=document.createElement('canvas');c.width=Math.round(image.width*scale);c.height=Math.round(image.height*scale);c.getContext('2d').drawImage(image,0,0,c.width,c.height);return c.toDataURL('image/jpeg',.88);}
-async function generateAI(){if(!img){$('trymsg').textContent='Please take or upload your selfie in Scan first.';return;}if(!useCredit())return;generatedImg=null;generatedUrl='';drawTry();$('renderTry').disabled=true;$('renderTry').textContent='Submitting…';$('trymsg').textContent='Sending your photo securely to the AI service. Please wait…';try{const imageDataUrl=await imageToDataUrl(img);const res=await fetch(CUTFIT_API+'/api/try-on',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({imageDataUrl,hairstyle:(selectedTry[7]||(selectedTry[0]+(selectedTry[5]?' ('+selectedTry[5]+')':''))).slice(0,230)})});const data=await res.json();if(!res.ok)throw new Error(data.error||'Could not start AI generation.');const id=data.request_id;if(!id)throw new Error('The AI service did not return a request ID.');$('trymsg').textContent='AI is creating your '+selectedTry[0]+'. This may take a little while…';let done=false,netErr=0;for(let i=0;i<60;i++){await new Promise(r=>setTimeout(r,2500));let status;try{const poll=await fetch(CUTFIT_API+'/api/status?id='+encodeURIComponent(id));status=await poll.json();if(!poll.ok)throw new Error(status.error||'Could not check AI status.');netErr=0}catch(pe){if(++netErr>=4)throw pe;continue}if(status.status==='COMPLETED'&&status.imageUrl){const loadOut=cors=>new Promise((resolve,reject)=>{const o=new Image();if(cors)o.crossOrigin='anonymous';o.onload=()=>resolve(o);o.onerror=()=>reject(new Error('Could not load the generated image.'));o.src=status.imageUrl});let out;try{out=await loadOut(true)}catch(_){out=await loadOut(false)}generatedImg=out;generatedUrl=status.imageUrl;drawTry();done=true;$('trymsg').textContent='Your AI hairstyle preview is ready. Compare it with the original and save it if you like.';break;}if(status.status==='FAILED')throw new Error(status.error||'AI generation failed.');}if(!done)throw new Error('This generation is taking longer than expected. Please try again later.');}catch(e){refundCredit();$('trymsg').textContent='AI try-on error: '+(/failed to fetch|networkerror|load failed/i.test(e.message||'')?'cannot reach the AI server. Check your connection and the Worker settings (ALLOWED_ORIGIN).':(e.message||'Please try again.'));}finally{$('renderTry').disabled=creditsLeft()<=0;$('renderTry').textContent='✦ Generate AI';updateCredits();}}
-$('tryStyle').onchange=()=>{selectedTry=CM[$('tryStyle').value]||CT[0];drawTry();updateFitLabel()};
-$('hairColor').onchange=$('hairOpacity').oninput=drawTry;
-$('retakeFit').onclick=()=>{tab('scan');$('retake').hidden=false;$('retake').click()};
-$('adjustFit').onclick=()=>{$('fitAdjustments').hidden=!$('fitAdjustments').hidden};
-$('colorFit').onclick=()=>{$('fitAdjustments').hidden=false;$('hairColor').focus()};
-$('tutorialFit').onclick=()=>window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(selectedTry[0]+' men haircut tutorial barber step by step'),'_blank','noopener');
-$('saveTrySecondary').onclick=()=>$('saveTry').click();
-$('renderTry').onclick=generateAI;
-$('saveTry').onclick=()=>{if(!img){$('trymsg').textContent='Take or upload a photo first.';return;}if(!isFav(selectedTry[0])){favs.push(selectedTry[0]);saveFavs();renderSaved();updateFitLabel();}if(generatedUrl){const direct=document.createElement('a');direct.href=generatedUrl;direct.target='_blank';direct.rel='noopener';direct.download='cutfit-'+selectedTry[0].toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-ai.png';direct.click();$('trymsg').textContent=selectedTry[0]+' saved to My looks. Open the generated image to save it to your device.';return;}const exportCanvas=document.createElement('canvas');exportCanvas.width=$('trycv').width;exportCanvas.height=$('trycv').height;const ex=exportCanvas.getContext('2d');ex.drawImage($('trycv'),0,0);ex.fillStyle='rgba(255,255,255,.86)';ex.fillRect(18,exportCanvas.height-58,190,38);ex.fillStyle='#171717';ex.font='600 18px Arial';ex.fillText('CUTfit  •  STYLE PREVIEW',28,exportCanvas.height-33);const a=document.createElement('a');a.download='cutfit-'+selectedTry[0].toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-preview.png';a.href=exportCanvas.toDataURL('image/png');a.click();$('trymsg').textContent=selectedTry[0]+' saved to My looks and preview downloaded.';};
-function openTry(name){selectedTry=CM[name]||CT[0];$('tryStyle').value=selectedTry[0];tab('try');drawTry();$('trymsg').textContent=img?'Selected '+selectedTry[0]+'. Adjust the preview and compare styles.':'Take or upload a photo in Scan first.';}
-
-// ---------- barbers and reviews ----------
-function bl(){
- const q=($('barberSearch')?.value||'').trim().toLowerCase();
- const rows=B.map((b,i)=>({b,i})).filter(({b})=>!q||(b[0]+' '+b[1]+' '+b[9]).toLowerCase().includes(q));
- $('bl').innerHTML=rows.length?rows.map(({b,i})=>{
-  const mine=RV[b[8]]||[],url='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(b[0]+' '+b[1])+'&query_place_id='+b[8];
-  return `<div class="bb"><div class="t"><span>${b[0]}</span><span>${b[3]?b[3].toFixed(1)+' ★':'No rating'}</span></div>
-<div class="mute fine">${b[1]}</div>
-<div class="fine">${b[2]} km away${b[4]?', '+b[4].toLocaleString()+' Google review'+(b[4]>1?'s':''):''}</div>
-<div class="fine">Price: ${['not listed','₱ (inexpensive)','₱₱ (moderate)'][b[5]]}${b[6]?'. Open '+b[6]:''}</div>
-<p class="fine">${b[9]}</p>
-${mine.map(r=>`<p class="fine"><b>Your review:</b> ${'★'.repeat(r.s)}${r.t?' '+esc(r.t):''}</p>`).join('')}
-<div class="chips"><button class="chip" data-rv="${i}">Write a review</button><a class="chip" target="_blank" rel="noopener" href="${url}">Open in Maps</a>${b[7]?`<a class="chip" href="tel:${b[7]}">Call</a>`:''}</div>
-<div class="rf" id="rf${i}" hidden><select id="rs${i}" aria-label="Your rating">${[5,4,3,2,1].map(n=>`<option value="${n}">${'★'.repeat(n)}</option>`).join('')}</select><input id="rt${i}" maxlength="140" placeholder="Your review (optional)"><button class="chip" data-sv="${i}">Save</button></div></div>`}).join(''):'<p class="hint">No shops match that search. Try a nearby area or a shorter shop name.</p>' ;
-}
-function saveRv(i){
- const id=B[i][8];(RV[id]=RV[id]||[]).push({s:+$('rs'+i).value,t:$('rt'+i).value.trim().slice(0,140)});
- ls.s('cf_rv',JSON.stringify(RV));bl();
-}
-
-// ---------- guide bot ----------
-const R=[
-[/studio|create|custom|mannequin|own (hair|style|cut)|build (a )?(hair|style)/,'Tap the + button in Try-on, Styles or My looks to open the Hair Studio. Shape a style on the 3D mannequin, save it, try it on your photo, or send it to AI.'],
-[/photo|camera|selfie|upload|picture|dots?/,'Open Scan, tap Take a photo or Upload a photo, then drag the dots onto your hairline, chin, temples, cheekbones and jaw corners. Tap Find my face shape when they sit right.'],
-[/accura|how.*(work|measure)|ratio/,'It compares your face length with the width of your forehead, cheekbones and jaw, then matches those ratios to 7 classic shapes. The more precisely you place the dots, the better the match.'],
-[/barber|salon|price|rate|review|near/,'Open Barbers for nearby shops with ratings, price levels and hours. Tap Write a review to save your own rating on this device, and confirm prices with the shop.'],
-[/spin|roulette|game|random|fun/,'Open Roulette and tap Spin to discover a men’s haircut. The wheel includes men’s and unisex styles.'],
-[/try.on|preview|edit|credit/,'Open Try-on, upload a selfie in Scan, choose a modern haircut and tap Generate AI. You start with 10 credits and regain 1 credit every 3 hours, up to 10.'],
-[/style|library|old|classic|modern|trend|haircut/,'Styles shows men’s and unisex cuts with illustrations. Filter by Classic oldies or Modern, length and haircut category, then move between pages.'],
-[/privacy|data|safe|store|terms|agree/,'Your photo stays in your browser and is never uploaded. I’ve opened the full terms for you.'],
-[/^(hi|hello|hey)|help/,'Hi! I can guide you through scanning, face shapes, the style library, the roulette and the barbers.']];
-const say=(t,u)=>{const d=document.createElement('div');d.className='m '+(u?'u':'b');d.textContent=t;$('ms').append(d);$('ms').scrollTop=1e9};
-function ask(q){
- say(q,1);const s=q.toLowerCase(),sh={oval:'oval',round:'round',square:'square',rect:'rect',oblong:'rect',heart:'heart',diamond:'diamond',triang:'tri',pear:'tri'},k=s.match(/\b(oval|round|square|rect|oblong|heart|diamond|triang|pear)/);
- let r;
- if(/my (face )?shape|my result/.test(s))r=rank?`Your closest shape is ${S[rank[0][0]].n}. ${S[rank[0][0]].g} Try ${S[rank[0][0]].r.slice(0,3).join(', ')}.`:'Add a photo in Scan and tap Find my face shape, then I can tell you more.';
- else if(k)r=`${S[sh[k[1]]].n}: ${S[sh[k[1]]].g} Good picks: ${S[sh[k[1]]].r.slice(0,3).join(', ')}.`;
- else{const h=R.find(x=>x[0].test(s));r=h?h[1]:'I can help with taking a photo, face shapes, the style library, the roulette, nearby barbers and the terms. What would you like to know?'}
- if(/terms|agree|privacy/.test(s))terms();
- setTimeout(()=>say(r),350);
-}
-$('cb').onclick=()=>{
- const b=$('bot');b.hidden=!b.hidden;
- if(!b.hidden&&!$('ms').children.length){say('Hi! I’m the Cutfit guide. Ask me about taking a photo, face shapes, barbers or the roulette.');$('qc').innerHTML=['How do I take a photo?','How accurate is it?','Find a barber','What is my shape?','How do I use Try-on?'].map(q=>`<button class="chip" data-qr="${q}">${q}</button>`).join('')}
-};
-const send=()=>{const v=$('bi').value.trim();if(v){$('bi').value='';ask(v)}};
-$('bs').onclick=send;$('bi').onkeydown=e=>{if(e.key=='Enter')send()};
-['styleSearch','styleLength','styleType'].forEach(id=>$(id).addEventListener(id==='styleSearch'?'input':'change',()=>{libraryPage=1;lib()}));
-$('barberSearch').addEventListener('input',bl);
-
-
-// ---------- 3D hair studio ----------
-E.x='Custom';
-const SW=[['#16120f','black'],['#3b2a20','dark brown'],['#6b4a32','chestnut brown'],['#a97c50','light brown'],['#d6bf8f','blonde'],['#9a3b26','auburn red'],['#b9b9b9','silver grey'],['#3d6dcc','blue'],['#e86aa6','pink']];
-const SD={top:4,sides:2,back:2,fringe:4,wave:0,fr:'swept',part:1,color:'#3b2a20',fade:false,hawk:false,bun:false,afro:false};
-const PRE={Bald:{top:0,sides:0,back:0,fringe:0,fr:'none'},Buzz:{top:0,sides:1,back:1,fringe:0,fr:'none'},Crop:{top:2,sides:1,back:1,fringe:3,fr:'straight',fade:true},Quiff:{top:8,sides:1,back:1,fringe:3,fr:'swept',fade:true,wave:2},Bob:{top:2,sides:6,back:5,fringe:5,fr:'straight'},Long:{top:3,sides:9,back:10,fringe:4,fr:'curtain',wave:2},Curls:{top:6,sides:4,back:3,fringe:4,fr:'curtain',wave:9},Afro:{afro:true,fr:'none'},Mohawk:{hawk:true,top:6,fr:'none',fade:true},Bun:{bun:true,top:3,sides:2,back:3,fr:'none',fade:true}};
-const SL=[['top','Top length'],['sides','Sides'],['back','Back'],['fringe','Fringe length'],['wave','Waves & curls']];
-const FR=[['none','No fringe'],['straight','Straight'],['swept','Swept'],['curtain','Curtains']];
-let ST={...SD},T3=null,editing=null;
-customs=customs.filter(r=>r&&typeof r.name==='string').map(r=>({...SD,...r}));
-const hx=(h,a)=>parseInt(h.slice(a,a+2),16);
-const cw=h=>SW.map(([c,n])=>[n,Math.hypot(hx(h,1)-hx(c,1),hx(h,3)-hx(c,3),hx(h,5)-hx(c,5))]).sort((a,b)=>a[1]-b[1])[0][0];
-function desc(r){
- const c=cw(r.color),tw=r.wave<2?'straight':r.wave<5?'wavy':'curly',T=['','very short','short','medium','long','very long'],lv=v=>T[Math.min(5,Math.ceil(v/2))];
- if(r.afro)return `a natural round afro, ${c} hair`;
- if(r.hawk)return `a mohawk with shaved sides and ${tw} hair, ${c} color`;
- const fr={none:'hair swept back with no fringe',straight:'a straight fringe',swept:'a side-swept fringe',curtain:'curtain bangs parted in the middle'}[r.fr];
- return [`${lv(r.top)||'very short'} ${tw} hair on top`,`${r.fade?'skin-faded':lv(r.sides)||'shaved'} sides`,r.back>=3?`${lv(r.back)} back`:'',fr,r.bun?'tied up in a bun':'',`${c} color`].filter(Boolean).join(', ');
-}
-function customEntry(r){
- const mx=Math.max(r.sides,r.back),len=mx>=6?'l':mx>=3||r.top>=6?'m':'s',b=mx>=3?Math.min(104,50+mx*6):0,fl={none:0,straight:1,swept:2,curtain:3}[r.fr]||0,
- fg=[Math.round(r.top*1.6),40-Math.round(r.fringe*.4),r.fade||r.hawk?40:46+Math.min(10,r.sides*2),fl,36+Math.round(r.fringe*1.2),b,Math.round(r.back/2),(r.fade?'F':'')+(r.hawk?'NH':'')+(r.bun?'K':'')+(r.afro?'A':'')+(r.wave>=7?'U':r.wave>=4&&b?'V':'')],
- hint=r.afro?'afro':r.hawk?'mohawk':b&&mx<=6?'bob':b?'long layers':r.sides<=3&&r.top<=5?'crop fade':'textured top';
- return [r.name,'u',len,'x',fg,'Made in the Hair Studio',hint+(r.fr!='none'?' fringe':''),desc(r),r];
-}
-customs.forEach(r=>{CM[r.name]=customEntry(r)});
-
-function head3(){
- const M=new THREE.MeshStandardMaterial({color:0xe6e1da,roughness:.6}),g=new THREE.Group(),S=()=>new THREE.SphereGeometry(1,40,30),
- add=(geo,sx,sy,sz,x,y,z)=>{const m=new THREE.Mesh(geo,M);m.scale.set(sx,sy,sz);m.position.set(x,y,z);g.add(m);return m};
- add(S(),.84,1.05,.95,0,0,0);add(S(),.6,.55,.7,0,-.52,.22);
- add(new THREE.ConeGeometry(.11,.36,16),1,1,1,0,-.18,.96).rotation.x=Math.PI/2;
- [-1,1].forEach(s=>add(new THREE.SphereGeometry(.16,16,12),.4,1,.75,s*.86,-.05,-.02));
- add(new THREE.CylinderGeometry(.36,.42,1,24),1,1,1,0,-1.45,-.05);add(S(),1.55,.42,.72,0,-2.15,-.05);
- return g;
-}
-function shell(keep,thick){
- const G=new THREE.SphereGeometry(1,56,40).toNonIndexed(),p=G.attributes.position,o=[],nn=[];
- for(let i=0;i<p.count;i+=3){
-  const a=[0,1,2].map(k=>[p.getX(i+k),p.getY(i+k),p.getZ(i+k)]);
-  if(!keep((a[0][0]+a[1][0]+a[2][0])/3,(a[0][1]+a[1][1]+a[2][1])/3,(a[0][2]+a[1][2]+a[2][2])/3))continue;
-  a.forEach(([x,y,z])=>{const t=1+thick(x,y,z),l=Math.hypot(x/.84,y/1.05,z/.95)||1;o.push(x*.84*t,y*1.05*t,z*.95*t);nn.push(x/.84/l,y/1.05/l,z/.95/l)});
- }
- const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(o,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nn,3));G.dispose();return g;
-}
-function drape(dl,db){
- const N=28,R=8,o=[],ix=[];
- for(let j=0;j<=R;j++)for(let i=0;i<=N;i++){
-  const a=(i/N*2-1)*2,k=(Math.cos(a)+1)/2,len=.9+dl*(1-k)+db*k,f=1+.14*j/R,w=1+ST.wave*.012*Math.sin(j*2.1+i*.8);
-  o.push(.9*f*w*Math.sin(a),.05-len*j/R,-1*f*w*Math.cos(a));
- }
- for(let j=0;j<R;j++)for(let i=0;i<N;i++){const a=j*(N+1)+i,c=a+N+1;ix.push(a,c,a+1,a+1,c,c+1)}
- const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(o,3));g.setIndex(ix);g.computeVertexNormals();return g;
-}
-function hair3D(){
- if(!T3)return;const g=T3.hg;
- while(g.children.length){const o=g.children.pop();if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()}
- const s=ST,c01=v=>Math.max(0,Math.min(1,v)),M=o=>new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(s.color),roughness:.8,side:THREE.DoubleSide},o));
- if(s.top+s.sides+s.back>0||s.afro||s.hawk||s.bun){
-  const fb=s.fr=='none'?.62:.6-s.fringe*.075,hl=x=>s.fr=='swept'?fb-.3*s.part*x:s.fr=='curtain'?fb+.35*(.35-Math.abs(x)):fb,
-  fx=s.fade||s.hawk,sR=fx?.5:.35-s.sides*.12,bR=fx?.45:.3-s.back*.14,tT=s.top*.04,pf=(s.sides+s.back)*.006,
-  keep=(x,y,z)=>{if(s.afro)return y>-.25&&!(z>.3&&y<.42);if(z>.28&&y<hl(x))return false;if(s.hawk)return Math.abs(x)<.2&&y>-.1;const k=c01((-z+.2)/1.2);return y>sR*(1-k)+bR*k},
-  thick=(x,y,z)=>s.afro?.38:.035+tT*Math.pow(c01((y-.1)/.9),1.3)+pf*(1-c01(y))+s.wave*.004*Math.sin(y*16+x*7+z*5)+(s.top>6&&z>.2&&y>.5?tT*.35:0);
-  g.add(new THREE.Mesh(shell(keep,thick),M()));
-  if(fx)g.add(new THREE.Mesh(shell((x,y,z)=>y>-.05&&!(z>.28&&y<.5),()=>.012),M({transparent:true,opacity:.5})));
-  if(s.bun){const b=new THREE.Mesh(new THREE.SphereGeometry(.34,24,18),M());b.position.set(0,1.1+s.top*.03,-.25);g.add(b)}
-  const dl=s.sides>6?(s.sides-6)*.3:0,db=s.back>6?(s.back-6)*.42:0;
-  if(!s.afro&&!s.hawk&&(dl||db))g.add(new THREE.Mesh(drape(dl,db),M()));
- }
- T3.draw();
-}
-function init3D(){
- const cv=$('stcv'),r=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});r.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
- const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,50),rig=new THREE.Group(),hg=new THREE.Group(),dl=new THREE.DirectionalLight(0xffffff,.9);
- cam.position.set(0,-.5,7.2);dl.position.set(2,3,4);sc.add(new THREE.HemisphereLight(0xffffff,0x555566,.9),dl,rig);rig.add(head3(),hg);
- T3={rig,hg,draw(){r.render(sc,cam)},resize(){const w=cv.clientWidth||320,h=cv.clientHeight||360;r.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();T3.draw()}};
- let dn=0,lx=0;
- cv.onpointerdown=e=>{dn=1;lx=e.clientX;cv.setPointerCapture(e.pointerId)};
- cv.onpointermove=e=>{if(!dn)return;rig.rotation.y+=(e.clientX-lx)*.01;lx=e.clientX;T3.draw()};
- cv.onpointerup=cv.onpointercancel=()=>{dn=0};
- cv.onwheel=e=>{e.preventDefault();cam.position.z=Math.min(10,Math.max(4.5,cam.position.z+e.deltaY*.005));T3.draw()};
-}
-function buildCtl(){
- const b=(on,a,t)=>`<button class="chip" aria-pressed="${on}" ${a}>${t}</button>`,h=t=>`<p class="fine" style="margin:.9rem 0 .3rem;color:#aaa">${t}</p>`;
- $('stCtl').innerHTML=h('Start from')+`<div class="chips">${Object.keys(PRE).map(k=>b(false,'data-pre="'+k+'"',k)).join('')}</div>`
- +h('Shape it')+SL.map(([k,t])=>`<label class="st-row"><span>${t}</span><input type="range" min="0" max="10" value="${ST[k]}" data-sl="${k}"><b id="v_${k}">${ST[k]}</b></label>`).join('')
- +h('Fringe')+`<div class="chips">${FR.map(([k,t])=>b(ST.fr==k,'data-fr="'+k+'"',t)).join('')}${b(false,'data-flip="1"','Flip side')}</div>`
- +h('Extras')+`<div class="chips">${[['fade','Skin fade'],['hawk','Mohawk'],['bun','Bun'],['afro','Afro']].map(([k,t])=>b(!!ST[k],'data-opt="'+k+'"',t)).join('')}</div>`
- +h('Color')+`<div class="st-sw">${SW.map(([c,n])=>`<button style="background:${c}" aria-label="${n}" aria-pressed="${ST.color==c}" data-col="${c}"></button>`).join('')}<input type="color" id="stCol" value="${ST.color}" aria-label="Pick any color"></div>`;
-}
-function saveStyle(){
- let n=$('stName').value.trim().slice(0,40)||'My style';const old=editing;
- if(CM[n]&&n!==old){let k=2;while(CM[n+' '+k])k++;n+=' '+k}
- const rec={...ST,name:n};
- if(old&&old!==n){customs=customs.filter(x=>x.name!==old);delete CM[old];favs=favs.map(f=>f===old?n:f)}
- customs=customs.filter(x=>x.name!==n);customs.push(rec);ls.s('cf_custom',JSON.stringify(customs));
- CM[n]=customEntry(rec);if(!isFav(n))favs.push(n);saveFavs();editing=n;$('stName').value=n;
- renderSaved();setupTry();return n;
-}
-function delStyle(n){
- if(typeof confirm==='function'&&!confirm('Delete “'+n+'”?'))return;
- customs=customs.filter(x=>x.name!==n);delete CM[n];favs=favs.filter(f=>f!==n);ls.s('cf_custom',JSON.stringify(customs));saveFavs();
- if(selectedTry[0]===n)selectedTry=CT.find(c=>c[0]==='Korean two-block')||CT[0];
- renderSaved();setupTry();drawTry();
-}
-function openStudio(name){
- const c=name&&CM[name];editing=c&&c[3]==='x'?name:null;ST=editing?{...c[8]}:{...SD};
- $('studio').hidden=false;$('stName').value=editing||'';buildCtl();
- if(!T3&&typeof THREE!=='undefined'){try{init3D()}catch(_){T3=null}}
- if(T3){T3.resize();hair3D();$('stmsg').textContent='Drag the head to rotate. Shape your style, then save it, try it on, or send it to AI.'}
- else $('stmsg').textContent='The 3D preview couldn’t load, but you can still design and save a style. Check your connection and reload to see the mannequin.';
-}
-const closeStudio=()=>{$('studio').hidden=true};
-$('stClose').onclick=closeStudio;
-$('stSave').onclick=()=>{const n=saveStyle();$('stmsg').textContent='Saved “'+n+'”. Find it in My looks and on the Try-on shelf.'};
-$('stTry').onclick=()=>{const n=saveStyle();closeStudio();selectTry(n);tab('try')};
-$('stAI').onclick=()=>{const n=saveStyle();closeStudio();selectTry(n);tab('try');generateAI()};
-$('studio').addEventListener('input',e=>{const t=e.target;if(t.dataset.sl){ST[t.dataset.sl]=+t.value;$('v_'+t.dataset.sl).textContent=t.value;hair3D()}else if(t.id==='stCol'){ST.color=t.value;hair3D();document.querySelectorAll('[data-col]').forEach(x=>x.setAttribute('aria-pressed','false'))}});
-$('studio').addEventListener('click',e=>{
- if(e.target===$('studio')){closeStudio();return}
- const b=e.target.closest('button');if(!b)return;const d=b.dataset;
- if(d.pre){ST={...SD,...PRE[d.pre],color:ST.color};buildCtl();hair3D()}
- if(d.fr){ST.fr=d.fr;buildCtl();hair3D()}
- if(d.flip){ST.part*=-1;hair3D()}
- if(d.opt){ST[d.opt]=!ST[d.opt];buildCtl();hair3D()}
- if(d.col){ST.color=d.col;buildCtl();hair3D()}
- if(d.vw!==undefined&&T3){T3.rig.rotation.y=+d.vw;T3.draw()}
-});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('studio').hidden)closeStudio()});
-addEventListener('resize',()=>{if(T3&&!$('studio').hidden)T3.resize()});
-
-// ---------- clicks ----------
-document.onclick=e=>{
- const b=e.target.closest('button');if(!b)return;const d=b.dataset;
- if(d.t)tab(d.t);if(d.go)tab(d.go);if(d.preview)openTry(d.preview);if(d.details)showHaircutDetails(d.details);if(d.fav)toggleFav(d.fav);if(d.add)openStudio();if(d.edit)openStudio(d.edit);if(d.del)delStyle(d.del);
- if(d.k){cur=d.k;dt()}if(d.g){g=d.g;dt()}if(d.l){l=d.l;dt()}
- if(d.e){le=d.e;libraryPage=1;lib()}if(d.q){lg='m';libraryPage=1;lib()}if(d.page){const n=Math.max(1,Math.ceil(libraryTotal/12));libraryPage=d.page==='next'?Math.min(n,libraryPage+1):d.page==='prev'?Math.max(1,libraryPage-1):Math.min(n,+d.page);lib();sc($('p-lib'));}
- if(d.rv){const f=$('rf'+d.rv);f.hidden=!f.hidden}
- if(d.sv)saveRv(+d.sv);
- if(d.qr)ask(d.qr);
-};
-lib();wheel();dt();bl();setupTry();drawTry();updateCredits();
-if(!agreed)terms();
-setInterval(updateCredits,60000);
-window.addEventListener('load',()=>setTimeout(()=>$('loadingScreen')?.classList.add('done'),850));setTimeout(()=>$('loadingScreen')?.classList.add('done'),2200);
-
-</script>
+<script type="module" src="js/app.js"></script>
+<noscript><p class="w">Cutfit needs JavaScript for face scanning and previews.</p></noscript>
 </body>
 </html>

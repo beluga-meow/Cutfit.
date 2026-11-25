@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "updated": "2026-11-25",
+  "notes": "Hair assets for the 3D head simulator. A style either points at a GLB file in this folder or uses a built-in example. Read README.md before adding files.",
+  "styles": [
+    {
+      "id": "example-textured-crop",
+      "name": "Textured crop (built-in example cards)",
+      "file": null,
+      "builtin": "cards",
+      "license": "CC0 — generated procedurally in the viewer, no third-party asset",
+      "author": "Cutfit",
+      "anchors": { "scale": 1, "position": [0, 0, 0], "rotation": [0, 0, 0] },
+      "defaults": { "length": 0.45, "fade": 0.6, "color": "#2b2320" }
+    }
+  ]
+}

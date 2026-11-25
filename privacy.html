@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cutfit — privacy notice</title>
+<meta name="description" content="Plain-language privacy notice for Cutfit: what happens to your photos, what is stored and how to delete it.">
+<link rel="stylesheet" href="styles.css">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+</head>
+<body>
+<main class="w">
+<header><div class="header-row">
+  <a class="logo" href="index.html" style="text-decoration:none;color:inherit">Cutfit<span class="brand-dot">.</span></a>
+  <div class="header-tools"><a class="chip small" href="index.html">Back to Cutfit</a></div>
+</div></header>
+
+<h1>Privacy notice</h1>
+<p class="lead">Short version: your face is measured inside your browser. A photo only leaves your device when you press “Generate AI”, and the result is deleted automatically.</p>
+
+<h2>1. What runs on your device</h2>
+<p>Face scanning uses MediaPipe FaceLandmarker and the hair segmenter. Both models run locally in your browser tab. Your camera frames, the landmarks, the hair mask, the measurements and the 3D head are held in memory only. Closing the tab clears them.</p>
+
+<h2>2. What is sent, and only when you ask</h2>
+<p>When you press Generate AI, we send:</p>
+<ul>
+  <li>the single photo you selected (resized, JPEG),</li>
+  <li>a black-and-white hair mask,</li>
+  <li>the haircut spec text (no personal details),</li>
+  <li>an optional random seed,</li>
+  <li>a random device id and your language, used for credit limits and abuse protection.</li>
+</ul>
+<p>Those requests go to our Cloudflare Worker, which forwards the image and mask to <a href="https://fal.ai" target="_blank" rel="noopener">fal.ai</a> to run Qwen Image Edit. fal.ai processes the image under its own terms. The generated preview is stored for about 15 minutes on Cloudflare R2 so your browser can show it, then deleted by a scheduled job.</p>
+<p>We do not send your name, email, account, contacts or location. There is no account system.</p>
+
+<h2>3. Why we can ask for this</h2>
+<p>Face images and face geometry can count as biometric data in some laws. That is why we ask for consent before the camera starts and before any upload, in plain language, and why you can decline and still browse styles and barbers.</p>
+
+<h2>4. What is stored on your device</h2>
+<ul>
+  <li>saved looks and custom styles,</li>
+  <li>your own barber reviews (only on this device, never sent),</li>
+  <li>your language and feature-flag choices,</li>
+  <li>a random device id used for credit limits,</li>
+  <li>a cached credit count for display only; the real count lives on the server.</li>
+</ul>
+<p>No photos are stored in localStorage, IndexedDB or the cache.</p>
+
+<h2>5. Analytics and errors</h2>
+<p>We send event names such as <code>scan_done</code> or <code>ai_done</code> to our own Worker, which writes them to Cloudflare logs. These events contain no photo, no free text and no advertising identifier. Errors send the message and the page path so we can fix breakage. No third-party analytics scripts run on Cutfit.</p>
+
+<h2>6. Delete everything</h2>
+<p>“Delete my photos” removes the session scan, the generated preview and every Cutfit key in this browser. Server-side previews expire automatically within 15 minutes.</p>
+<div class="row"><button class="btn" id="deleteAll" type="button">Delete my data on this device</button></div>
+<p class="fine mute" id="deleteMsg" role="status"></p>
+
+<h2>7. Children</h2>
+<p>Cutfit is not intended for children under 13. Do not upload photos of children or of anyone who has not agreed.</p>
+
+<h2>8. Contact</h2>
+<p class="fine">This is a student/demo project. For privacy requests, open an issue on the project repository. Last updated 25 November 2026.</p>
+</main>
+<script>
+document.getElementById("deleteAll").addEventListener("click", function () {
+  var removed = 0;
+  try {
+    for (var i = localStorage.length - 1; i >= 0; i -= 1) {
+      var key = localStorage.key(i);
+      if (key && key.indexOf("cf_") === 0) { localStorage.removeItem(key); removed += 1; }
+    }
+    sessionStorage.clear();
+  } catch (e) { /* storage blocked */ }
+  document.getElementById("deleteMsg").textContent =
+    "Removed " + removed + " Cutfit key(s) from this browser. Server previews expire within 15 minutes.";
+});
+</script>
+</body>
+</html>
