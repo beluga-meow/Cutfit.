@@ -13,6 +13,7 @@ import * as Catalog from "./catalog.js";
 import * as Scan from "./scan.js";
 import * as TryOn from "./tryon.js";
 import * as Barbers from "./barbers.js";
+import * as Salons from "./salons.js";
 import { createGuide } from "./guide.js";
 import * as FS from "./face-shape.js";
 
@@ -649,19 +650,23 @@ function setupTryShelf() {
     "Drop fade", "Modern mullet", "Textured fringe", "Modern slick back", "Teddy bear cut",
     "Japanese wolf cut", "Edgar cut", "Bro flow"
   ];
+  const q = ($("trySearch")?.value || "").trim().toLowerCase();
   const items = featured
     .map((n) => Catalog.CUTS.find((c) => c[0].toLowerCase() === n.toLowerCase()))
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((c) => !q || `${c[0]} ${c[5]}`.toLowerCase().includes(q));
   const carousel = $("tryCarousel");
   if (!carousel) return;
   carousel.innerHTML =
     `<button class="try-card add" type="button" data-open-3d="1"><b class="plus">+</b><span>Create your own</span></button>` +
-    items
-      .map(
-        (c) => `<button class="try-card" type="button" data-style="${esc(c[0])}" aria-pressed="${c[0] === state.selected[0]}">
+    (items.length === 0
+      ? `<p class="mute fine">No shelf matches “${esc(q)}”. <button class="text-action" type="button" data-go="lib">Search the full library</button></p>`
+      : items
+          .map(
+            (c) => `<button class="try-card" type="button" data-style="${esc(c[0])}" aria-pressed="${c[0] === state.selected[0]}">
           ${Catalog.fig(c[4])}<span>${esc(c[0])}</span></button>`
-      )
-      .join("");
+          )
+          .join(""));
 }
 
 // ------------------------------------------------------------------- AI run
@@ -831,7 +836,7 @@ function renderSaved() {
   const names = [...new Set([...store.getFavs(), ...store.getCustoms().map((r) => r.name)])];
   const items = names.map((n) => Catalog.CM[n]).filter(Boolean);
   if (!items.length) {
-    el.innerHTML = `<div class="hint"><b>Your shelf is empty—for now.</b><p>Save a hairstyle from the Style Library or the fitting room and it will appear here.</p><button class="btn" data-t="lib">Explore hairstyles</button></div>`;
+    el.innerHTML = `<div class="hint"><b>No saved looks yet.</b><p>Tap ♡ Save on any style in the library or the fitting room, and it shows up here.</p><button class="btn" data-t="lib">Explore hairstyles</button></div>`;
     return;
   }
   el.innerHTML = `<p class="mute fine">${items.length} saved ${items.length === 1 ? "style" : "styles"}</p>
@@ -895,9 +900,12 @@ function spinWheel() {
     () => {
       wheelBusy = false;
       const cut = wheelPool[index];
-      const quip = ["Hope your barber is ready.", "No take-backs.", "Confidence required.", "Bold choice. We’re rooting for you."][
-        Math.floor(Math.random() * 4)
-      ];
+      const quip = [
+        "Save it, then show the barber card before the first cut.",
+        "Preview it in the fitting room on your own photo.",
+        "Check the side and back references before you commit.",
+        "Ask for the full spec so the result matches the photo."
+      ][Math.floor(Math.random() * 4)];
       if (result) {
         result.innerHTML = `<div class="cd" style="max-width:220px;margin:18px auto 8px;text-align:center">${Catalog.fig(
           cut[4]
@@ -1024,6 +1032,79 @@ function deletePhotos() {
   drawAfter();
   toast(t("consent.deleted"));
   track("photos_deleted");
+}
+
+// ------------------------------------------------------------- salon finder
+
+const SALON_BADGE = { women: "salons.badge.women", barber: "salons.badge.barber", hair: "salons.badge.hair" };
+let salonItems = [];
+let salonFilter = "women";
+
+function renderSalons() {
+  const el = $("salonList");
+  if (!el) return;
+  const list = salonFilter === "women" ? salonItems.filter((s) => s.kind !== "barber") : salonItems;
+  if (!list.length) {
+    el.innerHTML = `<p class="hint">${esc(t("salons.none"))}</p>`;
+    return;
+  }
+  el.innerHTML = `<div class="salon-grid">${list
+    .map(
+      (s) => `<article class="salon-card">
+      <div class="salon-top"><b>${esc(s.name)}</b><span class="salon-badge" data-kind="${esc(s.kind)}">${esc(
+        t(SALON_BADGE[s.kind] || "salons.badge.hair")
+      )}</span></div>
+      ${s.address ? `<p class="fine mute">${esc(s.address)}</p>` : ""}
+      <p class="fine">${s.distance != null ? `${s.distance.toFixed(1)} km away` : ""}${s.hours ? ` · ${esc(s.hours)}` : ""}</p>
+      <div class="chips">
+        <a class="chip" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${s.lat},${s.lon}">${esc(
+        t("salons.maps")
+      )}</a>
+        <a class="chip" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}">${esc(
+        t("salons.directions")
+      )}</a>
+        ${s.phone ? `<a class="chip" href="tel:${esc(s.phone)}">${esc(t("salons.call"))}</a>` : ""}
+      </div>
+    </article>`
+    )
+    .join("")}</div>`;
+}
+
+async function searchSalons() {
+  const btn = $("salonLocate");
+  if (btn) btn.disabled = true;
+  setStatus("salonStatus", t("salons.searching"), "info");
+  try {
+    const pos = await Salons.locate();
+    const items = await Salons.findSalons({ lat: pos.lat, lon: pos.lon, radius: 4000 });
+    salonItems = items;
+    setStatus("salonStatus", t("salons.results", { n: salonItems.length }), salonItems.length ? "ok" : "warn");
+    renderSalons();
+    track("salons_near", { count: salonItems.length });
+  } catch (err) {
+    const code = err?.code;
+    const message =
+      code === "denied" ? t("salons.denied")
+      : code === "unsupported" ? t("salons.unsupported")
+      : code === "timeout" ? t("salons.timeout")
+      : t("salons.error");
+    setStatus("salonStatus", message, "warn");
+    $("salonList").innerHTML = "";
+    logError(err?.message || "salon search", { code });
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+function bindSalonsUI() {
+  $("salonLocate")?.addEventListener("click", searchSalons);
+  document.querySelectorAll("[data-salon-filter]").forEach((chip) =>
+    chip.addEventListener("click", () => {
+      salonFilter = chip.dataset.salonFilter === "all" ? "all" : "women";
+      document.querySelectorAll("[data-salon-filter]").forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      renderSalons();
+    })
+  );
 }
 
 // ------------------------------------------------------------------- debug
@@ -1162,6 +1243,7 @@ function bindLibraryUI() {
 }
 
 function bindTryUI() {
+  $("trySearch")?.addEventListener("input", setupTryShelf);
   const seed = $("seedInput");
   $("renderTry")?.addEventListener("click", () => runAI({ seed: seed?.value ? Number(seed.value) : null }));
   $("regenerate")?.addEventListener("click", () => {
@@ -1484,6 +1566,7 @@ async function boot() {
   bindLibraryUI();
   bindTryUI();
   bindBarbersUI();
+  bindSalonsUI();
   bindDocumentClicks();
   bindModals();
   bindInstall();

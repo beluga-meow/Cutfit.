@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https://cutfit-ai-api.jhayc-chua06.workers.dev https://cdn.jsdelivr.net https://storage.googleapis.com https://fal.media https://*.fal.ai https://*.fal.run https://cloudflareinsights.com; worker-src 'self' blob:; frame-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https://overpass-api.de https://cutfit-ai-api.jhayc-chua06.workers.dev https://cdn.jsdelivr.net https://storage.googleapis.com https://fal.media https://*.fal.ai https://*.fal.run https://cloudflareinsights.com; worker-src 'self' blob:; frame-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -42,7 +42,7 @@
 </script>
 </head>
 <body>
-<div id="loadingScreen" aria-label="Loading Cutfit"><div><div class="loading-brand">Cutfit<span data-i18n="app.tagline">MEN’S GROOMING STUDIO</span></div><div class="loading-line"><i></i></div></div></div>
+<div id="loadingScreen" aria-label="Loading Cutfit"><div><div class="loading-brand">Cutfit<span data-i18n="app.tagline">HAIRCUT STUDIO FOR EVERYONE</span></div><div class="loading-line"><i></i></div></div></div>
 
 <main class="w">
 <header>
@@ -128,8 +128,8 @@
   <div class="consult-card" id="consultCard">
     <div class="consult-head">
       <p class="eyebrow">YOUR STYLE PROFILE</p>
-      <h2>Build your Smart Style Match</h2>
-      <p class="mute fine">Cutfit uses your scan estimate and these preferences to build a practical shortlist—no long quiz needed.</p>
+      <h2>Your style profile</h2>
+      <p class="mute fine">These preferences shape your shortlist. Change them any time and the matches update.</p>
     </div>
     <div class="consult-grid">
       <label>Hair texture
@@ -281,6 +281,7 @@
     <div><strong>Choose your hairstyle</strong><small>Tap a style to preview it</small></div>
     <button class="text-action" type="button" data-go="lib">See all</button>
   </div>
+  <input id="trySearch" class="try-search" type="search" placeholder="Search styles — try “bob”, “curtain”, “fade”" autocomplete="off" aria-label="Search hairstyles">
   <div id="tryCarousel" class="try-carousel" aria-label="Hairstyle choices"></div>
   <select id="tryStyle" aria-label="Choose a haircut" class="visually-hidden"></select>
   <p class="fit-status" id="trymsg" role="status">Upload a selfie in Scan, choose a haircut, then tap Generate AI.</p>
@@ -334,16 +335,34 @@
   <p class="hint" id="viewerOff" hidden data-i18n="flags.off">This feature is turned off in this build.</p>
 </section>
 
-<!-- ================= BARBERS ================= -->
+<!-- ================= BARBERS & SALONS ================= -->
 <section id="p-bar" hidden>
-  <h1 data-i18n="barbers.h1">Barbers near you</h1>
-  <p class="lead" data-i18n="barbers.lead">Explore the listed shops and check details directly before visiting. Directory details can change.</p>
+  <h1 data-i18n="barbers.h1">Barbers &amp; salons near you</h1>
+  <p class="lead" data-i18n="barbers.lead">Live hair shops from OpenStreetMap, plus the barber directory below. Confirm hours and prices before you travel.</p>
+
+  <div class="salon-finder" id="salonFinder">
+    <p class="eyebrow" data-i18n="salons.eyebrow">LIVE SALON FINDER</p>
+    <h2 data-i18n="salons.title">Salons for women near you</h2>
+    <p class="mute fine" data-i18n="salons.lead">OpenStreetMap data, no account needed. Coverage depends on local mapping, so call ahead to confirm services and prices.</p>
+    <div class="row">
+      <button class="btn" id="salonLocate" type="button" data-i18n="salons.locate">Use my location</button>
+      <a class="btn alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=salon%20for%20women%20near%20me" data-i18n="salons.fallback">Search on Google Maps</a>
+    </div>
+    <div class="chips" role="group" aria-label="Shop filters">
+      <button class="chip" data-salon-filter="women" aria-pressed="true" type="button" data-i18n="salons.women">Women’s salons</button>
+      <button class="chip" data-salon-filter="all" aria-pressed="false" type="button" data-i18n="salons.all">All hair shops</button>
+    </div>
+    <p class="fine mute salon-status" id="salonStatus" role="status" data-i18n="salons.idle">Tap “Use my location” to see hair shops within about 4 km.</p>
+    <div id="salonList"></div>
+  </div>
+
+  <h2 class="directory-title" data-i18n="barbers.dirTitle">Barber directory</h2>
   <label class="search-label" for="barberSearch" data-i18n="barbers.search">Search shops or areas</label>
   <input id="barberSearch" type="search" placeholder="Search by shop or location…" autocomplete="off">
   <label class="search-label" for="barberShopName">Your shop (optional, for the card)</label>
   <input id="barberShopName" type="text" maxlength="60" placeholder="e.g. Fadeday Studio" autocomplete="off">
   <div id="bl"></div>
-  <div class="row"><a class="btn alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/barber+shop+near+me">See more on Google Maps</a></div>
+  <div class="row"><a class="btn alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=barber%20shop%20near%20me">See more on Google Maps</a></div>
 </section>
 
 <hr>

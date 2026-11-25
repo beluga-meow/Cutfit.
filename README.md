@@ -374,3 +374,41 @@ Verified against live docs/registries on 25 Nov 2026:
    manually.
 7. **Analytics** is event-only via Cloudflare logs. If you want a dashboard,
    add Workers Analytics Engine rather than a third-party tracker.
+
+## Cutfit 3.1 — live salon finder, wider library, cleaner copy
+
+**Salon finder (new).** The Barbers tab now opens with “Salons for women near you”. It uses the
+browser’s location (only after you tap the button) and queries the public
+[OpenStreetMap Overpass API](https://overpass-api.de) for `shop=hairdresser` and `shop=beauty`
+within about 4 km. Results are de-duplicated, sorted by distance and filtered by how the shop is
+tagged or named (`female=yes` / `unisex=yes` → salon, `barber` → barbershop). Each card links to
+Maps, directions and, when mapped, the shop’s phone number. No API key, no account, no server.
+
+- `js/salons.js` holds the query builder, distance maths, tag classification and a 10-minute
+  `sessionStorage` cache. It is DOM-free and unit tested in `tests/salons.test.mjs`.
+- Failure modes are explicit: location denied, no geolocation support, timeout, Overpass busy (429)
+  and network error each show their own message, and the Google Maps search stays available.
+- The CSP `connect-src` now allows `https://overpass-api.de` only.
+- Honest limit: OSM coverage depends on local mapping. The UI says so and tells people to call ahead.
+
+**Library.** 71 → 91 styles, with ten new women’s cuts (curtain bob, curly bob, coily bob, textured
+lob, long curtain layers, grown-out pixie, blunt centre-part bob, wavy bob, soft shag with bangs,
+layered shoulder cut), six men’s and four neutral cuts. `tests/catalog.test.mjs` now checks every
+entry (unique name, audience, length, era, figure parameters, description, SVG render).
+
+**Convenience.** Search box above the try-on shelf filters the featured styles; the roulette result
+now suggests a useful next step instead of a joke; the empty “My looks” state explains how to save.
+
+**Copy.** The tagline is now “Haircut studio for everyone” (FIL: “Study ng gupit para sa lahat”),
+the style profile card was rewritten, and the Barbers tab covers both barbers and salons.
+
+**Wiring.** `wrangler.jsonc` now carries the real KV namespace id
+(`3c6969729d5a40a6889fea0738b73922`) for the `CREDITS` binding. The Worker still has to be deployed
+before credits, analytics and AI generation work end to end.
+
+**fal.ai data-URL mask check — not verified.** `scripts/check-mask-data-url.mjs` was run with the
+key supplied in chat in both plausible formats; fal.ai answered `HTTP 401 invalid key credentials`
+and `Cannot access application "fal-ai/qwen-image-edit"`, so no job was created and no charge was
+made. A fal key is normally `<key_id>:<key_secret>` with a long hex secret — re-copy it from
+<https://fal.ai/dashboard/keys> and run `FAL_KEY='…' npm run check:mask`. The Worker’s R2 mask
+fallback stays in place either way.

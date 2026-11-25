@@ -84,7 +84,27 @@ export const CUTS=[
 ['Modern pixie','f','s','m',[4,36,50,2,42,0,0,''],'Soft textured pixie with a longer top'],
 ['Tapered afro','u','s','m',[5,38,48,0,0,0,0,'A'],'Natural coils shaped close at the sides'],
 ['Coily high top','u','s','m',[10,36,45,0,0,0,0,'A'],'Full coily height with clean sides'],
-['Shoulder-length wolf cut','u','l','m',[5,38,55,3,48,102,6,'V'],'Long wolf layers with movement']];
+['Shoulder-length wolf cut','u','l','m',[5,38,55,3,48,102,6,'V'],'Long wolf layers with movement'],
+['Curtain bob','f','m','m',[2,38,57,3,49,86,3,'V'],'Jaw-grazing bob with long curtain bangs'],
+['Wavy bob','f','m','m',[3,38,56,0,42,88,3,'V'],'Soft waves with a rounded silhouette'],
+['Grown-out pixie','f','s','m',[5,37,52,2,42,62,1,''],'Pixie length with soft, grown-out edges'],
+['Long curtain layers','f','l','m',[3,38,54,3,50,108,5,'V'],'Long layers parted to frame the cheekbones'],
+['Curly bob','f','m','m',[8,37,56,1,43,86,4,'U'],'Rounded bob with defined curls'],
+['Soft shag with bangs','f','m','m',[4,38,55,3,48,94,5,'V'],'Face-framing shag with a soft fringe'],
+['Blunt bob with middle part','f','m','m',[0,39,60,3,44,80,2,''],'One-length bob with a centre part'],
+['Coily bob','f','m','m',[9,38,50,0,0,84,4,'A'],'Tapered coils shaped around the jaw'],
+['Layered shoulder cut','f','l','m',[2,38,53,3,47,100,5,'V'],'Shoulder-length cut with inward layers'],
+['Textured long bob','f','m','m',[4,38,56,2,45,90,4,'V'],'Textured lob with a soft, airy finish'],
+['Crew cut with fringe','m','s','m',[1,38,43,1,36,0,0,'F'],'Short crew cut with a blunt fringe'],
+['Low fade with beard line','m','s','m',[3,36,42,1,39,0,0,'F'],'Clean low fade blended into a beard line'],
+['Textured middle part','m','m','m',[5,39,52,3,48,0,0,''],'Long top split into a soft middle part'],
+['Long layered cut','m','l','m',[4,37,52,2,45,96,4,'V'],'Shoulder-length layers worn loose'],
+['Curly top fade','m','s','m',[7,36,42,0,0,0,0,'U'],'Curly top with tight faded sides'],
+['Side sweep','m','m','m',[4,38,50,2,44,0,0,''],'Swept side fringe with clean edges'],
+['Curly shag','u','m','m',[8,38,55,3,48,92,5,'U'],'Layered shag built for curls'],
+['Curtain mullet','u','m','m',[5,38,53,3,47,96,5,'V'],'Curtain fringe with a longer back'],
+['Soft wolf cut','u','l','m',[5,38,55,3,48,102,6,'V'],'Long wolf layers with airy ends'],
+['Buzz with line-up','u','s','m',[0,37,42,0,0,0,0,'Z'],'One-length buzz with a sharp hairline']];
 
 export const CM = Object.fromEntries(CUTS.map((c) => [c[0], c]));
 export const SHAPE_KEYS = Object.keys(SHAPE_COPY);

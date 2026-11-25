@@ -408,3 +408,19 @@ input,select{background:#fff!important;color:#171717!important;border-color:#ded
    aspect-ratio from the loaded photo; this keeps the empty state compact. */
 #compare{max-width:520px;width:100%;margin-left:auto;margin-right:auto}
 @media(min-width:900px){#compare{max-width:560px}}
+
+/* ---------- live salon finder (OpenStreetMap) ---------- */
+.salon-finder{margin:18px 0 26px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--card)}
+.salon-finder h2{margin:.2rem 0 .4rem;font-size:1.25rem}
+.salon-finder .lead,.salon-finder .mute{max-width:62ch}
+.salon-status{margin:.6rem 0 .2rem}
+.salon-grid{display:grid;gap:10px;margin-top:12px}
+.salon-card{border:1px solid var(--line);border-radius:14px;padding:14px}
+.salon-card p{margin:.3rem 0}
+.salon-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.salon-badge{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:#efe8e1;color:#5b4636;white-space:nowrap}
+.salon-badge[data-kind="barber"]{background:#e7ecef;color:#3f4c55}
+.salon-badge[data-kind="hair"]{background:#f0f0ed;color:#555}
+.try-search{width:100%;padding:11px 12px;border-radius:12px;margin:0 0 10px}
+.directory-title{margin:26px 0 .4rem;font-size:1.15rem}
+@media(min-width:900px){.salon-grid{grid-template-columns:1fr 1fr}}
