@@ -1045,7 +1045,8 @@ function renderSalons() {
   if (!el) return;
   const list = salonFilter === "women" ? salonItems.filter((s) => s.kind !== "barber") : salonItems;
   if (!list.length) {
-    el.innerHTML = `<p class="hint">${esc(t("salons.none"))}</p>`;
+    const message = salonItems.length ? t("salons.noneWomen") : t("salons.none");
+    el.innerHTML = `<p class="hint">${esc(message)}</p>`;
     return;
   }
   el.innerHTML = `<div class="salon-grid">${list
