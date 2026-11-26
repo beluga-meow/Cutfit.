@@ -498,3 +498,8 @@ button.credit-pill[data-state=ok]{color:#2f6b3d!important;background:#f2f8f3!imp
 .fit-view-row .view-tag{position:static;bottom:auto;right:auto;background:none;border:0;padding:0;color:#666}
 .salon-card b .ic{color:#6b5a4a}
 .picked .ic{width:14px;height:14px}
+
+/* Before the first preview the "after" layer is an empty black canvas, which
+   split the panel in half. Show the untouched photo until a result exists. */
+.compare:not(.has-result) .compare-after{display:none}
+.compare:not(.has-result) .compare-label.right{display:none}

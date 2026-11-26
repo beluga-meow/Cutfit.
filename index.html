@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=3.2.1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https://overpass-api.de https://overpass.kumi.systems https://cutfit-ai-api.jhayc-chua06.workers.dev https://cdn.jsdelivr.net https://storage.googleapis.com https://fal.media https://*.fal.ai https://*.fal.run https://cloudflareinsights.com; worker-src 'self' blob:; frame-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <script type="application/ld+json">
 {
@@ -127,13 +127,13 @@
     </div>
   </div>
   <nav id="nv" aria-label="Main navigation">
-    <button data-t="scan" aria-pressed="true" aria-label="Scan"><svg class="ic" aria-hidden="true"><use href="#i-scan"></use></svg><span data-i18n="nav.scan">Scan</span></button>
-    <button data-t="lib" aria-pressed="false" aria-label="Styles"><svg class="ic" aria-hidden="true"><use href="#i-styles"></use></svg><span data-i18n="nav.styles">Styles</span></button>
-    <button data-t="spin" aria-pressed="false" aria-label="Roulette"><svg class="ic" aria-hidden="true"><use href="#i-roulette"></use></svg><span data-i18n="nav.roulette">Roulette</span></button>
-    <button data-t="try" aria-pressed="false" aria-label="Try-on"><svg class="ic" aria-hidden="true"><use href="#i-tryon"></use></svg><span data-i18n="nav.try">Try-on</span></button>
-    <button data-t="view3d" aria-pressed="false" aria-label="3D head"><svg class="ic" aria-hidden="true"><use href="#i-3d"></use></svg><span>3D</span></button>
-    <button data-t="saved" aria-pressed="false" aria-label="My looks"><svg class="ic" aria-hidden="true"><use href="#i-heart"></use></svg><span data-i18n="nav.saved">My looks</span></button>
-    <button data-t="bar" aria-pressed="false" aria-label="Barbers and salons"><svg class="ic" aria-hidden="true"><use href="#i-barbers"></use></svg><span data-i18n="nav.barbers">Barbers</span></button>
+    <button data-t="scan" aria-pressed="true" aria-label="Scan"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-scan"></use></svg><span data-i18n="nav.scan">Scan</span></button>
+    <button data-t="lib" aria-pressed="false" aria-label="Styles"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-styles"></use></svg><span data-i18n="nav.styles">Styles</span></button>
+    <button data-t="spin" aria-pressed="false" aria-label="Roulette"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-roulette"></use></svg><span data-i18n="nav.roulette">Roulette</span></button>
+    <button data-t="try" aria-pressed="false" aria-label="Try-on"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-tryon"></use></svg><span data-i18n="nav.try">Try-on</span></button>
+    <button data-t="view3d" aria-pressed="false" aria-label="3D head"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-3d"></use></svg><span>3D</span></button>
+    <button data-t="saved" aria-pressed="false" aria-label="My looks"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-heart"></use></svg><span data-i18n="nav.saved">My looks</span></button>
+    <button data-t="bar" aria-pressed="false" aria-label="Barbers and salons"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-barbers"></use></svg><span data-i18n="nav.barbers">Barbers</span></button>
   </nav>
 </header>
 
@@ -244,12 +244,12 @@
   <h1>Style library</h1>
   <p class="lead">Explore men’s, women’s and gender-neutral cuts, from timeless barber classics to current Korean-inspired and street styles.</p>
   <p class="fine mute">Every style includes a quick description, a try-on shortcut, a save option and a step-by-step video search.</p>
-  <div class="row"><button class="btn" type="button" data-open-3d="1"><svg class="ic" aria-hidden="true"><use href="#i-plus"></use></svg> Create your own in 3D</button></div>
+  <div class="row"><button class="btn" type="button" data-open-3d="1"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-plus"></use></svg> Create your own in 3D</button></div>
   <div class="library-search">
     <label class="visually-hidden" for="styleSearch">Search hairstyles</label>
     <input id="styleSearch" type="search" placeholder="Search cuts, e.g. bob, fade" autocomplete="off">
     <button class="filters-toggle" id="filtersToggle" type="button" aria-expanded="false" aria-controls="filterFields">
-      <svg class="ic" aria-hidden="true"><use href="#i-search"></use></svg>
+      <svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-search"></use></svg>
       <span>Filters</span><span class="filter-count" id="filterCount" hidden>0</span>
     </button>
   </div>
@@ -277,7 +277,7 @@
 <section id="p-saved" hidden>
   <h1>Your Cutfit shelf.</h1>
   <p class="lead">A personal shortlist of cuts you love. Saved on this device, ready for your next barber visit.</p>
-  <div class="row"><button class="btn" type="button" data-open-3d="1"><svg class="ic" aria-hidden="true"><use href="#i-plus"></use></svg> Create your own in 3D</button></div>
+  <div class="row"><button class="btn" type="button" data-open-3d="1"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-plus"></use></svg> Create your own in 3D</button></div>
   <div id="savedList"></div>
   <p class="fine mute">Your saved looks and scans stay on this device. <button class="lnk" id="deletePhotos" type="button" data-i18n="consent.delete">Delete my photos</button></p>
 </section>
@@ -303,7 +303,7 @@
     </div>
     <div class="fit-heading-actions">
       <button class="credit-pill" id="tryCredits" type="button" data-state="loading" aria-live="polite">AI credits: …</button>
-      <button class="save-pill" id="saveTry" type="button" aria-label="Save this hairstyle"><svg class="ic" aria-hidden="true"><use href="#i-heart"></use></svg> <span data-i18n="try.save">Save</span></button>
+      <button class="save-pill" id="saveTry" type="button" aria-label="Save this hairstyle"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-heart"></use></svg> <span data-i18n="try.save">Save</span></button>
     </div>
   </div>
 
@@ -311,7 +311,7 @@
     <svg class="ic try-empty-icon" aria-hidden="true"><use href="#i-camera"></use></svg>
     <strong>Start with a clear selfie</strong>
     <p class="mute fine">Face the camera in even light with your hair pulled back. Your photo stays on this device until you tap Generate AI.</p>
-    <button class="btn" type="button" data-t="scan"><svg class="ic" aria-hidden="true"><use href="#i-scan"></use></svg> Scan my face</button>
+    <button class="btn" type="button" data-t="scan"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-scan"></use></svg> Scan my face</button>
   </div>
 
   <div class="fit-stage" id="fitStage" hidden>
@@ -332,10 +332,10 @@
         </div>
       </div>
       <div class="fit-caption">
-        <div class="fit-cut"><span class="checkmark"><svg class="ic" aria-hidden="true"><use href="#i-check"></use></svg></span><div><strong id="fitStyleName">Korean Two-Block</strong><small id="fitStyleDesc">Soft textured fringe</small></div></div>
+        <div class="fit-cut"><span class="checkmark"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-check"></use></svg></span><div><strong id="fitStyleName">Korean Two-Block</strong><small id="fitStyleDesc">Soft textured fringe</small></div></div>
         <div class="fit-caption-actions">
-          <button class="try-again" id="renderTry" type="button"><svg class="ic" aria-hidden="true"><use href="#i-tryon"></use></svg> <span data-i18n="try.generate">Generate AI</span></button>
-          <button class="try-again" id="regenerate" type="button"><svg class="ic" aria-hidden="true"><use href="#i-refresh"></use></svg> <span data-i18n="try.regenerate">Regenerate</span></button>
+          <button class="try-again" id="renderTry" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-tryon"></use></svg> <span data-i18n="try.generate">Generate AI</span></button>
+          <button class="try-again" id="regenerate" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-refresh"></use></svg> <span data-i18n="try.regenerate">Regenerate</span></button>
         </div>
       </div>
     </div>
@@ -378,14 +378,14 @@
   <p class="fine mute" id="tryAI" hidden></p>
 
   <div class="fit-tools">
-    <button class="tool-btn" id="adjustFit" type="button"><svg class="ic" aria-hidden="true"><use href="#i-palette"></use></svg><small>Colour &amp; more</small></button>
-    <button class="tool-btn" id="shareTry" type="button"><svg class="ic" aria-hidden="true"><use href="#i-share"></use></svg><small>Share</small></button>
-    <button class="tool-btn" id="cardFromTry" type="button"><svg class="ic" aria-hidden="true"><use href="#i-card"></use></svg><small>Barber card</small></button>
-    <button class="tool-btn" id="tutorialFit" type="button"><svg class="ic" aria-hidden="true"><use href="#i-play"></use></svg><small>Tutorial</small></button>
+    <button class="tool-btn" id="adjustFit" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-palette"></use></svg><small>Colour &amp; more</small></button>
+    <button class="tool-btn" id="shareTry" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-share"></use></svg><small>Share</small></button>
+    <button class="tool-btn" id="cardFromTry" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-card"></use></svg><small>Barber card</small></button>
+    <button class="tool-btn" id="tutorialFit" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-play"></use></svg><small>Tutorial</small></button>
   </div>
   <div class="fit-bottom-actions">
     <button class="btn alt" type="button" data-go="lib">Explore all hairstyles</button>
-    <button class="btn" id="saveTrySecondary" type="button"><svg class="ic" aria-hidden="true"><use href="#i-download"></use></svg> Save preview</button>
+    <button class="btn" id="saveTrySecondary" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-download"></use></svg> Save preview</button>
   </div>
 </section>
 
@@ -435,7 +435,7 @@
     <h2 data-i18n="salons.title">Salons for women near you</h2>
     <p class="mute fine" data-i18n="salons.lead">OpenStreetMap data, no account needed. Coverage depends on local mapping, so call ahead to confirm services and prices.</p>
     <div class="row">
-      <button class="btn" id="salonLocate" type="button"><svg class="ic" aria-hidden="true"><use href="#i-pin"></use></svg> <span data-i18n="salons.locate">Use my location</span></button>
+      <button class="btn" id="salonLocate" type="button"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-pin"></use></svg> <span data-i18n="salons.locate">Use my location</span></button>
       <a class="btn alt" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&amp;query=salon%20for%20women%20near%20me" data-i18n="salons.fallback">Search on Google Maps</a>
     </div>
     <div class="chips" role="group" aria-label="Shop filters">
@@ -467,10 +467,10 @@
 </footer>
 </main>
 
-<button id="cb" class="help-fab" aria-label="Open the guide chat" aria-expanded="false"><svg class="ic" aria-hidden="true"><use href="#i-help"></use></svg></button>
+<button id="cb" class="help-fab" aria-label="Open the guide chat" aria-expanded="false"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-help"></use></svg></button>
 
 <div id="bot" hidden>
-  <div class="bot-head"><strong>Cutfit guide</strong><button class="chip small" id="guideClose" type="button" aria-label="Close guide"><svg class="ic" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
+  <div class="bot-head"><strong>Cutfit guide</strong><button class="chip small" id="guideClose" type="button" aria-label="Close guide"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-close"></use></svg></button></div>
   <div id="ms" aria-live="polite"></div>
   <div class="chips" id="qc"></div>
   <div class="ib"><input id="bi" placeholder="Ask the guide" autocomplete="off"><button class="btn" id="bs" type="button">Send</button></div>
@@ -518,7 +518,7 @@
   <div class="modal-card">
     <div class="modal-top">
       <div><p class="eyebrow">CUT DETAILS &amp; REFERENCES</p><h2 id="haircutTitle">Haircut name</h2></div>
-      <button class="chip" id="closeHaircut" type="button">Close <svg class="ic" aria-hidden="true"><use href="#i-close"></use></svg></button>
+      <button class="chip" id="closeHaircut" type="button">Close <svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-close"></use></svg></button>
     </div>
     <p id="haircutDescription" class="mute"></p>
     <div class="spec-grid" id="haircutSpecs"></div>
@@ -526,7 +526,7 @@
     <p class="fine mute">These open photo references for the selected haircut. Check the side profile, back shape and front finish before choosing.</p>
     <div class="views" id="haircutViews"></div>
     <div class="detail-actions">
-      <a class="btn alt" id="haircutVideo" href="#" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-play"></use></svg> Watch haircut videos</a>
+      <a class="btn alt" id="haircutVideo" href="#" target="_blank" rel="noopener"><svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-play"></use></svg> Watch haircut videos</a>
       <button class="btn" id="useHaircut" type="button">Use this haircut</button>
     </div>
   </div>
@@ -537,7 +537,7 @@
   <div class="modal-card">
     <div class="modal-top">
       <h2 id="cardTitle" data-i18n="barbers.cardTitle">Your Cutfit barber card</h2>
-      <button class="chip" id="cardClose" type="button">Close <svg class="ic" aria-hidden="true"><use href="#i-close"></use></svg></button>
+      <button class="chip" id="cardClose" type="button">Close <svg class="ic" width="24" height="24" aria-hidden="true"><use href="#i-close"></use></svg></button>
     </div>
     <img id="cardPreview" alt="Preview of your one-page barber card" class="card-preview">
     <div class="row">
@@ -552,7 +552,7 @@
 <div id="toast" role="status" aria-live="polite" hidden></div>
 <div id="debugPanel" class="debug-panel" hidden></div>
 
-<script type="module" src="js/app.js"></script>
+<script type="module" src="js/app.js?v=3.2.1"></script>
 <noscript><p class="w">Cutfit needs JavaScript for face scanning and previews.</p></noscript>
 </body>
 </html>
