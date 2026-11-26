@@ -217,10 +217,23 @@ export function barberSpecs(cut, prefs = {}) {
   });
   else if (/bob|lob|pixie|bixie|layers|waves|butterfly|hush/.test(name)) Object.assign(specs, {
     sides: "Face-framing length kept soft",
-    top: "Layers with movement",
+    top: "Layers with movement, point-cut ends",
     fade: "No fade",
+    part: "Ask for the client's natural part",
+    fringe: "No fringe unless requested",
     finish: "Light serum or sea-salt spray",
     upkeep: "Every 6–8 weeks"
+  });
+  // Women's cuts that do not contain "bob", "layer" or "butterfly" still need
+  // salon specs — without this branch they fell through to the men's taper text.
+  else if (/hime|jellyfish|c-curl|s-curl|u-cut|v-cut|see-through|bangs|shoulder-length|wo?lf/.test(name)) Object.assign(specs, {
+    sides: "One-length guide, soft face-framing at the front",
+    top: "Keep the client's length, point-cut the ends",
+    fade: "No fade and no clipper work",
+    part: "Center or natural part",
+    fringe: /bangs|hime|see-through/.test(name) ? "Bangs to the brow, blended into the sides" : "No fringe unless requested",
+    finish: "Light smoothing serum or texture spray",
+    upkeep: "Every 8–10 weeks"
   });
   else if (/afro|coil|high top/.test(name)) Object.assign(specs, {
     sides: "Tapered around the hairline",

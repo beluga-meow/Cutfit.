@@ -56,7 +56,8 @@ export function buildPrompt(specs, { cutName = "", color = "", hairType = "unsur
     colour,
     beard ? "Neaten the beard and moustache edge in the masked area only; keep its length." : "",
     "Keep the person's face, facial features, skin tone, expression, ears, neck, clothing, background, camera angle and lighting exactly the same.",
-    "Match the existing hair direction and lighting. Photorealistic barbershop result, no text, no watermark.",
+    "Match the existing hair direction and lighting. Photorealistic salon-quality result, no text, no watermark.",
+    "Do not change the person's apparent gender, facial identity, hairline or skin tone.",
     viewText
   ].filter(Boolean).join(" ");
 }

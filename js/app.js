@@ -20,6 +20,7 @@ import * as FS from "./face-shape.js";
 const $ = (id) => document.getElementById(id);
 const esc = (v) =>
   String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const icon = (name) => `<svg class="ic" aria-hidden="true"><use href="#i-${name}"></use></svg>`;
 const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const scrollToEl = (el) => el?.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" });
 
@@ -61,7 +62,7 @@ function card(cut) {
     <div class="actions">
       <button class="chip" data-preview="${esc(cut[0])}">Try this</button>
       <button class="chip" data-details="${esc(cut[0])}">Details + views</button>
-      <button class="chip" data-fav="${esc(cut[0])}" aria-pressed="${fav}">${fav ? "♥ Saved" : "♡ Save"}</button>
+      <button class="chip" data-fav="${esc(cut[0])}" aria-pressed="${fav}">${icon("heart")} ${fav ? "Saved" : "Save"}</button>
       <a class="chip" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent(
         cut[0] + " haircut tutorial step by step barber guide"
       )}">Tutorial</a>
@@ -139,6 +140,7 @@ function tab(name) {
     active.classList.add("page-enter");
   }
   if (name === "saved") renderSaved();
+  if (name === "try") syncTryStage();
   if (name === "view3d") openViewer();
   scrollTo(0, 0);
   track("tab", { name });
@@ -569,6 +571,14 @@ function renderSummary(verdict, m, quality, stability) {
 
 // --------------------------------------------------------------- try-on view
 
+function syncTryStage() {
+  const hasPhoto = Boolean(state.scan?.canvas);
+  const stage = $("fitStage");
+  const empty = $("tryEmpty");
+  if (stage) stage.hidden = !hasPhoto;
+  if (empty) empty.hidden = hasPhoto;
+}
+
 function drawBefore() {
   const c = $("cmpBefore");
   if (!c) return;
@@ -581,6 +591,7 @@ function drawBefore() {
   if (src) ctx.drawImage(src, 0, 0, c.width, c.height);
   const wrap = $("compare");
   if (wrap && src) wrap.style.aspectRatio = `${c.width} / ${c.height}`;
+  syncTryStage();
 }
 
 function drawAfter() {
@@ -609,7 +620,11 @@ function updateFitLabel() {
   $("fitStyleName").textContent = cut[0];
   $("fitStyleDesc").textContent = cut[5] || "Custom hairstyle preview";
   const save = $("saveTry");
-  if (save) save.textContent = store.isFav(cut[0]) ? "♥ Saved" : "♡ Save";
+  if (save) {
+    const fav = store.isFav(cut[0]);
+    save.innerHTML = `${icon("heart")} <span>${fav ? "Saved" : t("try.save")}</span>`;
+    save.setAttribute("aria-pressed", String(fav));
+  }
   document.querySelectorAll(".try-card").forEach((b) => {
     const on = b.dataset.style === cut[0];
     b.setAttribute("aria-pressed", String(on));
@@ -617,7 +632,7 @@ function updateFitLabel() {
     if (on) {
       const i = document.createElement("i");
       i.className = "picked";
-      i.textContent = "✓";
+      i.innerHTML = icon("check");
       b.append(i);
     }
   });
@@ -704,6 +719,7 @@ async function runAI({ seed = null, colour = null, beard = false } = {}) {
   state.busy = true;
   const btn = $("renderTry");
   if (btn) { btn.disabled = true; btn.textContent = "…"; }
+  if (btn) btn.setAttribute("aria-busy", "true");
 
   try {
     const specs = Catalog.barberSpecs(state.selected, state.prefs);
@@ -732,14 +748,18 @@ async function runAI({ seed = null, colour = null, beard = false } = {}) {
     $("tryStage").textContent = t("try.done");
     $("tryProgress")?.setAttribute("hidden", "");
     const credits = store.cachedCredits();
-    if (typeof credits === "number") $("tryCredits").textContent = `${credits} AI credits`;
+    if (typeof credits === "number") setCreditsLabel(credits);
     track("ai_done", { cut: state.selected[0] });
   } catch (err) {
     setStatus("trymsg", err.message || "AI generation failed. Please try again.", "error");
     logError(err.message, { code: err.code, status: err.status });
   } finally {
     state.busy = false;
-    if (btn) { btn.disabled = false; btn.textContent = `✦ ${t("try.generate")}`; }
+    if (btn) {
+      btn.disabled = false;
+      btn.removeAttribute("aria-busy");
+      btn.innerHTML = `${icon("tryon")} <span>${t("try.generate")}</span>`;
+    }
     $("tryProgress")?.setAttribute("hidden", "");
   }
 }
@@ -828,6 +848,7 @@ function renderLibrary() {
         .join("")}
       <button data-page="next" ${libraryPage === pages ? "disabled" : ""} aria-label="Next page">›</button>
     </div>`;
+  updateFilterCount();
 }
 
 function renderSaved() {
@@ -836,7 +857,7 @@ function renderSaved() {
   const names = [...new Set([...store.getFavs(), ...store.getCustoms().map((r) => r.name)])];
   const items = names.map((n) => Catalog.CM[n]).filter(Boolean);
   if (!items.length) {
-    el.innerHTML = `<div class="hint"><b>No saved looks yet.</b><p>Tap ♡ Save on any style in the library or the fitting room, and it shows up here.</p><button class="btn" data-t="lib">Explore hairstyles</button></div>`;
+    el.innerHTML = `<div class="hint"><b>No saved looks yet.</b><p>Tap Save on any style in the library or the fitting room, and it shows up here.</p><button class="btn" data-t="lib">Explore hairstyles</button></div>`;
     return;
   }
   el.innerHTML = `<p class="mute fine">${items.length} saved ${items.length === 1 ? "style" : "styles"}</p>
@@ -845,7 +866,7 @@ function renderSaved() {
         (c) => `<div class="cd">${Catalog.fig(c[4])}<b>${esc(c[0])}</b><span>${esc(categoryLabel(c))}</span>
         <div class="actions">
           <button class="chip" data-preview="${esc(c[0])}">Open in try-on</button>
-          <button class="chip" data-fav="${esc(c[0])}" aria-pressed="true">Remove ♥</button>
+          <button class="chip" data-fav="${esc(c[0])}" aria-pressed="true">${icon("heart")} Remove</button>
         </div></div>`
       )
       .join("")}</div>`;
@@ -1052,7 +1073,7 @@ function renderSalons() {
   el.innerHTML = `<div class="salon-grid">${list
     .map(
       (s) => `<article class="salon-card">
-      <div class="salon-top"><b>${esc(s.name)}</b><span class="salon-badge" data-kind="${esc(s.kind)}">${esc(
+      <div class="salon-top"><b>${icon("pin")} ${esc(s.name)}</b><span class="salon-badge" data-kind="${esc(s.kind)}">${esc(
         t(SALON_BADGE[s.kind] || "salons.badge.hair")
       )}</span></div>
       ${s.address ? `<p class="fine mute">${esc(s.address)}</p>` : ""}
@@ -1086,8 +1107,10 @@ async function searchSalons() {
     const code = err?.code;
     const message =
       code === "denied" ? t("salons.denied")
+      : code === "insecure" ? t("salons.insecure")
       : code === "unsupported" ? t("salons.unsupported")
       : code === "timeout" ? t("salons.timeout")
+      : code === "busy" ? t("salons.busy")
       : t("salons.error");
     setStatus("salonStatus", message, "warn");
     $("salonList").innerHTML = "";
@@ -1229,6 +1252,17 @@ function bindScanUI() {
   state.prefs = prefs();
 }
 
+function updateFilterCount() {
+  const defaults = { styleLength: "a", styleEra: "a", styleType: "a", styleAudience: "all", styleHair: "all" };
+  const active = Object.entries(defaults).filter(([id, value]) => ($(id)?.value || value) !== value).length;
+  const badge = $("filterCount");
+  if (badge) {
+    badge.hidden = active === 0;
+    badge.textContent = String(active);
+  }
+  return active;
+}
+
 function bindLibraryUI() {
   ["styleSearch", "styleLength", "styleEra", "styleType", "styleAudience", "styleHair"].forEach((id) => {
     const el = $(id);
@@ -1238,13 +1272,22 @@ function bindLibraryUI() {
       renderLibrary();
     });
   });
+  $("filtersToggle")?.addEventListener("click", (e) => {
+    const panel = $("filterFields");
+    if (!panel) return;
+    const open = panel.hidden;
+    panel.hidden = !open;
+    e.currentTarget.setAttribute("aria-expanded", String(open));
+  });
   $("barberSearch")?.addEventListener("input", (e) =>
     Barbers.renderBarbers($("bl"), { query: e.target.value, reviews: store.getReviews() })
   );
 }
 
 function bindTryUI() {
+  $("tryCredits")?.addEventListener("click", () => refreshCredits({ retry: true }));
   $("trySearch")?.addEventListener("input", setupTryShelf);
+  syncTryStage();
   const seed = $("seedInput");
   $("renderTry")?.addEventListener("click", () => runAI({ seed: seed?.value ? Number(seed.value) : null }));
   $("regenerate")?.addEventListener("click", () => {
@@ -1315,7 +1358,7 @@ function bindTryUI() {
   $("cardFromTry")?.addEventListener("click", () => showBarberCard(state.selected[0]));
   $("tutorialFit")?.addEventListener("click", () =>
     window.open(
-      "https://www.youtube.com/results?search_query=" + encodeURIComponent(state.selected[0] + " men haircut tutorial barber step by step"),
+      "https://www.youtube.com/results?search_query=" + encodeURIComponent(state.selected[0] + " haircut tutorial barber step by step"),
       "_blank",
       "noopener"
     )
@@ -1450,7 +1493,7 @@ function showDetails(name) {
       ([label, view]) =>
         `<a class="view-link" target="_blank" rel="noopener" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(
           cut[0] + " haircut " + view
-        )}"><b>${esc(label)} view ↗</b><small>Open photo references</small></a>`
+        )}"><b>${esc(label)} view ${icon("external")}</b><small>Open photo references</small></a>`
     )
     .join("");
   $("haircutVideo").href =
@@ -1527,25 +1570,52 @@ function bindInstall() {
   });
 }
 
-async function refreshCredits() {
-  if (!store.apiV3()) {
-    const el = $("tryCredits");
-    if (el) el.textContent = "AI credits: —";
-    return;
+function setCreditsLabel(value) {
+  const el = $("tryCredits");
+  if (!el) return;
+  el.dataset.state = "ok";
+  el.textContent = t("try.credits", { n: value });
+  el.setAttribute("aria-label", `${el.textContent}. Tap to refresh.`);
+}
+
+function setCreditsUnavailable() {
+  const el = $("tryCredits");
+  if (!el) return;
+  el.dataset.state = "failed";
+  el.textContent = t("try.creditsOffline");
+  el.setAttribute("aria-label", `${el.textContent}. Tap to retry.`);
+}
+
+/**
+ * Load the credit balance. The pill doubles as the retry control, so a failed
+ * request never leaves the user staring at a bare dash.
+ */
+async function refreshCredits({ retry = false } = {}) {
+  const el = $("tryCredits");
+  if (el) {
+    el.dataset.state = "loading";
+    if (retry) el.textContent = t("try.creditsLoading");
   }
   try {
-    const data = await store.api("/api/credits", { timeoutMs: 8000 });
-    if (typeof data.credits === "number") {
-      store.setCachedCredits(data.credits);
-      const el = $("tryCredits");
-      if (el) el.textContent = `${data.credits}/${data.max ?? 10} AI credits`;
-      const btn = $("renderTry");
-      if (btn) btn.disabled = data.credits <= 0;
+    if (retry) store.clearCapabilities();
+    const caps = await store.apiCapabilities({ force: retry });
+    if (!caps.v3) {
+      setCreditsUnavailable();
+      return;
     }
+    const data = await store.api("/api/credits", { timeoutMs: 8000 });
+    if (typeof data.credits !== "number") {
+      setCreditsUnavailable();
+      return;
+    }
+    store.setCachedCredits(data.credits);
+    setCreditsLabel(`${data.credits}/${data.max ?? 10}`);
+    const btn = $("renderTry");
+    if (btn) btn.disabled = data.credits <= 0;
   } catch {
     const cached = store.cachedCredits();
-    const el = $("tryCredits");
-    if (el) el.textContent = cached == null ? "AI credits: —" : `${cached} AI credits`;
+    if (typeof cached === "number" && retry) setCreditsLabel(cached);
+    else setCreditsUnavailable();
   }
 }
 
@@ -1593,6 +1663,7 @@ async function boot() {
     const bot = $("bot");
     if (!bot) return;
     bot.hidden = !bot.hidden;
+    $("cb").setAttribute("aria-expanded", String(!bot.hidden));
     if (!bot.hidden && $("ms") && !$("ms").children.length) {
       guide.say("Hi! I’m the Cutfit guide. Ask me about scanning, face shapes, the 3D viewer, barbers or privacy.");
       guide.suggest();
@@ -1623,12 +1694,11 @@ async function boot() {
   }
   const caps = await store.apiCapabilities();
   if (!caps.v3) {
-    const creditsEl = $("tryCredits");
-    if (creditsEl) creditsEl.textContent = "AI credits: —";
+    setCreditsUnavailable();
     const note = $("tryAI");
     if (note) {
       note.hidden = false;
-      note.textContent = t("try.needsDeploy");
+      note.textContent = t("try.unavailable");
     }
     const btn = $("renderTry");
     if (btn) btn.disabled = false;

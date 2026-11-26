@@ -10,7 +10,7 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(self), microphone=(), geolocation=()
   Strict-Transport-Security: max-age=15552000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https://cutfit-ai-api.jhayc-chua06.workers.dev https://cdn.jsdelivr.net https://storage.googleapis.com https://fal.media https://*.fal.ai https://*.fal.run; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' blob:; connect-src 'self' https://overpass-api.de https://overpass.kumi.systems https://cutfit-ai-api.jhayc-chua06.workers.dev https://cdn.jsdelivr.net https://storage.googleapis.com https://fal.media https://*.fal.ai https://*.fal.run; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'; object-src 'none'
   Cross-Origin-Opener-Policy: same-origin
   X-Permitted-Cross-Domain-Policies: none
 

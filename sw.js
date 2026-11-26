@@ -1,7 +1,7 @@
 // Cutfit service worker — app shell caching + offline fallback.
 // It never caches API calls, fal.ai images or generated previews.
 
-const VERSION = "cutfit-v3.1.0";
+const VERSION = "cutfit-v3.2.0";
 const SHELL = [
   "./",
   "./index.html",

@@ -412,3 +412,54 @@ and `Cannot access application "fal-ai/qwen-image-edit"`, so no job was created 
 made. A fal key is normally `<key_id>:<key_secret>` with a long hex secret — re-copy it from
 <https://fal.ai/dashboard/keys> and run `FAL_KEY='…' npm run check:mask`. The Worker’s R2 mask
 fallback stays in place either way.
+
+## Cutfit 3.2 — inline icons, mobile layout, honest credits
+
+**Icons.** Every icon is one inline `<svg>` sprite (`<symbol id="i-…">`) at the top of
+`index.html`, referenced with `<use href="#i-…">`. There are no separate icon files to
+404 on GitHub Pages, nothing to precache, and `stroke="currentColor"` inherits the
+label colour. Nav (Scan, Styles, Roulette, Try-on, 3D, My looks, Barbers), the camera
+empty state, the help button, the four try-on tools and the save/download buttons all
+use it. `assets/icons/favicon.svg`, `icon-192.png` and `icon-512.png` stay for the
+manifest and the browser tab.
+
+**Mobile layout.** The style search is full width, the five dropdowns are a two-column
+grid (one column under 340 px) inside a collapsible *Filters* button that shows the
+active-filter count. Controls are 44 px tall at 16 px so iOS does not zoom. The main
+column reserves `--nav-h` + safe-area space, so the bottom nav never covers the page
+counters, and the guide is a 44 px round button sitting above the nav.
+
+**Try-on.** With no photo, the canvas is not rendered; the "Start with a clear selfie"
+card is shown instead. The view label sits above the slider, the generate/regenerate
+buttons share a row, and the credit pill shows `AI credits: N/M`, or
+`AI credits: offline — tap to retry` when the Worker cannot be reached. It is never a
+bare dash.
+
+**Error 1042.** `https://cutfit-ai-api.jhayc-chua06.workers.dev/api/health` returns
+`HTTP 404` with the body `error code: 1042`. Cloudflare documents 1042 as *"Worker tried
+to fetch from another Worker on the same zone… Also returned for a workers.dev URL with
+no Worker serving it, such as a Worker with its workers.dev route disabled."* The API
+code never fetches itself, so this is routing, not application logic: no Worker is
+serving that hostname under the account. Confirm the Worker exists under the account
+that owns `jhayc-chua06`, that its workers.dev route is enabled, then:
+
+```sh
+npx wrangler login          # or set CLOUDFLARE_API_TOKEN (Workers Scripts: Edit)
+npx wrangler secret put FAL_KEY
+npm run worker:deploy
+curl https://cutfit-ai-api.jhayc-chua06.workers.dev/api/health
+curl https://cutfit-ai-api.jhayc-chua06.workers.dev/api/config   # expect "apiVersion":3
+```
+
+`npx wrangler deploy --dry-run` bundles in 24.77 KiB gzip 7.47 KiB and resolves the
+`CREDITS` KV namespace, `RESULTS` R2 bucket and the three vars, so `wrangler.jsonc` and
+the Worker name (`cutfit-ai-api`) are correct.
+
+**Salons.** Overpass now falls back to `overpass.kumi.systems` on 429/5xx or a network
+error, geolocation reports an explicit insecure-context message, and the panel carries
+the required OpenStreetMap attribution link.
+
+**Barber specs.** Women's cuts that do not contain "bob", "layer" or "butterfly"
+(Hime, jellyfish, C-/S-curl, U-/V-cut, bangs, shoulder-length, wolf) no longer fall
+through to the men's taper text, and the AI prompt asks for a salon-quality result
+without changing the person's apparent gender or facial identity.

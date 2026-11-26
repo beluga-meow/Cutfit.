@@ -5,7 +5,12 @@
 // tells people to call ahead. This module is deliberately DOM-free so it can be
 // unit tested in Node.
 
-const OVERPASS = "https://overpass-api.de/api/interpreter";
+// Primary endpoint plus a community mirror. Overpass is a free, shared service,
+// so we try the mirror once before giving up on a network or 5xx failure.
+const OVERPASS_ENDPOINTS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter"
+];
 const CACHE_KEY = "cf_salons_v1";
 const CACHE_TTL = 10 * 60 * 1000;
 const CACHE_MOVE_KM = 0.5;
@@ -70,6 +75,8 @@ export function normaliseElement(el) {
     lon,
     address,
     phone: String(tags.phone || tags["contact:phone"] || "").slice(0, 40),
+    // Hours and contact details are only shown when OSM actually has them.
+    source: "openstreetmap",
     hours: String(tags.opening_hours || "").slice(0, 80),
     website: String(tags.website || tags["contact:website"] || "").slice(0, 200),
     kind: classifySalon(tags, name)
@@ -123,6 +130,9 @@ function writeCache(lat, lon, items) {
 
 /** Browser geolocation with a friendly, coded error. */
 export function locate({ timeout = 12000 } = {}) {
+  if (typeof window !== "undefined" && window.isSecureContext === false) {
+    return Promise.reject(error("Location needs a secure (https) page.", "insecure"));
+  }
   if (!navigator.geolocation) {
     return Promise.reject(error("This browser has no location support.", "unsupported"));
   }
@@ -153,24 +163,36 @@ export async function findSalons({ lat, lon, radius = 4000, signal } = {}) {
   const timer = setTimeout(() => controller.abort(), 25000);
   if (signal) signal.addEventListener("abort", () => controller.abort(), { once: true });
 
-  let res;
-  try {
-    res = await fetch(OVERPASS, {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
-      body: `data=${encodeURIComponent(buildOverpassQuery(lat, lon, radius))}`,
-      signal: controller.signal
-    });
-  } catch (err) {
-    clearTimeout(timer);
-    if (err?.name === "AbortError") throw error("The salon search timed out.", "timeout");
-    throw error("The salon search could not reach OpenStreetMap.", "network");
+  const body = `data=${encodeURIComponent(buildOverpassQuery(lat, lon, radius))}`;
+  let res = null;
+  let lastStatus = 0;
+
+  for (const endpoint of OVERPASS_ENDPOINTS) {
+    try {
+      res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded", Accept: "application/json" },
+        body,
+        signal: controller.signal
+      });
+    } catch (err) {
+      if (err?.name === "AbortError") {
+        clearTimeout(timer);
+        throw error("The salon search timed out.", "timeout");
+      }
+      res = null;
+      continue;
+    }
+    lastStatus = res.status;
+    // Retry on the mirror for rate limits and server-side failures only.
+    if (res.ok || (res.status !== 429 && res.status < 500)) break;
   }
   clearTimeout(timer);
 
+  if (!res) throw error("The salon search could not reach OpenStreetMap.", "network");
   if (!res.ok) {
-    if (res.status === 429) throw error("OpenStreetMap is busy right now. Try again in a minute.", "busy");
-    throw error(`OpenStreetMap answered ${res.status}.`, "http");
+    if (lastStatus === 429) throw error("OpenStreetMap is busy right now. Try again in a minute.", "busy");
+    throw error(`OpenStreetMap answered ${lastStatus}.`, "http");
   }
 
   let data;
