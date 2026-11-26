@@ -21,8 +21,10 @@ const SHELL = [
   "./js/barbers.js",
   "./js/salons.js",
   "./js/guide.js",
-  "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png",
+  "./favicon.svg",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./icon-maskable-512.png",
   "./assets/hair/manifest.json"
 ];
 
