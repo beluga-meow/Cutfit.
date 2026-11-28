@@ -321,7 +321,10 @@ async function storeMask(env, origin, dataUrl, ttl) {
 
 // ------------------------------------------------------------------ handler
 
-export default {
+// The real handlers live on this object and are wrapped by the default export
+// below, so a thrown error can never escape the request as Cloudflare Error
+// 1101 (a non-JSON 500 with no diagnostic for the page).
+const worker = {
   async fetch(request, env) {
     const url = new URL(request.url);
     const origin = request.headers.get("Origin") || "";
@@ -671,6 +674,52 @@ export default {
       } while (cursor);
     }
     console.log(JSON.stringify({ kind: "cleanup", deleted }));
+  }
+};
+
+/**
+ * Wrap a fetch handler so it always settles to a Response.
+ *
+ * The runtime calls `fetch` asynchronously: the handler must return a Promise
+ * and that Promise must resolve to a `Response`. If it returns anything else,
+ * or throws, the caller gets a 500 body like "Callback returned incorrect type;
+ * expected 'Promise'" or "The script will never generate a response" and the
+ * page cannot tell what happened. Catching here keeps the contract intact.
+ */
+function guardFetch(handler) {
+  return async function fetch(request, env, ctx) {
+    try {
+      return await handler.call(worker, request, env, ctx);
+    } catch (err) {
+      // Message only: never log env, headers or the incoming body.
+      console.error(JSON.stringify({ kind: "uncaught", message: String(err?.message || err).slice(0, 300) }));
+      let corsOrigin = "*";
+      try {
+        const allowed = parseOrigins(env?.ALLOWED_ORIGIN);
+        const origin = request?.headers?.get("Origin") || "";
+        const openToAll = allowed.length === 0 || allowed.includes("*");
+        corsOrigin = openToAll ? "*" : allowed.includes(origin) ? origin : allowed[0] || "*";
+      } catch { /* keep "*" */ }
+      return jsonResponse(
+        { error: "Something went wrong on the server. Please try again.", code: "worker" },
+        500,
+        corsOrigin
+      );
+    }
+  };
+}
+
+export default {
+  fetch: guardFetch(worker.fetch),
+
+  // Cron: delete expired previews from R2. A rejected scheduled event would be
+  // reported as an unhandled rejection, so failures are logged and swallowed.
+  async scheduled(event, env, ctx) {
+    try {
+      await worker.scheduled(event, env, ctx);
+    } catch (err) {
+      console.error(JSON.stringify({ kind: "cleanup_failed", message: String(err?.message || err).slice(0, 300) }));
+    }
   }
 };
 

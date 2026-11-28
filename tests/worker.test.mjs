@@ -428,3 +428,119 @@ test("unknown mask keys are gone, not listed", async () => {
   const traversal = await worker.fetch(req("/api/mask/../../x", { device: null, origin: null }), env);
   assert.equal(traversal.status, 404);
 });
+
+// ------------------------------------- regression: the Error 1101 shutdown
+//
+// Production answered every request, including OPTIONS, with 500 / 1101 and
+// "TypeError: Callback returned incorrect type; expected 'Promise'". That is the
+// runtime saying the fetch handler did not hand back a Promise resolving to a
+// Response. These tests pin the contract so the Worker can never regress to it.
+
+test("fetch is an async function and every request settles to a Response", async () => {
+  assert.equal(worker.fetch.constructor.name, "AsyncFunction", "fetch must be async");
+
+  const env = makeEnv();
+  const requests = [
+    req("/api/health", { device: null, origin: null }),
+    req("/api/config", { device: null, origin: null }),
+    req("/api/try-on", { method: "OPTIONS" }),
+    req("/api/try-on", { method: "POST", body: "not json at all" }),
+    req("/api/status?id=abc"),
+    req("/nope", { device: null, origin: null }),
+    req(`/api/result/${"d".repeat(32)}.png`, { device: null, origin: null })
+  ];
+
+  for (const request of requests) {
+    const pending = worker.fetch(request, env);
+    assert.ok(pending instanceof Promise, `fetch(${request.url}) must return a Promise`);
+    const res = await pending;
+    assert.ok(res instanceof Response, `fetch(${request.url}) must resolve to a Response`);
+    assert.ok(res.status < 500, `fetch(${request.url}) answered ${res.status}`);
+  }
+});
+
+test("a thrown error inside the handler returns JSON 500 with a CORS header", async () => {
+  const env = makeEnv();
+  Object.defineProperty(env, "ALLOWED_ORIGIN", {
+    get() {
+      throw new Error("env is broken");
+    }
+  });
+
+  const logged = [];
+  const original = console.error;
+  console.error = (...args) => logged.push(args.join(" "));
+  let res;
+  try {
+    res = await worker.fetch(req("/api/credits"), env);
+  } finally {
+    console.error = original;
+  }
+
+  assert.equal(res.status, 500, "no Error 1101: the handler still answers");
+  assert.equal(res.headers.get("Content-Type"), "application/json; charset=utf-8");
+  const data = await res.json();
+  assert.equal(data.code, "worker");
+  assert.equal(JSON.stringify(data).includes("env is broken"), false, "internals stay out of the response");
+  assert.equal(res.headers.get("Access-Control-Allow-Origin"), "*", "an unknown origin falls back to *");
+  assert.equal(logged.length, 1);
+  assert.match(logged[0], /env is broken/);
+});
+
+test("/api/health still answers 200 when KV, R2 and FAL_KEY are all absent", async () => {
+  const res = await worker.fetch(req("/api/health", { device: null, origin: null }), { ALLOWED_ORIGIN: ORIGIN });
+  const data = await res.json();
+  assert.equal(res.status, 200);
+  assert.equal(data.ok, true);
+  assert.equal(data.hasKV, false);
+  assert.equal(data.hasR2, false);
+  assert.equal(data.hasFalKey, false);
+});
+
+test("a missing R2 binding is reported, not silently ignored", async () => {
+  const env = makeEnv({ RESULTS: undefined });
+
+  const result = await worker.fetch(req(`/api/result/${"e".repeat(32)}.png`, { device: null, origin: null }), env);
+  assert.equal(result.status, 503);
+  assert.match((await result.json()).error, /storage is not configured/i);
+
+  const mask = await worker.fetch(req(`/api/mask/${"e".repeat(32)}.png`, { device: null, origin: null }), env);
+  assert.equal(mask.status, 503);
+});
+
+test("without R2 a finished preview falls back to the fal URL and says so", async () => {
+  const env = makeEnv({ RESULTS: undefined });
+  stubFal();
+
+  const start = await worker.fetch(
+    req("/api/try-on", { method: "POST", body: { imageDataUrl: PNG_1PX, prompt: "Give me a textured crop" } }),
+    env
+  );
+  assert.equal(start.status, 200);
+
+  const status = await (await worker.fetch(req("/api/status?id=req_12345678"), env)).json();
+  assert.equal(status.status, "COMPLETED");
+  assert.equal(status.stored, false);
+  assert.equal(status.imageUrl, "https://fal.media/out.png");
+});
+
+test("scheduled returns a Promise and never rejects", async () => {
+  const empty = worker.scheduled({}, {});
+  assert.ok(empty instanceof Promise);
+  await empty;
+
+  const env = makeEnv({
+    RESULTS: {
+      async list() {
+        throw new Error("R2 is down");
+      }
+    }
+  });
+  const original = console.error;
+  console.error = () => {};
+  try {
+    await worker.scheduled({ cron: "*/15 * * * *" }, env);
+  } finally {
+    console.error = original;
+  }
+});

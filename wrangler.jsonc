@@ -5,7 +5,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cutfit-ai-api",
   "main": "index.js",
-  "compatibility_date": "2026-11-21",
+  "compatibility_date": "2026-11-24",
   "observability": {
     // Workers Logs: client errors and analytics events are written with
     // console.log, so they show up here without a third-party SDK.
